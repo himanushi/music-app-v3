@@ -1,6 +1,6 @@
 {
   "extends": "@tsconfig/svelte/tsconfig.json",
-  "include": ["src/**/*", "src/@types"],
+  "include": ["src/**/*", "src/@types", "capacitor.config.ts"],
   "exclude": ["node_modules/**/*"],
   "compilerOptions": {
     "typeRoots": ["node_modules/@types", "src/@types"],
