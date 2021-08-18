@@ -1,7 +1,7 @@
-div {
+ion-content {
   @apply h-full flex flex-col items-center justify-center space-y-3;
 
-  span {
+  ion-text {
     @apply font-bold;
   }
   :nth-child(1) {

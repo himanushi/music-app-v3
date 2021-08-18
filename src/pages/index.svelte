@@ -1,6 +1,4 @@
 <script lang="ts">
-import { goto } from "@roxi/routify";
-
 let text = "Hello World!!";
 
 // $: { } ← のことを reactive declarations と呼ぶ
@@ -21,17 +19,36 @@ $: if (text.length > 30) {
   // eslint-disable-next-line no-console
   console.log("30文字以上になりました");
 }
+
+const presentAlert = () => {
+  const alert = document.createElement("ion-alert");
+  alert.cssClass = "my-custom-class";
+  alert.header = "Alert";
+  alert.subHeader = "Subtitle";
+  alert.message = "This is an alert message.";
+  alert.buttons = ["OK"];
+
+  document.body.appendChild(alert);
+  return alert.present();
+};
 </script>
 
-<div>
-  <span>{text}</span>
-  <span>{text}</span>
-  <span>{text}</span>
-  <input bind:value={text} />
-  <button on:click={() => $goto("/about")}>About ページへ</button>
-  <button on:click={() => $goto("/not-found")}>Not Found ページへ</button>
-</div>
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button />
+    </ion-buttons>
+    <ion-title>My Navigation Bar</ion-title>
+  </ion-toolbar>
 
-<style lang="scss">
-@import "./index.scss";
-</style>
+  <ion-toolbar>
+    <ion-title>Subheader</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-text>
+    {text}
+  </ion-text>
+  <input bind:value={text} />
+  <button on:click={presentAlert}>About2 ページへ</button>
+</ion-content>
