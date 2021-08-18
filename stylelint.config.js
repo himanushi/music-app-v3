@@ -11,6 +11,10 @@ module.exports = {
     "selector-pseudo-class-no-unknown": [
       true,
       { ignorePseudoClasses: ["global"] }
+    ],
+    "selector-type-no-unknown": [
+      true,
+      { ignore: ["custom-elements"] }
     ]
   }
 };
