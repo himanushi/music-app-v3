@@ -1,0 +1,5 @@
+query Playlist($id: TTID!) {
+  playlist(id: $id) {
+    ...PlaylistFields
+  }
+}
