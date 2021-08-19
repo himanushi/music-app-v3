@@ -1,7 +1,0 @@
-{
-  "name": "music-app",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "custom"
-}

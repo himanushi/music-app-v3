@@ -1,6 +1,0 @@
-node_modules
-.snowpack
-build
-.routify
-.env*
-.DS_Store
