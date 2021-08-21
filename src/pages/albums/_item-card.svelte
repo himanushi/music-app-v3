@@ -10,8 +10,7 @@ export let item: Album;
 const path = `/albums/${item.id}`;
 </script>
 
-<div class="w-40">
-  <a class="card" href={$url(path)}>
+<!-- <a class="card" href={$url(path)}>
     <Image src={item.artworkM?.url} class="h-40 w-40" />
     <span class="name">{item.name}</span>
   </a>
@@ -20,28 +19,11 @@ const path = `/albums/${item.id}`;
   </span>
   <span class="info">
     <InfoIcon {item} />
-  </span>
-</div>
+  </span> -->
 
-<style lang="scss">
-div {
-  @apply relative;
-
-  .card {
-    @apply flex flex-col;
-
-    .name {
-      @apply truncate text-gray-400 text-xs;
-      @apply p-1;
-    }
-  }
-
-  .favorite {
-    @apply absolute top-0 right-0;
-  }
-
-  .info {
-    @apply absolute bottom-7 left-2;
-  }
-}
-</style>
+<ion-card>
+  <ion-img src={item.artworkM?.url} alt={item.name} class="h-40 w-40" />
+  <ion-card-subtitle>
+    {item.name}
+  </ion-card-subtitle>
+</ion-card>

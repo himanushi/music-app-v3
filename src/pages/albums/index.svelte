@@ -17,12 +17,3 @@ $: me = $query?.data?.me;
   </div>
   <SearchDetailButton component={SearchDetail} />
 {/if}
-
-<style>
-div {
-  grid-template-columns: repeat(auto-fill, 175px);
-
-  @apply mt-2 mb-20 w-full;
-  @apply grid gap-1 justify-center justify-items-center items-center;
-}
-</style>

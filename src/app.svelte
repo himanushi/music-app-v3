@@ -1,5 +1,4 @@
 <script lang="ts">
-import "~/app.css";
 import { Router } from "@roxi/routify";
 import { routes } from "routify/routes";
 import { onMount } from "svelte";
@@ -16,4 +15,6 @@ onMount(() => {
 });
 </script>
 
-<Router {routes} />
+<ion-app>
+  <Router {routes} />
+</ion-app>

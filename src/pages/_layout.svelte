@@ -11,9 +11,11 @@ import client from "~/graphql/client";
 setClient(client);
 </script>
 
-<Initializer />
-<Header />
-<Content><slot /></Content>
-<Footer />
-<Modals />
-<Toasts />
+<ion-page>
+  <Initializer />
+  <Header />
+  <Content><slot /></Content>
+  <Footer />
+  <Modals />
+  <Toasts />
+</ion-page>
