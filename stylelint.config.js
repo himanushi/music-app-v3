@@ -12,6 +12,10 @@ module.exports = {
     "selector-pseudo-class-no-unknown": [
       true,
       { ignorePseudoClasses: ["global"] }
+    ],
+    "selector-type-no-unknown": [
+      true,
+      { ignoreTypes: [/^ion-/u] }
     ]
   }
 };

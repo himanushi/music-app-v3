@@ -26,15 +26,5 @@
     "javascriptreact",
     "typescript",
     "typescriptreact"
-  ],
-
-  // TailwindCSS JIT
-  "emeraldwalk.runonsave": {
-    "commands": [
-      {
-        "match": "\\.(svelte|css)$",
-        "cmd": "touch ./src/app.css"
-      }
-    ]
-  }
+  ]
 }
