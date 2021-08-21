@@ -26,5 +26,7 @@
     "javascriptreact",
     "typescript",
     "typescriptreact"
-  ]
+  ],
+  "html-css-class-completion.includeGlobPattern": "**/*.{css,scss,svelte,html}",
+  "html-css-class-completion.enableScssFindUsage": true
 }

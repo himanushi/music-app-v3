@@ -57,7 +57,7 @@ const showPlayer = () => {
 </script>
 
 {#if track}
-  <footer
+  <ion-footer
     transition:fly={{
       duration: 200,
       opacity: 100,
@@ -108,7 +108,7 @@ const showPlayer = () => {
         {/if}
       </span>
     {/key}
-  </footer>
+  </ion-footer>
 {/if}
 
 <style lang="scss">

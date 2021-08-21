@@ -12,8 +12,8 @@ $: me = $query?.data?.me;
 </script>
 
 {#if me && isAllowed(me, "albums")}
-  <div>
+  <ion-list>
     <Albums params={$params} />
-  </div>
+  </ion-list>
   <SearchDetailButton component={SearchDetail} />
 {/if}

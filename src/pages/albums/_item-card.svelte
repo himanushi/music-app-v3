@@ -1,5 +1,7 @@
 <script lang="ts">
-import { url } from "@roxi/routify";
+import {
+  goto, url
+} from "@roxi/routify";
 import InfoIcon from "./_info-icon.svelte";
 import Favorite from "~/components/favorite.svelte";
 import Image from "~/components/square-image.svelte";
@@ -21,9 +23,13 @@ const path = `/albums/${item.id}`;
     <InfoIcon {item} />
   </span> -->
 
-<ion-card>
-  <ion-img src={item.artworkM?.url} alt={item.name} class="h-40 w-40" />
-  <ion-card-subtitle>
-    {item.name}
-  </ion-card-subtitle>
-</ion-card>
+<ion-item button on:click={() => $goto(path)}>
+  <ion-thumbnail slot="start">
+    <ion-img src={item.artworkM?.url} alt={item.name} />
+  </ion-thumbnail>
+  <ion-label>{item.name}</ion-label>
+</ion-item>
+
+<style lang="scss">
+// @import "./_item-card.scss";
+</style>
