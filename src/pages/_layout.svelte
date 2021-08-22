@@ -15,7 +15,7 @@ setClient(client);
   <Initializer />
   <Header />
   <Content><slot /></Content>
-  <Footer />
+  <!-- <Footer />
   <Modals />
-  <Toasts />
+  <Toasts /> -->
 </ion-page>

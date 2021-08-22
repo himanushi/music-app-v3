@@ -2,9 +2,7 @@
 import ChangePage from "./_change-page.svelte";
 </script>
 
-<main data-routify="scroll-lock">
+<ion-cotent fullscreen scrollY>
   <ChangePage />
-  <ion-cotent>
-    <slot />
-  </ion-cotent>
-</main>
+  <slot />
+</ion-cotent>

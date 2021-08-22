@@ -1,16 +1,8 @@
-import { defineCustomElements } from "@ionic/core/loader";
-import "@ionic/core/css/ionic.bundle.css";
 import App from "./app.svelte";
 
 const app = new App({ target: document.body });
 
 export default app;
-
-if (typeof window !== "undefined") {
-
-  defineCustomElements(window);
-
-}
 
 /*
  * Hot Module Replacement (HMR) - Remove this snippet to remove HMR.
