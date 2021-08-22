@@ -2,7 +2,8 @@
   "scripts": {
     "start": "run-p route dev",
     "dev": "snowpack dev",
-    "build": "rm -fr build && routify -b && snowpack build && . scripts/cache-buster.bash && . scripts/rename-index.bash",
+    "ios:run": "ionic capacitor run ios",
+    "build": "rm -fr build && routify -b && snowpack build && . scripts/cache-buster.bash",
     "lint": "prettier --write . && eslint --fix --ext .js,.ts . && eslint --fix --ext .svelte .",
     "route": "routify -b",
     "routing": "routify",
@@ -28,6 +29,9 @@
     "xstate": "^4.17.1"
   },
   "devDependencies": {
+    "@capacitor/cli": "^3.2.0",
+    "@capacitor/core": "^3.2.0",
+    "@capacitor/ios": "^3.2.0",
     "@graphql-codegen/cli": "^1.21.2",
     "@graphql-codegen/typed-document-node": "^1.18.3",
     "@graphql-codegen/typescript": "^1.21.1",
