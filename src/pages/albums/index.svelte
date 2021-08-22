@@ -15,5 +15,5 @@ $: me = $query?.data?.me;
   <ion-list>
     <Albums params={$params} />
   </ion-list>
-  <SearchDetailButton component={SearchDetail} />
+  <!-- <SearchDetailButton component={SearchDetail} /> -->
 {/if}

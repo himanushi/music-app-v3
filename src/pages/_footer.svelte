@@ -58,6 +58,7 @@ const showPlayer = () => {
 
 {#if track}
   <ion-footer
+    class="footer"
     transition:fly={{
       duration: 200,
       opacity: 100,
@@ -110,30 +111,3 @@ const showPlayer = () => {
     {/key}
   </ion-footer>
 {/if}
-
-<style lang="scss">
-footer {
-  @apply fixed z-10 w-full bottom-0;
-  @apply flex flex-row;
-  @apply bg-teal-600;
-
-  .track-info {
-    @apply flex-1 w-0;
-    @apply flex flex-row items-center;
-    @apply rounded p-2;
-
-    .image {
-      @apply h-10 w-10 inline-block mr-2;
-    }
-
-    .title {
-      @apply truncate;
-    }
-  }
-
-  .buttons {
-    @apply flex-shrink-0;
-    @apply flex flex-row items-center;
-  }
-}
-</style>

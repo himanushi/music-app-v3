@@ -10,11 +10,14 @@ const showSidebar = () => modals.open(Sidebar);
 </script>
 
 <ion-header>
-  <IconButton class="h-10 w-10 mr-2" on:click={showSidebar}>
+  <ion-toolbar>
+    <ion-title>{title}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<!-- <IconButton class="h-10 w-10 mr-2" on:click={showSidebar}>
     <MenuIcon class="h-7 w-7" />
   </IconButton>
 
   <h1 class="clickable">
     <a href={$url("./albums")}>{title}</a>
-  </h1>
-</ion-header>
+  </h1> -->

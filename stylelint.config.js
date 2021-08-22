@@ -9,6 +9,7 @@ module.exports = {
         "layer"
       ] }
     ],
+    "no-duplicate-selectors": null,
     "selector-pseudo-class-no-unknown": [
       true,
       { ignorePseudoClasses: ["global"] }
