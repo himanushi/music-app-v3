@@ -1,10 +1,6 @@
 <script lang="ts">
-import {
-  goto, url
-} from "@roxi/routify";
-import InfoIcon from "./_info-icon.svelte";
+import { goto } from "@roxi/routify";
 import Favorite from "~/components/favorite.svelte";
-import Image from "~/components/square-image.svelte";
 import type { Album } from "~/graphql/types";
 
 export let item: Album;
@@ -12,24 +8,15 @@ export let item: Album;
 const path = `/albums/${item.id}`;
 </script>
 
-<!-- <a class="card" href={$url(path)}>
-    <Image src={item.artworkM?.url} class="h-40 w-40" />
-    <span class="name">{item.name}</span>
-  </a>
-  <span class="favorite">
-    <Favorite type="album" id={item.id} />
-  </span>
-  <span class="info">
-    <InfoIcon {item} />
-  </span> -->
-
-<ion-item button on:click={() => $goto(path)}>
+<ion-item detail={false} button on:click={() => $goto(path)}>
   <ion-thumbnail slot="start">
     <ion-img src={item.artworkM?.url} alt={item.name} />
   </ion-thumbnail>
   <ion-label>{item.name}</ion-label>
+  <ion-buttons slot="end">
+    <Favorite type="album" id={item.id} />
+    <ion-button>
+      <ion-icon name="ellipsis-horizontal" />
+    </ion-button>
+  </ion-buttons>
 </ion-item>
-
-<style lang="scss">
-// @import "./_item-card.scss";
-</style>
