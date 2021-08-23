@@ -9,7 +9,7 @@ import { title } from "~/lib/variable";
 const showSidebar = () => modals.open(Sidebar);
 </script>
 
-<ion-header>
+<ion-header translucent>
   <ion-toolbar>
     <ion-title>{title}</ion-title>
   </ion-toolbar>

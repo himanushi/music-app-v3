@@ -66,6 +66,14 @@ const showPlayer = () => {
     }}
   >
     {#key track.id}
+      <ion-toolbar>
+        <ion-thumbnail slot="start">
+          <ion-img src={track.artworkM?.url} alt={track.name} />
+        </ion-thumbnail>
+        <ion-title>{track.name}</ion-title>
+      </ion-toolbar>
+    {/key}
+    <!-- {#key track.id}
       <span class="track-info clickable" on:click={showPlayer}>
         <span class="image">
           <Image src={track.artworkM.url} class="h-10 w-10" />
@@ -108,6 +116,6 @@ const showPlayer = () => {
           {/if}
         {/if}
       </span>
-    {/key}
+    {/key} -->
   </ion-footer>
 {/if}
