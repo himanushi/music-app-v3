@@ -1,5 +1,6 @@
 <script lang="ts">
 import { setClient } from "svelte-apollo";
+import ChangePage from "./_change-page.svelte";
 import Content from "./_content.svelte";
 import Footer from "./_footer.svelte";
 import Header from "./_header.svelte";
@@ -10,11 +11,14 @@ import Toasts from "~/components/toasts.svelte";
 import client from "~/graphql/client";
 
 setClient(client);
+
+let content: HTMLElement;
 </script>
 
 <Initializer />
 <Header />
-<ion-content>
+<ion-content bind:this={content}>
+  <ChangePage {content} />
   <slot />
 </ion-content>
 <Footer />

@@ -3,25 +3,30 @@
 import {
   afterPageLoad, beforeUrlChange
 } from "@roxi/routify";
-import { modals } from "~/components/modals.svelte";
 import { googleAnalyticsId } from "~/lib/variable";
 import { currentPath } from "~/store/history";
 import { scrollLock } from "~/store/scroll-lock";
 
-let content: HTMLElement | null;
+export let content: HTMLElement | null;
+let scrollContent: HTMLElement | null;
+
+$: if (content) {
+
+  content.getScrollElement().then((element) => {
+
+    scrollContent = element;
+
+  });
+
+}
 
 $beforeUrlChange(() => {
 
-  // modal 対応
-  if ($modals.length > 0) {
+  if (scrollContent) {
 
-    modals.close();
-
-    return false;
+    scrollLock.update($currentPath, scrollContent.scrollTop);
 
   }
-
-  scrollLock.update($currentPath, document.documentElement.scrollTop);
 
   return true;
 
@@ -29,8 +34,12 @@ $beforeUrlChange(() => {
 
 $afterPageLoad(() => {
 
-  document.documentElement.scrollTop = $scrollLock[window.location.href] || 0;
-  currentPath.set(window.location.href);
+  if (scrollContent) {
+
+    scrollContent.scrollTop = $scrollLock[window.location.href] || 0;
+    currentPath.set(window.location.href);
+
+  }
 
   // Google Analytics
   if (googleAnalyticsId) {
@@ -42,5 +51,3 @@ $afterPageLoad(() => {
 
 });
 </script>
-
-<span bind:this={content} style="display: none;" />
