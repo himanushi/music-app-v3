@@ -1,24 +1,17 @@
 <script lang="ts">
 export let src: string | null | undefined = null;
-let className = "";
-export { className as class };
 
-let style = "";
+if (!src) {
 
-if (src) {
-
-  style = `background-image: url("${src}");`;
+  src = "/no-image.jpeg";
 
 }
 </script>
 
-<div {style} class={className} />
+<ion-img {src} />
 
 <style lang="scss">
-div {
-  @apply block rounded bg-gray-600;
-
-  /* img */
-  @apply bg-cover bg-center bg-no-repeat;
+ion-img {
+  max-width: 500px;
 }
 </style>

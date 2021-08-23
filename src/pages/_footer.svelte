@@ -5,6 +5,7 @@ import { fly } from "svelte/transition";
 import IconButton from "~/components/icon-button.svelte";
 import { modals } from "~/components/modals.svelte";
 import Player from "~/components/player.svelte";
+import SquareImage from "~/components/square-image.svelte";
 import Image from "~/components/square-image.svelte";
 import Text from "~/components/text.svelte";
 import LiveIcon from "~/icons/live.svelte";
@@ -60,24 +61,25 @@ const showPlayer = () => {
 const goBack = () => window.history.go(-1);
 </script>
 
-{#if track}
-  <ion-footer
-    class="footer"
-    transition:fly={{
-      duration: 200,
-      opacity: 100,
-      y: 56
-    }}
-  >
-    {#key track.id}
-      <ion-toolbar>
-        <ion-buttons slot="start">
-          <ion-button on:click={goBack}>
-            <ion-icon name="chevron-back-outline" />
-          </ion-button>
-        </ion-buttons>
+<ion-footer
+  class="footer"
+  transition:fly={{
+    duration: 200,
+    opacity: 100,
+    y: 56
+  }}
+>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button on:click={goBack}>
+        <ion-icon name="chevron-back-outline" />
+      </ion-button>
+    </ion-buttons>
+
+    {#if track}
+      {#key track.id}
         <ion-thumbnail slot="secondary">
-          <ion-img src={track.artworkM?.url} alt={track.name} />
+          <SquareImage src={track.artworkM.url} />
         </ion-thumbnail>
         <ion-title button>{track.name}</ion-title>
         <ion-buttons slot="end">
@@ -88,9 +90,22 @@ const goBack = () => window.history.go(-1);
             <ion-icon name="play-forward" />
           </ion-button>
         </ion-buttons>
-      </ion-toolbar>
-    {/key}
-    <!-- {#key track.id}
+      {/key}
+    {:else}
+      <ion-thumbnail slot="secondary">
+        <SquareImage />
+      </ion-thumbnail>
+      <ion-buttons slot="end">
+        <ion-button disabled>
+          <ion-icon name="play" />
+        </ion-button>
+        <ion-button disabled>
+          <ion-icon name="play-forward" />
+        </ion-button>
+      </ion-buttons>
+    {/if}
+  </ion-toolbar>
+  <!-- {#key track.id}
       <span class="track-info clickable" on:click={showPlayer}>
         <span class="image">
           <Image src={track.artworkM.url} class="h-10 w-10" />
@@ -134,5 +149,4 @@ const goBack = () => window.history.go(-1);
         {/if}
       </span>
     {/key} -->
-  </ion-footer>
-{/if}
+</ion-footer>
