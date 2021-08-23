@@ -1,4 +1,6 @@
 <script lang="ts">
+import { goto } from "@roxi/routify";
+
 import { fly } from "svelte/transition";
 import IconButton from "~/components/icon-button.svelte";
 import { modals } from "~/components/modals.svelte";
@@ -54,6 +56,8 @@ const showPlayer = () => {
   modals.open(Player);
 
 };
+
+const goBack = () => window.history.go(-1);
 </script>
 
 {#if track}
@@ -67,10 +71,23 @@ const showPlayer = () => {
   >
     {#key track.id}
       <ion-toolbar>
-        <ion-thumbnail slot="start">
+        <ion-buttons slot="start">
+          <ion-button on:click={goBack}>
+            <ion-icon name="chevron-back-outline" />
+          </ion-button>
+        </ion-buttons>
+        <ion-thumbnail slot="secondary">
           <ion-img src={track.artworkM?.url} alt={track.name} />
         </ion-thumbnail>
-        <ion-title>{track.name}</ion-title>
+        <ion-title button>{track.name}</ion-title>
+        <ion-buttons slot="end">
+          <ion-button>
+            <ion-icon name="play" />
+          </ion-button>
+          <ion-button>
+            <ion-icon name="play-forward" />
+          </ion-button>
+        </ion-buttons>
       </ion-toolbar>
     {/key}
     <!-- {#key track.id}

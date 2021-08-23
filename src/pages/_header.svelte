@@ -11,6 +11,11 @@ const showSidebar = () => modals.open(Sidebar);
 
 <ion-header translucent>
   <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon name="menu" />
+      </ion-button>
+    </ion-buttons>
     <ion-title>{title}</ion-title>
   </ion-toolbar>
 </ion-header>
