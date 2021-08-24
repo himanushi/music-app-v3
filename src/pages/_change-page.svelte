@@ -7,7 +7,7 @@ import { googleAnalyticsId } from "~/lib/variable";
 import { currentPath } from "~/store/history";
 import { scrollLock } from "~/store/scroll-lock";
 
-export let content: HTMLElement | null;
+const content: HTMLElement | null = document.querySelector("ion-app>ion-content");
 let scrollContent: HTMLElement | null;
 
 $: if (content) {

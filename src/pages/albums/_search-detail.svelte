@@ -1,7 +1,5 @@
 <script lang="ts">
-import {
-  goto, params
-} from "@roxi/routify";
+import { goto } from "@roxi/routify";
 import InputCheckbox from "~/components/input-checkbox.svelte";
 import InputSelection from "~/components/input-selection.svelte";
 import InputText from "~/components/input-text.svelte";
@@ -12,11 +10,11 @@ import {
 import { SearchParams } from "~/lib/params";
 import type { SearchParamsType } from "~/lib/params";
 
-let keyword = $params[SearchParams.album.keyword];
-let favorite = $params[SearchParams.album.favorite] === "1";
-let username = $params[SearchParams.album.username];
-const order = $params[SearchParams.album.order] || "RELEASE";
-const direction = $params[SearchParams.album.direction] || "DESC";
+let keyword = "";
+let favorite = false;
+let username = "";
+const order = "RELEASE";
+const direction = "DESC";
 
 let orderValue = `${order}.${direction}`;
 const orderItems = [
@@ -42,7 +40,7 @@ const orderItems = [
   }
 ];
 
-let statusValue = $params[SearchParams.album.status] || "ACTIVE";
+let statusValue = "ACTIVE";
 const statusItems = [
   {
     label: "有効",
@@ -110,23 +108,18 @@ const onClick = () => {
   $goto("/albums", parameters);
 
 };
-
-const query = meQuery();
-$: me = $query?.data?.me;
 </script>
 
 <SearchDetail title="Search Albums" {onClick}>
   <InputText label="検索ワード" bind:value={keyword} />
   <InputText label="お気に入り公開ユーザーID" bind:value={username} />
   <InputSelection label="並び順" bind:value={orderValue} items={orderItems} />
-  {#if me && isAllowed(me, "changeFavorites")}
-    <InputCheckbox label="お気に入り" bind:checked={favorite} />
-  {/if}
-  {#if me && isAllowed(me, "changeStatus")}
-    <InputSelection
-      label="ステータス"
-      bind:value={statusValue}
-      items={statusItems}
-    />
-  {/if}
+
+  <InputCheckbox label="お気に入り" bind:checked={favorite} />
+
+  <InputSelection
+    label="ステータス"
+    bind:value={statusValue}
+    items={statusItems}
+  />
 </SearchDetail>

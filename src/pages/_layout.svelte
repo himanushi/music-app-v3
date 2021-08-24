@@ -11,14 +11,10 @@ import Toasts from "~/components/toasts.svelte";
 import client from "~/graphql/client";
 
 setClient(client);
-
-let content: HTMLElement;
 </script>
 
 <Initializer />
 <Header />
-<ion-content bind:this={content}>
-  <ChangePage {content} />
-  <slot />
-</ion-content>
+<slot />
+<!-- <ChangePage /> -->
 <Footer />

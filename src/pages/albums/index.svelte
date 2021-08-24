@@ -11,9 +11,14 @@ const query = meQuery();
 $: me = $query?.data?.me;
 </script>
 
-{#if me && isAllowed(me, "albums")}
-  <ion-list>
-    <Albums params={$params} />
-  </ion-list>
-  <!-- <SearchDetailButton component={SearchDetail} /> -->
-{/if}
+<ion-content>
+  {#if me && isAllowed(me, "albums")}
+    <ion-list>
+      <Albums params={$params} />
+    </ion-list>
+
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <SearchDetailButton component={SearchDetail} />
+    </ion-fab>
+  {/if}
+</ion-content>

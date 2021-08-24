@@ -1,25 +1,7 @@
 <script lang="ts">
-import { SvelteComponent } from "svelte";
-import IconButton from "~/components/icon-button.svelte";
-import { modals } from "~/components/modals.svelte";
-import Search from "~/icons/search.svelte";
-import { playerService } from "~/machines/jukebox-machine";
-
-export let component: typeof SvelteComponent;
-
-const showModal = () => modals.open(component);
-
-let className = "bottom-4";
-
-$: if ($playerService.context.currentTrack) {
-
-  className = "bottom-20";
-
-}
+import { openModal } from "~/lib/ionic";
 </script>
 
-<span class={className} on:click={showModal}>
-  <IconButton class="w-10 h-10 mr-2">
-    <Search class="w-10 h-10" />
-  </IconButton>
-</span>
+<ion-fab-button on:click={openModal("modal-albums-search")}>
+  <ion-icon name="arrow-forward-circle" />
+</ion-fab-button>
