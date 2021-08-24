@@ -23,12 +23,3 @@ $: if ($playerService.context.currentTrack) {
     <Search class="w-10 h-10" />
   </IconButton>
 </span>
-
-<style lang="scss">
-span {
-  @apply fixed right-5;
-  @apply flex items-center justify-center;
-  @apply h-14 w-14 rounded-full bg-white;
-  @apply shadow;
-}
-</style>
