@@ -23,14 +23,9 @@ import { defineCustomElements } from "@ionic/core/loader";
 import { Router } from "@roxi/routify";
 import { routes } from "routify/routes";
 import { onMount } from "svelte";
-import Popup from "./components/popup.svelte";
 import { register } from "./register-service-worker";
 
-import { define } from "~/lib/customElement";
-
 onMount(() => {
-
-  define("popover-example-page", Popup);
 
   if (window.location.host !== "localhost:8080") {
 
