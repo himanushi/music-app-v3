@@ -3,11 +3,11 @@
 import { SvelteComponent } from "svelte";
 
 export const define = (
-  name: string,
+  defineName: string,
   Component: typeof SvelteComponent,
   attributes = []
 ) => customElements.define(
-  name,
+  defineName,
   class extends HTMLElement {
 
       component?: SvelteComponent;
@@ -25,11 +25,11 @@ export const define = (
 
       }
 
-      attributeChangedCallback (key: string, oldValue: any, newValue: any) {
+      attributeChangedCallback (name: any, oldValue: any, newValue: any) {
 
         if (this.component && oldValue !== newValue) {
 
-          this.component.$set({ [key]: newValue });
+          this.component.$set({ [name]: newValue });
 
         }
 

@@ -18,7 +18,7 @@ $: me = $query?.data?.me;
 
     <ion-fab vertical="bottom" horizontal="end" slot="fixed">
       <ion-fab-button on:click={openModal("modal-albums-search")}>
-        <ion-icon name="arrow-forward-circle" />
+        <ion-icon name="search-outline" />
       </ion-fab-button>
     </ion-fab>
   {/if}

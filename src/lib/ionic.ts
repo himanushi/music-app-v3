@@ -1,3 +1,5 @@
+import { modalController } from "@ionic/core";
+
 export const openMenu = (name: string) => (event: any) => {
 
   const popover = Object.assign(document.createElement("ion-popover"), {
@@ -32,11 +34,6 @@ export const openModal = (name: string) => () => {
 
 export const closeModal = () => {
 
-  const modalElement = document.createElement("ion-modal");
-  if (modalElement) {
-
-    modalElement.dismiss();
-
-  }
+  modalController.dismiss();
 
 };
