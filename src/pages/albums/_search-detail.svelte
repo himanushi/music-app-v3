@@ -4,6 +4,7 @@ import InputCheckbox from "~/components/input-checkbox.svelte";
 import InputSelection from "~/components/input-selection.svelte";
 import InputText from "~/components/input-text.svelte";
 import SearchDetail from "~/components/search-detail.svelte";
+import { closeModal } from "~/lib/ionic";
 import {
   isAllowed, meQuery
 } from "~/lib/me";
@@ -74,6 +75,8 @@ const statusItems = [
 
 const onClick = () => {
 
+  closeModal();
+
   const parameters: SearchParamsType = {};
   if (keyword) {
 
@@ -105,7 +108,7 @@ const onClick = () => {
     parameters[SearchParams.album.status] = statusValue;
 
   }
-  $goto("/albums", parameters);
+  // $goto("/albums", parameters);
 
 };
 </script>

@@ -1,8 +1,7 @@
 <script lang="ts">
 import { params } from "@roxi/routify";
 import Albums from "./_albums.svelte";
-import SearchDetail from "./_search-detail.svelte";
-import SearchDetailButton from "~/components/search-detail-button.svelte";
+import { openModal } from "~/lib/ionic";
 import {
   isAllowed, meQuery
 } from "~/lib/me";
@@ -18,7 +17,9 @@ $: me = $query?.data?.me;
     </ion-list>
 
     <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-      <SearchDetailButton component={SearchDetail} />
+      <ion-fab-button on:click={openModal("modal-albums-search")}>
+        <ion-icon name="arrow-forward-circle" />
+      </ion-fab-button>
     </ion-fab>
   {/if}
 </ion-content>
