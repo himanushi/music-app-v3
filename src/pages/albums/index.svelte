@@ -1,31 +1,22 @@
 <script lang="ts">
 import { params } from "@roxi/routify";
 import Albums from "./_albums.svelte";
-import { openModal } from "~/lib/ionic";
+import SearchDetailButton from "~/components/search-detail-button.svelte";
 import {
   isAllowed, meQuery
 } from "~/lib/me";
+import Content from "~/pages/_content.svelte";
 
 const query = meQuery();
 $: me = $query?.data?.me;
 </script>
 
-<ion-content>
+<Content>
   {#if me && isAllowed(me, "albums")}
     <ion-list>
       <Albums params={$params} />
     </ion-list>
 
-    <ion-fab vertical="bottom" horizontal="start" slot="fixed">
-      <ion-fab-button on:click={openModal("modal-albums-search")}>
-        <ion-icon name="chevron-back-outline" />
-      </ion-fab-button>
-    </ion-fab>
-
-    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-      <ion-fab-button on:click={openModal("modal-albums-search")}>
-        <ion-icon name="search-outline" />
-      </ion-fab-button>
-    </ion-fab>
+    <SearchDetailButton modalName="modal-albums-search" />
   {/if}
-</ion-content>
+</Content>

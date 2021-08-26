@@ -1,7 +1,8 @@
 <script>
-import ChangePage from "./_change-page.svelte";
+import BackButton from "~/components/back-button.svelte";
 </script>
 
-<ion-cotent>
+<ion-content>
   <slot />
-</ion-cotent>
+  <BackButton />
+</ion-content>
