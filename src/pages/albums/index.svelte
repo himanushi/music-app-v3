@@ -16,6 +16,12 @@ $: me = $query?.data?.me;
       <Albums params={$params} />
     </ion-list>
 
+    <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+      <ion-fab-button on:click={openModal("modal-albums-search")}>
+        <ion-icon name="chevron-back-outline" />
+      </ion-fab-button>
+    </ion-fab>
+
     <ion-fab vertical="bottom" horizontal="end" slot="fixed">
       <ion-fab-button on:click={openModal("modal-albums-search")}>
         <ion-icon name="search-outline" />

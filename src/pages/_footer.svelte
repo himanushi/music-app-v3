@@ -70,15 +70,15 @@ const goBack = () => window.history.go(-1);
   }}
 >
   <ion-toolbar>
-    <ion-buttons slot="start">
+    <!-- <ion-buttons slot="start">
       <ion-button on:click={goBack}>
         <ion-icon name="chevron-back-outline" />
       </ion-button>
-    </ion-buttons>
+    </ion-buttons> -->
 
     {#if track}
       {#key track.id}
-        <ion-thumbnail slot="secondary">
+        <ion-thumbnail slot="start">
           <SquareImage src={track.artworkM.url} />
         </ion-thumbnail>
         <ion-title button>{track.name}</ion-title>
