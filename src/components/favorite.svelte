@@ -18,7 +18,7 @@ const query = meQuery();
 $: me = $query?.data?.me;
 
 let favorite = false;
-let button: HTMLElement;
+let icon: HTMLElement;
 
 $: if (me) {
 
@@ -32,13 +32,13 @@ const changeFavorites = mutation<unknown, ChangeFavoritesMutationVariables>(
 
 const onClick = async () => {
 
-  if (button && !favorite) {
+  if (icon && !favorite) {
 
     createAnimation().
-      addElement(button).
+      addElement(icon).
       duration(300).
       iterations(1).
-      easing("steps(28, end)").
+      easing("steps(20, end)").
       keyframes([
         {
           offset: 0,
@@ -83,14 +83,11 @@ const onClick = async () => {
 </script>
 
 {#if me && isAllowed(me, "changeFavorites")}
-  <ion-button
-    bind:this={button}
-    on:click|preventDefault|stopPropagation={onClick}
-  >
+  <ion-button on:click|preventDefault|stopPropagation={onClick}>
     {#if favorite}
       <ion-icon name="heart" />
     {:else}
-      <ion-icon name="heart-outline" />
+      <ion-icon bind:this={icon} name="heart-outline" />
     {/if}
   </ion-button>
 {/if}
