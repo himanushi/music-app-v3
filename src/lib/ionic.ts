@@ -1,34 +1,27 @@
-import { modalController } from "@ionic/core";
+import {
+  modalController, popoverController
+} from "@ionic/core";
 
-export const openMenu = (name: string) => (event: any) => {
+export const openMenu = (name: string) => async (event: any) => {
 
-  const popover = Object.assign(document.createElement("ion-popover"), {
+  const popover = await popoverController.create({
     component: name,
-    event,
-    translucent: true
+    event
   });
-  document.body.appendChild(popover);
   return popover.present();
 
 };
 
 export const closeMenu = () => {
 
-  const modalElement = document.createElement("ion-popover");
-  if (modalElement) {
-
-    modalElement.dismiss();
-
-  }
+  popoverController.dismiss();
 
 };
 
-export const openModal = (name: string) => () => {
+export const openModal = (name: string) => async () => {
 
-  const modalElement = document.createElement("ion-modal");
-  modalElement.component = name;
-  document.body.appendChild(modalElement);
-  return modalElement.present();
+  const modal = await modalController.create({ component: name });
+  await modal.present();
 
 };
 
