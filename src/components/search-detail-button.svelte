@@ -1,7 +1,7 @@
 <script lang="ts">
 import { openModal } from "~/lib/ionic";
 
-export let modalName: string;
+export let name: string;
 let component: HTMLElement;
 $: if (component) {
 
@@ -11,7 +11,7 @@ $: if (component) {
 </script>
 
 <ion-fab vertical="bottom" horizontal="end" bind:this={component}>
-  <ion-fab-button on:click={openModal(modalName)}>
+  <ion-fab-button on:click={openModal(name)}>
     <ion-icon name="search-outline" />
   </ion-fab-button>
 </ion-fab>

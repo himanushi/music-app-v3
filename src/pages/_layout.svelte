@@ -1,12 +1,8 @@
 <script lang="ts">
 import { setClient } from "svelte-apollo";
-import ChangePage from "./_change-page.svelte";
 import Footer from "./_footer.svelte";
 import Header from "./_header.svelte";
-import Index from "./albums/index.svelte";
 import Initializer from "~/components/initializers/initializer.svelte";
-import Modals from "~/components/modals.svelte";
-import Toasts from "~/components/toasts.svelte";
 import client from "~/graphql/client";
 
 setClient(client);
