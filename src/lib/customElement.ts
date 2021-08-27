@@ -6,51 +6,59 @@ export const define = (
   defineName: string,
   Component: typeof SvelteComponent,
   attributes = []
-) => customElements.define(
-  defineName,
-  class extends HTMLElement {
+) => {
 
-      component?: SvelteComponent;
+  if (!customElements.get(defineName)) {
 
-      constructor () {
+    customElements.define(
+      defineName,
+      class extends HTMLElement {
 
-        super();
-        this.component = undefined;
+        component?: SvelteComponent;
 
-      }
+        constructor () {
 
-      static get observedAttributes () {
+          super();
+          this.component = undefined;
 
-        return attributes;
+        }
 
-      }
+        static get observedAttributes () {
 
-      attributeChangedCallback (name: any, oldValue: any, newValue: any) {
+          return attributes;
 
-        if (this.component && oldValue !== newValue) {
+        }
 
-          this.component.$set({ [name]: newValue });
+        attributeChangedCallback (name: any, oldValue: any, newValue: any) {
+
+          if (this.component && oldValue !== newValue) {
+
+            this.component.$set({ [name]: newValue });
+
+          }
+
+        }
+
+        connectedCallback () {
+
+          const props: Record<string, string | undefined> = {};
+
+          for (const attr of attributes) {
+
+            props[attr] = this.getAttribute(attr) || undefined;
+
+          }
+
+          this.component = new Component({
+            props,
+            target: this
+          });
 
         }
 
       }
-
-      connectedCallback () {
-
-        const props: Record<string, string | undefined> = {};
-
-        for (const attr of attributes) {
-
-          props[attr] = this.getAttribute(attr) || undefined;
-
-        }
-
-        this.component = new Component({
-          props,
-          target: this
-        });
-
-      }
+    );
 
   }
-);
+
+};
