@@ -41,11 +41,22 @@ export const define = (
 
         connectedCallback () {
 
-          const props: Record<string, string | undefined> = {};
+          const props: Record<string, any> = {};
 
           for (const attr of attributes) {
 
             props[attr] = this.getAttribute(attr) || undefined;
+
+          }
+
+          const modalElement = document.querySelector("ion-modal");
+          if (modalElement && modalElement.componentProps) {
+
+            for (const key of Object.keys(modalElement.componentProps)) {
+
+              props[key] = modalElement.componentProps[key];
+
+            }
 
           }
 

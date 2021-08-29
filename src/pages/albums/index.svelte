@@ -1,5 +1,7 @@
 <script lang="ts">
-import { params } from "@roxi/routify";
+import {
+  goto, params
+} from "@roxi/routify";
 import Albums from "./_albums.svelte";
 import SearchDetail from "./_search-detail.svelte";
 import SearchDetailButton from "~/components/search-detail-button.svelte";
@@ -14,6 +16,8 @@ $: me = $query?.data?.me;
 
 const name = "modal-albums-search";
 define(name, SearchDetail);
+
+const go = (url: string) => $goto(url);
 </script>
 
 <Content>
@@ -21,6 +25,6 @@ define(name, SearchDetail);
     <ion-list>
       <Albums params={$params} />
     </ion-list>
-    <SearchDetailButton {name} />
+    <SearchDetailButton {name} props={{ go }} />
   {/if}
 </Content>

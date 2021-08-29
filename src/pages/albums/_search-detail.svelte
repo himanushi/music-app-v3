@@ -1,5 +1,7 @@
 <script lang="ts">
-import { goto } from "@roxi/routify";
+import {
+  goto, url
+} from "@roxi/routify";
 import InputCheckbox from "~/components/input-checkbox.svelte";
 import InputSelection from "~/components/input-selection.svelte";
 import InputText from "~/components/input-text.svelte";
@@ -10,6 +12,8 @@ import {
 } from "~/lib/me";
 import { SearchParams } from "~/lib/params";
 import type { SearchParamsType } from "~/lib/params";
+
+export let go: (_url: string) => void;
 
 let keyword = "";
 let favorite = false;
@@ -75,7 +79,7 @@ const statusItems = [
 
 const onClick = () => {
 
-  closeModal();
+  // closeModal();
 
   const parameters: SearchParamsType = {};
   if (keyword) {
@@ -108,7 +112,7 @@ const onClick = () => {
     parameters[SearchParams.album.status] = statusValue;
 
   }
-  // $goto("/albums", parameters);
+  go("/albums");
 
 };
 </script>

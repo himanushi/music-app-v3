@@ -18,12 +18,16 @@ export const closeMenu = () => {
 
 };
 
-export const openModal = (name: string) => async () => {
+export const openModal =
+  (name: string, props: Record<string, any>) => async () => {
 
-  const modal = await modalController.create({ component: name });
-  await modal.present();
+    const modal = await modalController.create({
+      component: name,
+      componentProps: props
+    });
+    await modal.present();
 
-};
+  };
 
 export const closeModal = () => {
 
