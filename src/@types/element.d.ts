@@ -5,3 +5,7 @@ interface Element {
   dismiss: () => void;
   cssClass: string;
 }
+
+interface EventTarget {
+  value: any;
+}

@@ -1,7 +1,4 @@
 <script lang="ts">
-import IconButton from "~/components/icon-button.svelte";
-import Text from "~/components/text.svelte";
-import SearchIcon from "~/icons/search.svelte";
 import { closeModal } from "~/lib/ionic";
 
 export let title: string;
@@ -16,13 +13,15 @@ const click = () => {
 </script>
 
 <ion-content>
-  <form on:submit|preventDefault>
-    <div class="separate">
-      <Text class="text-white">{title}</Text>
-    </div>
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>{title}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
     <slot />
-    <IconButton class="w-16 h-16" on:click={click}>
-      <SearchIcon class="w-10 h-10 mr-2" />
-    </IconButton>
-  </form>
+    <ion-button on:click={click}>
+      <ion-icon name="search-outline" />
+    </ion-button>
+  </ion-content>
 </ion-content>

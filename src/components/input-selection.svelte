@@ -1,39 +1,26 @@
 <script lang="ts">
-import { v4 as uuid } from "uuid";
-
-let className = "";
-export { className as class };
-
 export let label: string;
 export let value: string;
 export let items: { value: string; label: string }[];
 
-const id = uuid();
+const onChange = (event: Event) => {
+
+  if (event?.target?.value) {
+
+    value = event?.target?.value;
+
+  }
+
+};
 </script>
 
-<div class={`input ${className}`}>
-  <label for={id}>
-    {label}
-  </label>
-  <select {id} bind:value>
+<ion-item>
+  <ion-label>{label}</ion-label>
+  <ion-select {value} on:ionChange={onChange} ok-text="OK" cancel-text="Cancel">
     {#each items as item}
-      <option value={item.value}>
+      <ion-select-option value={item.value}>
         {item.label}
-      </option>
+      </ion-select-option>
     {/each}
-  </select>
-</div>
-
-<style lang="scss">
-.input {
-  @apply flex flex-col;
-
-  label {
-    @apply mb-1;
-  }
-
-  select {
-    @apply appearance-none border block w-auto rounded py-2 px-3 text-black leading-tight pr-9;
-  }
-}
-</style>
+  </ion-select>
+</ion-item>

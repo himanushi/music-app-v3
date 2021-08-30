@@ -3,8 +3,8 @@ import {
   goto, params
 } from "@roxi/routify";
 import InputCheckbox from "~/components/input-checkbox.svelte";
+import InputItem from "~/components/input-item.svelte";
 import InputSelection from "~/components/input-selection.svelte";
-import InputText from "~/components/input-text.svelte";
 import SearchDetail from "~/components/search-detail.svelte";
 import {
   isAllowed, meQuery
@@ -14,7 +14,7 @@ import type { SearchParamsType } from "~/lib/params";
 
 let keyword = $params[SearchParams.album.keyword];
 let favorite = $params[SearchParams.album.favorite] === "1";
-let username = $params[SearchParams.album.username];
+const username = $params[SearchParams.album.username];
 const order = $params[SearchParams.album.order] || "RELEASE";
 const direction = $params[SearchParams.album.direction] || "DESC";
 
@@ -116,8 +116,7 @@ $: me = $query?.data?.me;
 </script>
 
 <SearchDetail title="Search Albums" {onClick}>
-  <InputText label="検索ワード" bind:value={keyword} />
-  <InputText label="お気に入り公開ユーザーID" bind:value={username} />
+  <InputItem label="検索ワード" bind:value={keyword} />
   <InputSelection label="並び順" bind:value={orderValue} items={orderItems} />
   {#if me && isAllowed(me, "changeFavorites")}
     <InputCheckbox label="お気に入り" bind:checked={favorite} />

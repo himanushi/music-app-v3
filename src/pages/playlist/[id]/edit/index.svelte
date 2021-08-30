@@ -6,8 +6,8 @@ import {
 import Button from "~/components/button.svelte";
 import DndSelection from "~/components/dnd-selection.svelte";
 import type { ItemsType } from "~/components/dnd-selection.svelte";
+import InputText from "~/components/input-item.svelte";
 import InputSelection from "~/components/input-selection.svelte";
-import InputText from "~/components/input-text.svelte";
 import InputTextarea from "~/components/input-textarea.svelte";
 import PlayButton from "~/components/play-button.svelte";
 import Text from "~/components/text.svelte";

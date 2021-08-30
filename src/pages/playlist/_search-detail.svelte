@@ -3,8 +3,8 @@ import {
   goto, params
 } from "@roxi/routify";
 import InputCheckbox from "~/components/input-checkbox.svelte";
+import InputText from "~/components/input-item.svelte";
 import InputSelection from "~/components/input-selection.svelte";
-import InputText from "~/components/input-text.svelte";
 import SearchDetail from "~/components/search-detail.svelte";
 import {
   isAllowed, meQuery

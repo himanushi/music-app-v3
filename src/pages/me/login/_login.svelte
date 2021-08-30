@@ -3,7 +3,7 @@ import { ApolloError } from "@apollo/client/core";
 import { goto } from "@roxi/routify";
 import { mutation } from "svelte-apollo";
 import Button from "~/components/button.svelte";
-import InputText from "~/components/input-text.svelte";
+import InputText from "~/components/input-item.svelte";
 import Messages from "~/components/messages.svelte";
 import RecaptchaV2 from "~/components/recaptcha-v2.svelte";
 import Message from "~/components/toast-messages/message.svelte";
