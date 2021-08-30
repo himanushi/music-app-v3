@@ -15,7 +15,7 @@ export let viewImage = true;
 const path = `/tracks/${item.id}`;
 </script>
 
-<ion-item>
+<ion-item button detail={false}>
   <ion-buttons slot="start">
     <PlayButton {name} {index} tracks={items} />
   </ion-buttons>

@@ -83,19 +83,22 @@ $: if ($albumQuery.data) {
       </ion-label>
     </ion-item>
     <ion-item>
-      <ion-label class="ion-text-wrap">
-        発売日/配信日 : {convertDate(album.releaseDate)}
-      </ion-label>
+      <ion-label class="ion-text-wrap"> 発売日/配信日 </ion-label>
+      <ion-note slot="end">
+        {convertDate(album.releaseDate)}
+      </ion-note>
     </ion-item>
     <ion-item>
-      <ion-label class="ion-text-wrap">
-        曲数: {album.tracks.length}曲
-      </ion-label>
+      <ion-label class="ion-text-wrap"> 曲数 </ion-label>
+      <ion-note slot="end">
+        {album.tracks.length}曲
+      </ion-note>
     </ion-item>
     <ion-item>
-      <ion-label class="ion-text-wrap">
-        再生時間 : {convertTime(toMs(album.tracks))}
-      </ion-label>
+      <ion-label class="ion-text-wrap"> 再生時間 </ion-label>
+      <ion-note slot="end">
+        {convertTime(toMs(album.tracks))}
+      </ion-note>
     </ion-item>
     <ion-item>
       <ion-buttons>
