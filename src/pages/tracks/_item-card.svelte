@@ -1,5 +1,5 @@
 <script lang="ts">
-import { url } from "@roxi/routify";
+import { goto } from "@roxi/routify";
 import AddPlaylistButton from "~/components/add-playlist-button.svelte";
 import Favorite from "~/components/favorite.svelte";
 import PlayButton from "~/components/play-button.svelte";
@@ -15,11 +15,11 @@ export let viewImage = true;
 const path = `/tracks/${item.id}`;
 </script>
 
-<ion-item button detail={false}>
+<ion-item button detail={false} on:click={() => $goto(path)}>
   <ion-buttons slot="start">
     <PlayButton {name} {index} tracks={items} />
   </ion-buttons>
-  <ion-label href={$url(path)}>
+  <ion-label>
     {item.name}
   </ion-label>
   <ion-buttons slot="end">

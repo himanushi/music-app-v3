@@ -48,70 +48,43 @@ $: albumsVariables = {
 };
 </script>
 
-<div class="track">
-  {#if track && track.artworkL.url}
-    <div class="separate">
-      <Text class="text-white">Track</Text>
-    </div>
-    <div class="iamge">
-      <Image src={track.artworkL.url} class="h-80 w-80" />
-    </div>
-    <div class="name">
-      <Text>{track.name}</Text>
-    </div>
-    <div class="description">
-      <Text class="text-base text-gray-400">
-        再生時間 : {convertTime(track.durationMs)}
-      </Text>
-    </div>
-    <div class="tracks">
-      <ItemCard name={track.name} item={track} items={[track]} index={0} />
-    </div>
+{#if track && track.artworkL.url}
+  <ion-item-group>
+    <ion-item-divider>
+      <ion-label>Track</ion-label>
+    </ion-item-divider>
+    <Image src={track.artworkL.url} />
+    <ion-item>
+      <ion-label class="ion-text-wrap">
+        {track.name}
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label class="ion-text-wrap"> 再生時間 </ion-label>
+      <ion-note slot="end">
+        {convertTime(track.durationMs)}
+      </ion-note>
+    </ion-item>
+  </ion-item-group>
 
-    <div class="separate">
-      <Text class="text-white">Artists</Text>
-    </div>
-    <div class="artists">
-      <Artists variables={artistsVariables} />
-    </div>
+  <ion-item-group>
+    <ion-item-divider>
+      <ion-label>Tracks</ion-label>
+    </ion-item-divider>
+    <ItemCard name={track.name} item={track} items={[track]} index={0} />
+  </ion-item-group>
 
-    <div class="separate">
-      <Text class="text-white">Albums</Text>
-    </div>
-    <div class="albums">
-      <Albums variables={albumsVariables} />
-    </div>
-  {/if}
-</div>
+  <ion-item-group>
+    <ion-item-divider>
+      <ion-label>Artists</ion-label>
+    </ion-item-divider>
+    <Artists variables={artistsVariables} />
+  </ion-item-group>
 
-<style lang="scss">
-.track {
-  @apply flex flex-col items-center;
-  @apply mb-2;
-
-  .name {
-    @apply mt-2 text-center text-lg text-white w-80;
-  }
-
-  .description {
-    @apply mt-2 text-center w-80;
-  }
-
-  .separate {
-    @apply my-6 border-b-2 w-28 border-gray-500 text-lg text-center;
-  }
-
-  .tracks {
-    @apply w-full px-4 divide-y divide-gray-700;
-  }
-
-  .artists,
-  .albums {
-    @apply mt-2;
-
-    grid-template-columns: repeat(auto-fill, 175px);
-    @apply my-2 w-full;
-    @apply grid gap-1 justify-center justify-items-center items-center;
-  }
-}
-</style>
+  <ion-item-group>
+    <ion-item-divider>
+      <ion-label>Albums</ion-label>
+    </ion-item-divider>
+    <Albums variables={albumsVariables} />
+  </ion-item-group>
+{/if}
