@@ -1,19 +1,8 @@
 <script lang="ts">
-import { goto } from "@roxi/routify";
-
 import { fly } from "svelte/transition";
-import IconButton from "~/components/icon-button.svelte";
 import { modals } from "~/components/modals.svelte";
 import Player from "~/components/player.svelte";
 import SquareImage from "~/components/square-image.svelte";
-import Image from "~/components/square-image.svelte";
-import Text from "~/components/text.svelte";
-import LiveIcon from "~/icons/live.svelte";
-import LoadingIcon from "~/icons/loading.svelte";
-import PuaseIcon from "~/icons/pause.svelte";
-import PlayIcon from "~/icons/play.svelte";
-import SkipIcon from "~/icons/skip.svelte";
-import StopIcon from "~/icons/stop.svelte";
 import { playerService } from "~/machines/jukebox-machine";
 import { radioService } from "~/machines/radio-machine";
 
@@ -69,13 +58,7 @@ const goBack = () => window.history.go(-1);
     y: 56
   }}
 >
-  <ion-toolbar>
-    <!-- <ion-buttons slot="start">
-      <ion-button on:click={goBack}>
-        <ion-icon name="chevron-back-outline" />
-      </ion-button>
-    </ion-buttons> -->
-
+  <ion-toolbar color="main">
     {#if track}
       {#key track.id}
         <ion-thumbnail slot="start">
@@ -105,48 +88,4 @@ const goBack = () => window.history.go(-1);
       </ion-buttons>
     {/if}
   </ion-toolbar>
-  <!-- {#key track.id}
-      <span class="track-info clickable" on:click={showPlayer}>
-        <span class="image">
-          <Image src={track.artworkM.url} class="h-10 w-10" />
-        </span>
-        <span class="title">
-          <Text>{track.name}</Text>
-        </span>
-      </span>
-
-      <span class="buttons">
-        {#if player && $playerService}
-          {#if $playerService.context.isRadio}
-            {#if $player.value === "playing"}
-              <IconButton {disabled} class="w-10 h-10" on:click={stop}>
-                <StopIcon class="text-gray-900 h-10 w-10" />
-              </IconButton>
-            {:else if $player.value === "loading"}
-              <IconButton class="w-10 h-10">
-                <LoadingIcon />
-              </IconButton>
-            {:else}
-              <IconButton {disabled} class="w-10 h-10" on:click={live}>
-                <LiveIcon class="text-gray-900 h-8 w-8 mb-1" />
-              </IconButton>
-            {/if}
-          {:else}
-            <IconButton {disabled} class="w-10 h-10" on:click={play_or_pause}>
-              {#if $player.value === "playing"}
-                <PuaseIcon class="text-gray-900 h-10 w-10" />
-              {:else if $player.value === "loading" || $player.value === "playerSelecting"}
-                <LoadingIcon />
-              {:else}
-                <PlayIcon class="text-gray-900 h-10 w-10" />
-              {/if}
-            </IconButton>
-
-            <IconButton {disabled} class="w-10 h-10" on:click={skip}>
-              <SkipIcon class="text-gray-900 h-10 w-10" />
-            </IconButton>
-          {/if}
-        {/if}
-      </span>
-    {/key} -->
 </ion-footer>

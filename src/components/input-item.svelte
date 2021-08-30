@@ -75,7 +75,7 @@ export let autocomplete:
 
 const onChange = (event: Event) => {
 
-  if (event?.target?.value) {
+  if (event?.target) {
 
     value = event?.target?.value;
 
@@ -86,5 +86,11 @@ const onChange = (event: Event) => {
 
 <ion-item>
   <ion-label position="floating">{label}</ion-label>
-  <ion-input {placeholder} {autocomplete} {type} on:ionChange={onChange} />
+  <ion-input
+    {value}
+    {placeholder}
+    {autocomplete}
+    {type}
+    on:ionChange={onChange}
+  />
 </ion-item>

@@ -5,9 +5,9 @@ export let checked: boolean;
 
 const onChange = (event: Event) => {
 
-  if (event?.target?.value) {
+  if (event?.target) {
 
-    checked = event?.target?.value;
+    checked = event?.target?.checked;
 
   }
 
@@ -16,5 +16,5 @@ const onChange = (event: Event) => {
 
 <ion-item>
   <ion-label>{label}</ion-label>
-  <ion-checkbox on:ionChange={onChange} />
+  <ion-checkbox color="main" {checked} on:ionChange={onChange} />
 </ion-item>
