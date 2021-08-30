@@ -23,15 +23,8 @@ import { defineCustomElements } from "@ionic/core/loader";
 import { Router } from "@roxi/routify";
 import { routes } from "routify/routes";
 import { onMount } from "svelte";
-import { register } from "./register-service-worker";
 
 onMount(() => {
-
-  if (window.location.host !== "localhost:8080") {
-
-    register();
-
-  }
 
   if (typeof window !== "undefined") {
 
