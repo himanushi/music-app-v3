@@ -1,15 +1,14 @@
 <script lang="ts">
 import { query } from "svelte-apollo";
-import AppleMusicButton from "./_apple-music-button.svelte";
-import ItunesButton from "./_itunes-button.svelte";
 import AddPlaylistButton from "~/components/add-playlist-button.svelte";
 import Favorite from "~/components/favorite.svelte";
 import AmazonMusic from "~/components/search-buttons/amazon-music.svelte";
+import AppleMusic from "~/components/search-buttons/apple-music.svelte";
+import Itunes from "~/components/search-buttons/itunes.svelte";
 import LineMusic from "~/components/search-buttons/line-music.svelte";
 import Spotify from "~/components/search-buttons/spotify.svelte";
 import YoutubeMusic from "~/components/search-buttons/youtube-music.svelte";
 import Image from "~/components/square-image.svelte";
-import Text from "~/components/text.svelte";
 import { AlbumDocument } from "~/graphql/types";
 import type {
   Album,
@@ -105,18 +104,23 @@ $: if ($albumQuery.data) {
       </ion-buttons>
     </ion-item>
   </ion-item-group>
-  <!-- <div class="services">
+
+  <ion-item-group>
+    <ion-item-divider>
+      <ion-label>Music Services</ion-label>
+    </ion-item-divider>
     {#if album.appleMusicAlbum}
-      <AppleMusicButton id={album.appleMusicAlbum.appleMusicId} />
+      <AppleMusic id={album.appleMusicAlbum.appleMusicId} />
     {/if}
     {#if album.itunesAlbum}
-      <ItunesButton id={album.itunesAlbum.appleMusicId} />
+      <Itunes id={album.itunesAlbum.appleMusicId} />
     {/if}
     <Spotify name={album.name} />
     <AmazonMusic name={album.name} />
     <YoutubeMusic name={album.name} />
     <LineMusic name={album.name} />
-  </div> -->
+  </ion-item-group>
+
   <ion-item-group>
     <ion-item-divider>
       <ion-label>Tracks</ion-label>
