@@ -2,16 +2,20 @@
   "name": "music-app",
   "version": "0.0.1",
   "description": "music-app",
+  "main": "index.js",
   "scripts": {
     "start": "run-p route dev",
     "dev": "snowpack dev",
+    "ios:build": "ionic capacitor build ios",
+    "ios:live": "ionic capacitor run ios --livereload-url=http://localhost:8080",
     "ios:run": "ionic capacitor run ios",
-    "build": "rm -fr build && routify -b && snowpack build && . scripts/cache-buster.bash",
+    "build": "rm -fr build && routify -b && snowpack build",
     "lint": "prettier --write . && eslint --fix --ext .js,.ts . && eslint --fix --ext .svelte .",
     "route": "routify -b",
     "routing": "routify",
     "generate": "npx graphql-codegen --config=codegen.yml",
-    "ionic:build": "run-s build"
+    "ionic:build": "run-s build",
+    "ionic:serve": "run-s start"
   },
   "dependencies": {
     "@apollo/client": "^3.3.11",
