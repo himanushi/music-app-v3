@@ -1,7 +1,6 @@
 <script lang="ts">
 import { query } from "svelte-apollo";
 import Image from "~/components/square-image.svelte";
-import Text from "~/components/text.svelte";
 import { TrackDocument } from "~/graphql/types";
 import type {
   Track,

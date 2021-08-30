@@ -14,7 +14,7 @@ import type { SearchParamsType } from "~/lib/params";
 
 let keyword = $params[SearchParams.artist.keyword];
 let favorite = $params[SearchParams.artist.favorite] === "1";
-let username = $params[SearchParams.artist.username];
+const username = $params[SearchParams.artist.username];
 const order = $params[SearchParams.artist.order] || "NAME";
 const direction = $params[SearchParams.artist.direction] || "DESC";
 
@@ -117,7 +117,6 @@ $: me = $query?.data?.me;
 
 <SearchDetail title="Search Artists" {onClick}>
   <InputText label="検索ワード" bind:value={keyword} />
-  <InputText label="お気に入り公開ユーザーID" bind:value={username} />
   <InputSelection label="並び順" bind:value={orderValue} items={orderItems} />
   {#if me && isAllowed(me, "changeFavorites")}
     <InputCheckbox label="お気に入り" bind:checked={favorite} />
