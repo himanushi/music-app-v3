@@ -1,5 +1,6 @@
 <script lang="ts">
 export let src: string | null | undefined = null;
+export let alt: string | null | undefined = null;
 
 if (!src) {
 
@@ -8,7 +9,7 @@ if (!src) {
 }
 </script>
 
-<ion-img {src} />
+<ion-img {src} {alt} />
 
 <style lang="scss">
 ion-img {

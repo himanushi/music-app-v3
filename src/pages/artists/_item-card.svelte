@@ -1,8 +1,7 @@
 <script lang="ts">
-import { url } from "@roxi/routify";
-import InfoIcon from "./_info-icon.svelte";
+import { goto } from "@roxi/routify";
 import Favorite from "~/components/favorite.svelte";
-import Image from "~/components/square-image.svelte";
+import SquareImage from "~/components/square-image.svelte";
 import type { Artist } from "~/graphql/types";
 
 export let item: Artist;
@@ -10,38 +9,12 @@ export let item: Artist;
 const path = `/artists/${item.id}`;
 </script>
 
-<div class="w-40">
-  <a class="card" href={$url(path)}>
-    <Image src={item.artworkM?.url} class="h-40 w-40" />
-    <span class="name">{item.name}</span>
-  </a>
-  <span class="favorite">
+<ion-item detail={false} button on:click={() => $goto(path)}>
+  <ion-thumbnail slot="start">
+    <SquareImage src={item.artworkM?.url} alt={item.name} />
+  </ion-thumbnail>
+  <ion-label>{item.name}</ion-label>
+  <ion-buttons slot="end">
     <Favorite type="artist" id={item.id} />
-  </span>
-  <span class="info">
-    <InfoIcon {item} />
-  </span>
-</div>
-
-<style lang="scss">
-div {
-  @apply relative;
-
-  .card {
-    @apply flex flex-col;
-
-    .name {
-      @apply truncate text-gray-400 text-xs;
-      @apply p-1;
-    }
-  }
-
-  .favorite {
-    @apply absolute top-0 right-0;
-  }
-
-  .info {
-    @apply absolute bottom-7 left-2;
-  }
-}
-</style>
+  </ion-buttons>
+</ion-item>
