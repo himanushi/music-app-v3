@@ -8,29 +8,29 @@ export const openMenu = (name: string) => async (event: any) => {
     component: name,
     event
   });
-  return popover.present();
+  await popover.present();
 
 };
 
-export const closeMenu = () => {
+export const closeMenu = async () => {
 
-  popoverController.dismiss();
+  await popoverController.dismiss();
 
 };
 
 export const openModal =
-  (name: string, props: Record<string, any>) => async () => {
+  (component: HTMLElement, props?: Record<string, any>) => async () => {
 
     const modal = await modalController.create({
-      component: name,
+      component,
       componentProps: props
     });
     await modal.present();
 
   };
 
-export const closeModal = () => {
+export const closeModal = async () => {
 
-  modalController.dismiss();
+  await modalController.dismiss();
 
 };

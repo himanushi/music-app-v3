@@ -1,25 +1,22 @@
 <script lang="ts">
 import {
-  goto, url
+  goto, params
 } from "@roxi/routify";
 import InputCheckbox from "~/components/input-checkbox.svelte";
 import InputSelection from "~/components/input-selection.svelte";
 import InputText from "~/components/input-text.svelte";
 import SearchDetail from "~/components/search-detail.svelte";
-import { closeModal } from "~/lib/ionic";
 import {
   isAllowed, meQuery
 } from "~/lib/me";
 import { SearchParams } from "~/lib/params";
 import type { SearchParamsType } from "~/lib/params";
 
-export let go: (_url: string) => void;
-
-let keyword = "";
-let favorite = false;
-let username = "";
-const order = "RELEASE";
-const direction = "DESC";
+let keyword = $params[SearchParams.album.keyword];
+let favorite = $params[SearchParams.album.favorite] === "1";
+let username = $params[SearchParams.album.username];
+const order = $params[SearchParams.album.order] || "RELEASE";
+const direction = $params[SearchParams.album.direction] || "DESC";
 
 let orderValue = `${order}.${direction}`;
 const orderItems = [
@@ -45,7 +42,7 @@ const orderItems = [
   }
 ];
 
-let statusValue = "ACTIVE";
+let statusValue = $params[SearchParams.album.status] || "ACTIVE";
 const statusItems = [
   {
     label: "有効",
@@ -79,8 +76,6 @@ const statusItems = [
 
 const onClick = () => {
 
-  // closeModal();
-
   const parameters: SearchParamsType = {};
   if (keyword) {
 
@@ -112,21 +107,26 @@ const onClick = () => {
     parameters[SearchParams.album.status] = statusValue;
 
   }
-  go("/albums");
+  $goto("/albums", parameters);
 
 };
+
+const query = meQuery();
+$: me = $query?.data?.me;
 </script>
 
 <SearchDetail title="Search Albums" {onClick}>
   <InputText label="検索ワード" bind:value={keyword} />
   <InputText label="お気に入り公開ユーザーID" bind:value={username} />
   <InputSelection label="並び順" bind:value={orderValue} items={orderItems} />
-
-  <InputCheckbox label="お気に入り" bind:checked={favorite} />
-
-  <InputSelection
-    label="ステータス"
-    bind:value={statusValue}
-    items={statusItems}
-  />
+  {#if me && isAllowed(me, "changeFavorites")}
+    <InputCheckbox label="お気に入り" bind:checked={favorite} />
+  {/if}
+  {#if me && isAllowed(me, "changeStatus")}
+    <InputSelection
+      label="ステータス"
+      bind:value={statusValue}
+      items={statusItems}
+    />
+  {/if}
 </SearchDetail>
