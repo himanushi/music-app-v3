@@ -3,7 +3,6 @@ import { goto } from "@roxi/routify";
 import Favorite from "~/components/favorite.svelte";
 import type { Album } from "~/graphql/types";
 import { define } from "~/lib/customElement";
-import { openMenu } from "~/lib/ionic";
 import AlbumMenu from "~/pages/albums/_album-menu.svelte";
 
 export let item: Album;
@@ -21,8 +20,5 @@ define(name, AlbumMenu);
   <ion-label>{item.name}</ion-label>
   <ion-buttons slot="end">
     <Favorite type="album" id={item.id} />
-    <ion-button on:click|preventDefault|stopPropagation={openMenu(name)}>
-      <ion-icon name="ellipsis-horizontal" />
-    </ion-button>
   </ion-buttons>
 </ion-item>

@@ -34,7 +34,7 @@ const close = () => closeModal();
   </ion-grid>
 </ion-content>
 <ion-footer>
-  <ion-toolbar>
+  <ion-toolbar color="main">
     <ion-buttons slot="end">
       <ion-button on:click={close}>
         <ion-icon name="close" />

@@ -3,8 +3,6 @@ import { url } from "@roxi/routify";
 import AddPlaylistButton from "~/components/add-playlist-button.svelte";
 import Favorite from "~/components/favorite.svelte";
 import PlayButton from "~/components/play-button.svelte";
-import Image from "~/components/square-image.svelte";
-import Text from "~/components/text.svelte";
 import type { Track } from "~/graphql/types";
 
 export let index: number;
@@ -17,45 +15,15 @@ export let viewImage = true;
 const path = `/tracks/${item.id}`;
 </script>
 
-<div>
-  {#if viewImage}
-    <span class="image">
-      <Image src={item.artworkM?.url} class="h-10 w-10" />
-    </span>
-  {/if}
-  <span class="paly">
+<ion-item>
+  <ion-buttons slot="start">
     <PlayButton {name} {index} tracks={items} />
-  </span>
-  <a class="name clickable" href={$url(path)}>
-    <Text>{item.name}</Text>
-  </a>
-  <span class="buttons">
+  </ion-buttons>
+  <ion-label href={$url(path)}>
+    {item.name}
+  </ion-label>
+  <ion-buttons slot="end">
     <Favorite type="track" id={item.id} />
-    <AddPlaylistButton class="w-10 h-10" tracks={[item]} />
-  </span>
-</div>
-
-<style lang="scss">
-div {
-  @apply flex flex-row justify-center items-center w-full relative;
-  @apply py-2;
-
-  .paly {
-    @apply flex-shrink-0 mr-2 z-10;
-  }
-
-  .image {
-    @apply absolute left-0;
-  }
-
-  .name {
-    @apply flex-1;
-    @apply truncate text-white p-2 rounded;
-  }
-
-  .buttons {
-    @apply flex-shrink-0 ml-2;
-    @apply flex flex-row space-x-2;
-  }
-}
-</style>
+    <AddPlaylistButton tracks={[item]} />
+  </ion-buttons>
+</ion-item>

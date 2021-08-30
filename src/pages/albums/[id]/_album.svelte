@@ -60,123 +60,86 @@ $: if ($albumQuery.data) {
 }
 </script>
 
-<div class="album">
-  {#if album && album.artworkL.url}
-    <div class="separate">
-      <Text class="text-white">Album</Text>
-    </div>
+{#if album && album.artworkL.url}
+  <ion-item-group>
+    <ion-item-divider>
+      <ion-label>Album</ion-label>
+    </ion-item-divider>
+
+    <Image src={album.artworkL.url} />
+
     {#if album.status !== "ACTIVE"}
-      <div class="name">
-        <Text class="text-lg text-red-300">Status : {album.status}</Text>
-      </div>
+      <ion-item>
+        Status : {album.status}
+      </ion-item>
     {/if}
-    <div class="iamge">
-      <Image src={album.artworkL.url} class="h-80 w-80" />
-    </div>
-    <div class="name">
-      <Text class="text-lg text-white">{album.name}</Text>
-    </div>
-    <div class="description">
-      <Text class="text-sm text-gray-400">{album.copyright}</Text>
-    </div>
-    <div class="description">
-      <Text class="text-base text-gray-400">
+    <ion-item>
+      <ion-label class="ion-text-wrap">
+        {album.name}
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label class="ion-text-wrap">
+        {album.copyright}
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label class="ion-text-wrap">
         発売日/配信日 : {convertDate(album.releaseDate)}
-      </Text>
-    </div>
-    <div class="description">
-      <Text class="text-base text-gray-400">
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label class="ion-text-wrap">
         曲数: {album.tracks.length}曲
-      </Text>
-    </div>
-    <div class="description">
-      <Text class="text-base text-gray-400">
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label class="ion-text-wrap">
         再生時間 : {convertTime(toMs(album.tracks))}
-      </Text>
-    </div>
-    <div class="buttons">
-      <Favorite type="album" id={album.id} />
-      <AddPlaylistButton
-        class="w-10 h-10"
-        tracks={album.tracks.map((track) => track)}
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-buttons>
+        <Favorite type="album" id={album.id} />
+        <AddPlaylistButton tracks={album.tracks.map((track) => track)} />
+      </ion-buttons>
+    </ion-item>
+  </ion-item-group>
+  <!-- <div class="services">
+    {#if album.appleMusicAlbum}
+      <AppleMusicButton id={album.appleMusicAlbum.appleMusicId} />
+    {/if}
+    {#if album.itunesAlbum}
+      <ItunesButton id={album.itunesAlbum.appleMusicId} />
+    {/if}
+    <Spotify name={album.name} />
+    <AmazonMusic name={album.name} />
+    <YoutubeMusic name={album.name} />
+    <LineMusic name={album.name} />
+  </div> -->
+  <ion-item-group>
+    <ion-item-divider>
+      <ion-label>Tracks</ion-label>
+    </ion-item-divider>
+
+    {#each album.tracks as track, index (track.id)}
+      <ItemCard
+        viewImage={false}
+        name={album.name}
+        item={track}
+        items={album.tracks.map((trk) => trk)}
+        {index}
       />
-    </div>
-    <div class="services">
-      {#if album.appleMusicAlbum}
-        <AppleMusicButton id={album.appleMusicAlbum.appleMusicId} />
-      {/if}
-      {#if album.itunesAlbum}
-        <ItunesButton id={album.itunesAlbum.appleMusicId} />
-      {/if}
-      <Spotify name={album.name} />
-      <AmazonMusic name={album.name} />
-      <YoutubeMusic name={album.name} />
-      <LineMusic name={album.name} />
-    </div>
+    {/each}
+  </ion-item-group>
 
-    <div class="separate">
-      <Text class="text-white">Tracks</Text>
-    </div>
-    <div class="tracks">
-      {#each album.tracks as track, index (track.id)}
-        <ItemCard
-          viewImage={false}
-          name={album.name}
-          item={track}
-          items={album.tracks.map((trk) => trk)}
-          {index}
-        />
-      {/each}
-    </div>
-
-    <div class="separate">
-      <Text class="text-white">Artists</Text>
-    </div>
+  <ion-item-group>
+    <ion-item-divider>
+      <ion-label>Artists</ion-label>
+    </ion-item-divider>
 
     {#if variables}
-      <div class="artists">
-        <Artists {variables} />
-      </div>
+      <Artists {variables} />
     {/if}
-  {/if}
-</div>
-
-<style lang="scss">
-.album {
-  @apply flex flex-col items-center;
-  @apply mb-2;
-
-  .name {
-    @apply mt-2 text-center w-80;
-  }
-
-  .description {
-    @apply mt-2 text-center w-80;
-  }
-
-  .buttons {
-    @apply mt-2;
-    @apply flex flex-row space-x-2;
-  }
-
-  .services {
-    @apply mt-2 text-center;
-  }
-
-  .tracks {
-    @apply w-full px-4 divide-y divide-gray-700;
-  }
-
-  .separate {
-    @apply my-6 border-b-2 w-28 border-gray-500 text-lg text-center;
-  }
-
-  .artists {
-    @apply mt-2;
-
-    grid-template-columns: repeat(auto-fill, 175px);
-    @apply my-2 w-full;
-    @apply grid gap-1 justify-center justify-items-center items-center;
-  }
-}
-</style>
+  </ion-item-group>
+{/if}
