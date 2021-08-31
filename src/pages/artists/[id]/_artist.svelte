@@ -66,7 +66,7 @@ $: if ($artistQuery.data) {
       </ion-label>
     </ion-item>
     <ion-item>
-      <ion-buttons>
+      <ion-buttons slot="end">
         <Favorite type="artist" id={artist.id} />
       </ion-buttons>
     </ion-item>

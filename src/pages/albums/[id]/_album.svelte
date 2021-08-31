@@ -101,7 +101,7 @@ $: if ($albumQuery.data) {
       </ion-note>
     </ion-item>
     <ion-item>
-      <ion-buttons>
+      <ion-buttons slot="end">
         <Favorite type="album" id={album.id} />
         <AddPlaylistButton tracks={album.tracks.map((track) => track)} />
       </ion-buttons>
