@@ -61,7 +61,7 @@ $: if ($albumQuery.data) {
 
 {#if album && album.artworkL.url}
   <ion-item-group>
-    <ion-item-divider>
+    <ion-item-divider sticky>
       <ion-label>Album</ion-label>
     </ion-item-divider>
 
@@ -109,7 +109,7 @@ $: if ($albumQuery.data) {
   </ion-item-group>
 
   <ion-item-group>
-    <ion-item-divider>
+    <ion-item-divider sticky>
       <ion-label>Music Services</ion-label>
     </ion-item-divider>
     {#if album.appleMusicAlbum}
@@ -125,7 +125,7 @@ $: if ($albumQuery.data) {
   </ion-item-group>
 
   <ion-item-group>
-    <ion-item-divider>
+    <ion-item-divider sticky>
       <ion-label>Tracks</ion-label>
     </ion-item-divider>
 
@@ -141,7 +141,7 @@ $: if ($albumQuery.data) {
   </ion-item-group>
 
   <ion-item-group>
-    <ion-item-divider>
+    <ion-item-divider sticky>
       <ion-label>Artists</ion-label>
     </ion-item-divider>
 

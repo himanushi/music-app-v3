@@ -50,7 +50,7 @@ $: if ($artistQuery.data) {
 
 {#if artist}
   <ion-item-group>
-    <ion-item-divider>
+    <ion-item-divider sticky>
       <ion-label>Artist</ion-label>
     </ion-item-divider>
 
@@ -73,7 +73,7 @@ $: if ($artistQuery.data) {
   </ion-item-group>
 
   <ion-item-group>
-    <ion-item-divider>
+    <ion-item-divider sticky>
       <ion-label>Albums</ion-label>
     </ion-item-divider>
     {#if variables}
