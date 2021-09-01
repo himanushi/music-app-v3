@@ -1,10 +1,4 @@
 {
-  // tailwindCSS classname autocomplete
-  "tailwindCSS.emmetCompletions": true,
-  "tailwindCSS.includeLanguages": {
-    "svelte": "html"
-  },
-
   // svelte, html, css
   "css.validate": false,
   "less.validate": false,
