@@ -17,13 +17,13 @@ const path = `/tracks/${item.id}`;
 </script>
 
 <ion-item button detail={false} on:click={() => $goto(path)}>
-  <ion-buttons slot="start">
-    <ion-thumbnail>
+  <ion-thumbnail slot="start">
+    {#if viewImage}
       <SquareImage src={item.artworkM.url} />
-    </ion-thumbnail>
-    <span class="playButton">
-      <PlayButton {name} {index} tracks={items} />
-    </span>
+    {/if}
+  </ion-thumbnail>
+  <ion-buttons class="playButton" slot="start">
+    <PlayButton {name} {index} tracks={items} />
   </ion-buttons>
   <ion-label>
     {item.name}
@@ -37,6 +37,6 @@ const path = `/tracks/${item.id}`;
 <style lang="scss">
 .playButton {
   position: absolute;
-  left: calc(14%);
+  left: calc(var(--padding-start) + var(--ion-safe-area-left, 0px) + 8px);
 }
 </style>
