@@ -14,7 +14,7 @@ import type { SearchParamsType } from "~/lib/params";
 
 let keyword = $params[SearchParams.track.keyword];
 let favorite = $params[SearchParams.track.favorite] === "1";
-let username = $params[SearchParams.track.username];
+const username = $params[SearchParams.track.username];
 const order = $params[SearchParams.track.order] || "NEW";
 const direction = $params[SearchParams.track.direction] || "DESC";
 
@@ -72,7 +72,6 @@ $: me = $query?.data?.me;
 
 <SearchDetail title="Search Tracks" {onClick}>
   <InputText label="検索ワード(2文字以上)" bind:value={keyword} />
-  <InputText label="お気に入り公開ユーザーID" bind:value={username} />
   <InputSelection label="並び順" bind:value={orderValue} items={orderItems} />
   {#if me && isAllowed(me, "changeFavorites")}
     <InputCheckbox label="お気に入り" bind:checked={favorite} />

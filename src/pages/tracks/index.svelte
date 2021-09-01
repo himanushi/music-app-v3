@@ -7,6 +7,7 @@ import {
   isAllowed, meQuery
 } from "~/lib/me";
 import { SearchParams } from "~/lib/params";
+import Content from "~/pages/_content.svelte";
 
 $: canSearch = false;
 
@@ -25,19 +26,24 @@ $: if (params) {
 
 const query = meQuery();
 $: me = $query?.data?.me;
+
+let component: HTMLElement;
 </script>
 
-{#if me && isAllowed(me, "tracks")}
-  {#if canSearch}
-    <div>
-      <Tracks params={$params} />
-    </div>
+<Content>
+  {#if me && isAllowed(me, "tracks")}
+    {#if canSearch}
+      <div>
+        <Tracks params={$params} />
+      </div>
+    {/if}
+    <SearchDetailButton {component} />
   {/if}
-  <SearchDetailButton component={SearchDetail} />
-{/if}
+</Content>
 
-<style lang="scss">
-div {
-  @apply mt-2 mb-20 mx-4 divide-y divide-gray-700;
-}
-</style>
+<!-- Modal -->
+<span style="display:none">
+  <span bind:this={component}>
+    <SearchDetail />
+  </span>
+</span>

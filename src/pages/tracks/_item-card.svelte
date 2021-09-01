@@ -3,6 +3,7 @@ import { goto } from "@roxi/routify";
 import AddPlaylistButton from "~/components/add-playlist-button.svelte";
 import Favorite from "~/components/favorite.svelte";
 import PlayButton from "~/components/play-button.svelte";
+import SquareImage from "~/components/square-image.svelte";
 import type { Track } from "~/graphql/types";
 
 export let index: number;
@@ -17,7 +18,12 @@ const path = `/tracks/${item.id}`;
 
 <ion-item button detail={false} on:click={() => $goto(path)}>
   <ion-buttons slot="start">
-    <PlayButton {name} {index} tracks={items} />
+    <ion-thumbnail>
+      <SquareImage src={item.artworkM.url} />
+    </ion-thumbnail>
+    <span class="playButton">
+      <PlayButton {name} {index} tracks={items} />
+    </span>
   </ion-buttons>
   <ion-label>
     {item.name}
@@ -27,3 +33,10 @@ const path = `/tracks/${item.id}`;
     <AddPlaylistButton tracks={[item]} />
   </ion-buttons>
 </ion-item>
+
+<style lang="scss">
+.playButton {
+  position: absolute;
+  left: calc(14%);
+}
+</style>
