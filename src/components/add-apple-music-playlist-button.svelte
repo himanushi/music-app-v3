@@ -54,17 +54,11 @@ $: if ($service.matches("done")) {
 </script>
 
 {#if tracks.length > 0 && accountService && $accountService.matches("authorized")}
-  <button {disabled} on:click={addPlaylist}>
-    {disabled ? "追加中..." : "Apple Music に追加"}
-  </button>
+  <ion-item button>
+    <ion-label {disabled} on:click={addPlaylist}>
+      {disabled ? "追加中..." : "Apple Music に追加"}
+    </ion-label>
+  </ion-item>
 {/if}
 
 <SettingAppleMusicButton />
-
-<style lang="scss">
-button {
-  @apply rounded p-2;
-  @apply bg-pink-500 hover_bg-pink-400 active_bg-pink-300;
-  @apply text-white;
-}
-</style>

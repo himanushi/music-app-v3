@@ -17,12 +17,16 @@ const path = `/tracks/${item.id}`;
 </script>
 
 <ion-item button detail={false} on:click={() => $goto(path)}>
-  <ion-thumbnail slot="start">
+  <ion-thumbnail slot="start" on:click|preventDefault|stopPropagation>
     {#if viewImage}
       <SquareImage src={item.artworkM.url} />
     {/if}
   </ion-thumbnail>
-  <ion-buttons class="playButton" slot="start">
+  <ion-buttons
+    class="playButton"
+    slot="start"
+    on:click|preventDefault|stopPropagation
+  >
     <PlayButton {name} {index} tracks={items} />
   </ion-buttons>
   <ion-label>
