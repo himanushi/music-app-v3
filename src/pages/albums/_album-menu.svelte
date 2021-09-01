@@ -1,7 +1,0 @@
-<ion-content>
-  <ion-list>
-    <ion-list-header><ion-label>Ionic</ion-label></ion-list-header>
-    <ion-item button><ion-label>Item 0</ion-label></ion-item>
-    <ion-item button><ion-label>Item 1</ion-label></ion-item>
-  </ion-list>
-</ion-content>

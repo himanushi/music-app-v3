@@ -19,20 +19,8 @@ import "@ionic/core/css/display.css";
 import "~/theme/variables.css";
 import "~/theme/custom.css";
 
-import { defineCustomElements } from "@ionic/core/loader";
 import { Router } from "@roxi/routify";
 import { routes } from "routify/routes";
-import { onMount } from "svelte";
-
-onMount(() => {
-
-  if (typeof window !== "undefined") {
-
-    defineCustomElements(window);
-
-  }
-
-});
 </script>
 
 <ion-app>

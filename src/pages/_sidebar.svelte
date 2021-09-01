@@ -1,5 +1,7 @@
 <script lang="ts">
-import { goto } from "@roxi/routify";
+import {
+  goto, url
+} from "@roxi/routify";
 import { fly } from "svelte/transition";
 import IconButton from "~/components/icon-button.svelte";
 import { modals } from "~/components/modals.svelte";
@@ -10,8 +12,9 @@ import Disc from "~/icons/disc.svelte";
 import Live from "~/icons/live.svelte";
 import MusicNote from "~/icons/music-note.svelte";
 import Music from "~/icons/music.svelte";
-import PlaylistSearch from "~/icons/playlist-search.svelte";
+import PlaylistSearch from "~/icons/playlist-search.svg";
 import User from "~/icons/user.svelte";
+import { closeSidebar } from "~/lib/ionic";
 import {
   isAllowed, meQuery
 } from "~/lib/me";
@@ -28,7 +31,7 @@ const showPlayer = () => {
 const go =
   (path: string, params: Record<string, string> = {}) => () => {
 
-    modals.close();
+    closeSidebar();
     $goto(path, params);
 
   };
@@ -43,6 +46,88 @@ const query = meQuery();
 $: me = $query?.data?.me;
 </script>
 
+<ion-menu
+  side="end"
+  id="sidebar"
+  menu-id="sidebar"
+  content-id="sidebar-content"
+>
+  <ion-header>
+    <ion-toolbar color="main">
+      <ion-title>Menu</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-item-group>
+      <ion-item-divider>
+        <ion-label>Search</ion-label>
+      </ion-item-divider>
+      <ion-item button on:click={go("/artists")}>
+        <ion-icon name="person-outline" slot="start" />
+        <ion-label>アーティスト</ion-label>
+      </ion-item>
+      <ion-item button on:click={go("/albums")}>
+        <ion-icon name="disc-outline" slot="start" />
+        <ion-label>アルバム</ion-label>
+      </ion-item>
+      <ion-item button on:click={go("/tracks")}>
+        <ion-icon name="musical-note-outline" slot="start" />
+        <ion-label>曲</ion-label>
+      </ion-item>
+      <ion-item button on:click={go("/radios")}>
+        <ion-icon name="radio-outline" slot="start" />
+        <ion-label>ラジオ</ion-label>
+      </ion-item>
+      <ion-item button on:click={go("/tracks/random")}>
+        <ion-icon src={PlaylistSearch} slot="start" />
+        <ion-label>おまかせプレイリスト</ion-label>
+      </ion-item>
+      <ion-item button on:click={go("/playlist")}>
+        <ion-icon src={PlaylistSearch} slot="start" />
+        <ion-label>みんなのプレイリスト</ion-label>
+      </ion-item>
+      <ion-item button on:click={go("/playlist", { pm: "1" })}>
+        <ion-icon src={PlaylistSearch} slot="start" />
+        <ion-label>マイプレイリスト</ion-label>
+      </ion-item>
+    </ion-item-group>
+
+    <ion-item-group>
+      <ion-item-divider>
+        <ion-label>Setting</ion-label>
+      </ion-item-divider>
+      <ion-item button on:click={go("/me")}>
+        <ion-icon name="settings-outline" slot="start" />
+        <ion-label>設定</ion-label>
+      </ion-item>
+      <ion-item button on:click={showPlayer}>
+        <ion-icon name="musical-notes-outline" slot="start" />
+        <ion-label>ミュージックプレイヤー</ion-label>
+      </ion-item>
+    </ion-item-group>
+
+    <ion-item-group>
+      <ion-item-divider>
+        <ion-label>About</ion-label>
+      </ion-item-divider>
+      <ion-item button on:click={go("/about")}>
+        <ion-label>このサイトについて</ion-label>
+      </ion-item>
+      <ion-item button on:click={go("/terms")}>
+        <ion-label>利用規約</ion-label>
+      </ion-item>
+      <ion-item button on:click={go("/privacy")}>
+        <ion-label>プレイバシーポリシー</ion-label>
+      </ion-item>
+      <ion-item button on:click={go("/cookie-policy")}>
+        <ion-label>クッキーポリシー</ion-label>
+      </ion-item>
+    </ion-item-group>
+  </ion-content>
+</ion-menu>
+
+<span id="sidebar-content" />
+<!--
 <nav
   on:click|stopPropagation
   transition:fly={{
@@ -115,31 +200,4 @@ $: me = $query?.data?.me;
       </ul>
     </section>
   </main>
-</nav>
-
-<style lang="scss">
-nav {
-  @apply w-72 h-full;
-  @apply bg-opacity-100;
-
-  header {
-    @apply h-14 flex items-center bg-teal-500 px-2;
-
-    h4 {
-      @apply text-black text-lg;
-    }
-  }
-
-  main {
-    @apply bg-gray-900 text-white text-base h-full p-5 overflow-y-scroll;
-
-    h5 {
-      @apply m-1 text-base text-gray-500 border-b-2 border-gray-600;
-    }
-
-    li {
-      @apply p-2 text-sm rounded flex flex-row items-center space-x-2;
-    }
-  }
-}
-</style>
+</nav> -->

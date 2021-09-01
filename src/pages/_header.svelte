@@ -1,20 +1,13 @@
 <script lang="ts">
-import { url } from "@roxi/routify";
-import Sidebar from "./_sidebar.svelte";
-import IconButton from "~/components/icon-button.svelte";
-import { modals } from "~/components/modals.svelte";
-import MenuIcon from "~/icons/menu.svelte";
 import { title } from "~/lib/variable";
-
-const showSidebar = () => modals.open(Sidebar);
 </script>
 
 <ion-header translucent>
   <ion-toolbar>
     <ion-buttons slot="end">
-      <ion-button>
+      <ion-menu-button menu="sidebar" auto-hide={false}>
         <ion-icon name="menu" />
-      </ion-button>
+      </ion-menu-button>
     </ion-buttons>
     <ion-title>{title}</ion-title>
   </ion-toolbar>

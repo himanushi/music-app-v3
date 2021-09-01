@@ -1,5 +1,7 @@
 import {
-  modalController, popoverController
+  modalController,
+  popoverController,
+  menuController
 } from "@ionic/core";
 
 export const openMenu = (name: string) => async (event: any) => {
@@ -32,5 +34,16 @@ export const openModal =
 export const closeModal = async () => {
 
   await modalController.dismiss();
+
+};
+
+export const closeSidebar = () => {
+
+  const sidebar = document.querySelector("#sidebar");
+  if (sidebar) {
+
+    sidebar.close();
+
+  }
 
 };
