@@ -1,5 +1,6 @@
 <script lang="ts">
 import SettingAppleMusicButton from "./setting-apple-music-button.svelte";
+import InfoMessage from "~/components/info-message.svelte";
 import Message from "~/components/toast-messages/message.svelte";
 import { toasts } from "~/components/toasts.svelte";
 import type { Track } from "~/graphql/types";
@@ -59,6 +60,8 @@ $: if ($service.matches("done")) {
       {disabled ? "追加中..." : "Apple Music に追加"}
     </ion-label>
   </ion-item>
+{:else}
+  <SettingAppleMusicButton
+    message="Apple Music にプレイリストに追加するには Apple Music のログインが必須です"
+  />
 {/if}
-
-<SettingAppleMusicButton />
