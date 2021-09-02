@@ -14,7 +14,7 @@ import type { SearchParamsType } from "~/lib/params";
 
 let keyword = $params[SearchParams.playlist.keyword];
 let favorite = $params[SearchParams.playlist.favorite] === "1";
-let username = $params[SearchParams.playlist.username];
+const username = $params[SearchParams.playlist.username];
 const isMine = $params[SearchParams.playlist.mine] === "1";
 const order = $params[SearchParams.playlist.order] || "UPDATE";
 const direction = $params[SearchParams.playlist.direction] || "DESC";
@@ -86,7 +86,6 @@ $: me = $query?.data?.me;
 
 <SearchDetail title="Search Playlist" {onClick}>
   <InputText label="検索ワード" bind:value={keyword} />
-  <InputText label="お気に入り公開ユーザーID" bind:value={username} />
   <InputSelection label="並び順" bind:value={orderValue} items={orderItems} />
   {#if me && isAllowed(me, "changeFavorites")}
     <InputCheckbox label="お気に入り" bind:checked={favorite} />
