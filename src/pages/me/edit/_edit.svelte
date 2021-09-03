@@ -2,9 +2,7 @@
 import { ApolloError } from "@apollo/client/core";
 import { goto } from "@roxi/routify";
 import { mutation } from "svelte-apollo";
-import Button from "~/components/button.svelte";
 import InputText from "~/components/input-item.svelte";
-import Separate from "~/components/separate.svelte";
 import Message from "~/components/toast-messages/message.svelte";
 import { toasts } from "~/components/toasts.svelte";
 import {
@@ -63,54 +61,49 @@ const signup = async () => {
 };
 </script>
 
-<form on:submit|preventDefault>
-  <Separate text="User" />
+<ion-list>
+  <ion-item-group>
+    <ion-item-divider sticky>
+      <ion-label>User</ion-label>
+    </ion-item-divider>
 
-  <InputText
-    label="名前"
-    bind:value={name}
-    errorMessages={messages.name}
-    class="w-80"
-  />
+    <InputText label="名前" bind:value={name} errorMessages={messages.name} />
 
-  <Button class="text-center" on:click={signup} messages={messages._}>
-    更新
-  </Button>
+    <ion-item button on:click={signup} messages={messages._}>
+      <ion-icon name="build-outline" slot="start" />
+      更新する
+    </ion-item>
+  </ion-item-group>
 
-  <Separate text="Password" />
+  <ion-item-group>
+    <ion-item-divider sticky>
+      <ion-label>Password</ion-label>
+    </ion-item-divider>
+    <InputText
+      label="現在のパスワード"
+      type="password"
+      bind:value={currentPassword}
+      errorMessages={messages.currentPassword}
+      autocomplete="current-password"
+    />
+    <InputText
+      label="新しいパスワード"
+      type="password"
+      bind:value={newPassword}
+      errorMessages={messages.newPassword}
+      autocomplete="new-password"
+    />
+    <InputText
+      label="新しいパスワード再確認"
+      type="password"
+      bind:value={newPasswordConfirmation}
+      errorMessages={messages.newPasswordConfirmation}
+      autocomplete="new-password"
+    />
 
-  <InputText
-    label="現在のパスワード"
-    type="password"
-    bind:value={currentPassword}
-    errorMessages={messages.currentPassword}
-    autocomplete="new-password"
-    class="w-80"
-  />
-  <InputText
-    label="新しいパスワード"
-    type="password"
-    bind:value={newPassword}
-    errorMessages={messages.newPassword}
-    autocomplete="new-password"
-    class="w-80"
-  />
-  <InputText
-    label="新しいパスワード再確認"
-    type="password"
-    bind:value={newPasswordConfirmation}
-    errorMessages={messages.newPasswordConfirmation}
-    autocomplete="new-password"
-    class="w-80"
-  />
-
-  <Button class="text-center" on:click={signup} messages={messages._}>
-    更新
-  </Button>
-</form>
-
-<style lang="scss">
-form {
-  @apply text-white flex flex-col items-center space-y-5 py-2;
-}
-</style>
+    <ion-item button on:click={signup} messages={messages._}>
+      <ion-icon name="build-outline" slot="start" />
+      更新する
+    </ion-item>
+  </ion-item-group>
+</ion-list>

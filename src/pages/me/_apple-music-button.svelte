@@ -14,13 +14,5 @@ $: me = $query?.data?.me;
 </script>
 
 {#if me && isAllowed(me, "appleMusicToken")}
-  <button on:click={onClick}>Apple Music {meta.label}</button>
+  <ion-item button on:click={onClick}>Apple Music {meta.label}</ion-item>
 {/if}
-
-<style lang="scss">
-button {
-  @apply rounded p-2;
-  @apply bg-pink-500 hover_bg-pink-400 active_bg-pink-300 text-black;
-  @apply text-white;
-}
-</style>

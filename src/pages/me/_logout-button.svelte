@@ -2,7 +2,6 @@
 import { ApolloError } from "@apollo/client/core";
 import { goto } from "@roxi/routify";
 import { mutation } from "svelte-apollo";
-import Messages from "~/components/messages.svelte";
 import Message from "~/components/toast-messages/message.svelte";
 import { toasts } from "~/components/toasts.svelte";
 import {
@@ -51,12 +50,7 @@ const logout = async () => {
 };
 </script>
 
-<Messages type="error" messages={messages._} />
-<button on:click={logout}>ログアウト</button>
-
-<style lang="scss">
-button {
-  @apply rounded p-2;
-  @apply bg-red-700 hover_bg-red-600 active_bg-red-500 text-black;
-}
-</style>
+<ion-item button on:click={logout}>
+  <ion-icon color="red" name="exit-outline" slot="start" />
+  ログアウト
+</ion-item>
