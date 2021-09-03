@@ -67,7 +67,12 @@ const signup = async () => {
       <ion-label>User</ion-label>
     </ion-item-divider>
 
-    <InputText label="名前" bind:value={name} errorMessages={messages.name} />
+    <InputText
+      label="名前"
+      bind:value={name}
+      autocomplete="nickname"
+      errorMessages={messages.name}
+    />
 
     <ion-item button on:click={signup} messages={messages._}>
       <ion-icon name="build-outline" slot="start" />
