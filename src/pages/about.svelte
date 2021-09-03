@@ -1,11 +1,10 @@
 <script lang="ts">
-import Button from "~/components/button.svelte";
-import Markdown from "~/components/markdown.svelte";
 import { markdown } from "~/lib/markdown";
 import { twitterAccount } from "~/lib/variable";
 import {
   currentVersion, reset
 } from "~/lib/version";
+import Content from "~/pages/_content.svelte";
 
 const version = currentVersion() || "";
 
@@ -33,8 +32,10 @@ ${version}
 `);
 </script>
 
-<Markdown class="m-7">
-  {@html html}
-</Markdown>
+<Content>
+  <div class="ion-padding">
+    {@html html}
+  </div>
 
-<Button on:click={reset} class="text-center mb-5">リセット</Button>
+  <ion-button color="green" on:click={reset}>リセット</ion-button>
+</Content>

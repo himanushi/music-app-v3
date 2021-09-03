@@ -1,7 +1,7 @@
 <script lang="ts">
-import Markdown from "~/components/markdown.svelte";
 import { markdown } from "~/lib/markdown";
 import { title } from "~/lib/variable";
+import Content from "~/pages/_content.svelte";
 
 const html = markdown(`
 # プライバシーポリシー
@@ -73,6 +73,8 @@ Twitter アカウント : https://twitter.com/vgm_net
 `);
 </script>
 
-<Markdown class="m-7">
-  {@html html}
-</Markdown>
+<Content>
+  <div class="ion-padding">
+    {@html html}
+  </div>
+</Content>
