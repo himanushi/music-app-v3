@@ -15,8 +15,6 @@ twitterUrl += `&url=${url}`;
 twitterUrl += `&hashtags=${hashtags.join(",")}`;
 </script>
 
-<a href={twitterUrl} target="_blank">
-  <IconButton class="w-10 h-10">
-    <Twitter class="w-8 h-8 text-white" />
-  </IconButton>
-</a>
+<ion-button href={twitterUrl} target="_blank">
+  <ion-icon name="logo-twitter" />
+</ion-button>

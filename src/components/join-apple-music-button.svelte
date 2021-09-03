@@ -32,13 +32,7 @@ if (isMobile(window.navigator).apple.device) {
 </script>
 
 {#if accountService && $accountService.matches("unauthorized")}
-  <a class="apple" target="_blank" {href}> Apple Music に加入 </a>
+  <ion-item button class="apple" target="_blank" {href}>
+    Apple Music に加入
+  </ion-item>
 {/if}
-
-<style lang="scss">
-a {
-  @apply rounded p-2 w-44 text-center;
-  @apply bg-pink-500 hover_bg-pink-400 active_bg-pink-300;
-  @apply text-white;
-}
-</style>
