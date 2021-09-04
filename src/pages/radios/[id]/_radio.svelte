@@ -56,7 +56,7 @@ $: if ($radioQuery?.data) {
       <LiveButton {id} />
     {:else}
       <SettingAppleMusicButton
-        message="ラジオを聴くためには Apple Music のログインが必須です"
+        message="ラジオを聴くには Apple Music のログインが必須です"
       />
     {/if}
   </ion-item-group>

@@ -1,8 +1,9 @@
 <script lang="ts">
 import { fly } from "svelte/transition";
 import { modals } from "~/components/modals.svelte";
-import Player from "~/components/player.svelte";
+import Player, { openPlayer } from "~/components/player.svelte";
 import SquareImage from "~/components/square-image.svelte";
+import { openModal } from "~/lib/ionic";
 import { playerService } from "~/machines/jukebox-machine";
 import { radioService } from "~/machines/radio-machine";
 
@@ -41,9 +42,11 @@ const live = () => {
 
 };
 
+let playerComponent: HTMLElement;
+
 const showPlayer = () => {
 
-  modals.open(Player);
+  openPlayer.set(true);
 
 };
 
@@ -61,7 +64,7 @@ const goBack = () => window.history.go(-1);
   <ion-toolbar color="main">
     {#if track}
       {#key track.id}
-        <ion-thumbnail slot="start">
+        <ion-thumbnail on:click={showPlayer} slot="start">
           <SquareImage src={track.artworkM.url} />
         </ion-thumbnail>
         <ion-title button>{track.name}</ion-title>

@@ -22,10 +22,8 @@ import {
 const close = () => modals.close();
 
 const showPlayer = () => {
-
-  modals.close();
-  modals.open(Player);
-
+  // closeSidebar();
+  // openPlayer();
 };
 
 const go =

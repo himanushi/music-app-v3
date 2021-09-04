@@ -12,7 +12,7 @@ $: if (fabComponent) {
 </script>
 
 <ion-fab vertical="bottom" horizontal="end" bind:this={fabComponent}>
-  <ion-fab-button on:click={openModal(component, props)}>
+  <ion-fab-button on:click={() => openModal(component, props)}>
     <ion-icon name="search-outline" />
   </ion-fab-button>
 </ion-fab>

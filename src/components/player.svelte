@@ -1,74 +1,84 @@
+<script context="module" lang="ts">
+import { writable } from "svelte/store";
+export const openPlayer = writable<boolean>(false);
+</script>
+
 <script lang="ts">
-import { fly } from "svelte/transition";
-import IconButton from "./icon-button.svelte";
-import { modals } from "~/components/modals.svelte";
-import Player from "~/components/music-player/index.svelte";
-import Queue from "~/components/queue/index.svelte";
-import Radio from "~/components/radio-player/index.svelte";
-import Close from "~/icons/close.svelte";
-import Live from "~/icons/live.svelte";
-import MusicNote from "~/icons/music-note.svelte";
-import Playlist from "~/icons/playlist.svelte";
-import { playerService } from "~/machines/jukebox-machine";
+import {
+  isOpenModal, openModal, closeModal
+} from "~/lib/ionic";
+let component: HTMLElement;
+$: if (component) {
 
-const close = () => modals.close();
-let tabIndex = 0;
-const tabs = [
-  Player,
-  Queue,
-  Radio
-];
+  if ($openPlayer) {
 
-$: musicClass = tabIndex === 0 ? "text-teal-400" : "text-white";
-$: playlistClass = tabIndex === 1 ? "text-teal-400" : "text-white";
-$: if ($playerService.context.isRadio) {
+    openModal(component);
 
-  tabIndex = 2;
+  } else if (isOpenModal()) {
+
+    console.log(component);
+    closeModal();
+    console.log(component);
+
+  }
 
 }
 </script>
 
-<div
-  on:click|stopPropagation
-  transition:fly={{
-    duration: 400,
-    opacity: 100,
-    y: document.documentElement.clientHeight
-  }}
-  class="player"
->
-  <div class="content">
-    <svelte:component this={tabs[tabIndex]} />
-  </div>
-  <div class="buttons">
-    {#if tabIndex === 2}
-      <IconButton class="h-12 w-12">
-        <Live class="h-10 w-10 text-teal-400" />
-      </IconButton>
-    {:else}
-      <IconButton class="h-12 w-12" on:click={() => tabIndex = 0}>
-        <MusicNote class={`h-10 w-10 ${musicClass}`} />
-      </IconButton>
+<!-- Modal -->
+<span style="display:none">
+  <span bind:this={component}>
+    <ion-tabs>
+      <ion-tab tab="music">
+        <ion-header translucent>
+          <ion-toolbar>
+            <ion-title>Music</ion-title>
+          </ion-toolbar>
+        </ion-header>
 
-      <IconButton class="h-12 w-12" on:click={() => tabIndex = 1}>
-        <Playlist class={`h-10 w-10 ${playlistClass}`} />
-      </IconButton>
-    {/if}
+        <ion-content fullscreen class="ion-padding">
+          <h1>Music</h1>
+        </ion-content>
+      </ion-tab>
 
-    <IconButton class="h-12 w-12" on:click={close}>
-      <Close class="h-10 w-10 text-white" />
-    </IconButton>
-  </div>
-</div>
+      <ion-tab tab="movies">
+        <ion-header translucent>
+          <ion-toolbar>
+            <ion-title>Movies</ion-title>
+          </ion-toolbar>
+        </ion-header>
 
-<style lang="scss">
-.player {
-  @apply absolute inset-0 m-auto overflow-hidden;
-  @apply bg-gray-800 rounded;
-  @apply h-[600px] w-[300px];
+        <ion-content fullscreen class="ion-padding">
+          <h1>Movies</h1>
+        </ion-content>
+      </ion-tab>
 
-  .buttons {
-    @apply absolute bottom-5 w-full grid grid-flow-col justify-items-center;
-  }
-}
-</style>
+      <ion-tab tab="games">
+        <ion-header translucent>
+          <ion-toolbar>
+            <ion-title>Games</ion-title>
+          </ion-toolbar>
+        </ion-header>
+
+        <ion-content fullscreen class="ion-padding">
+          <h1>Games</h1>
+        </ion-content>
+      </ion-tab>
+
+      <ion-tab-bar slot="bottom">
+        <ion-tab-button tab="music">
+          <ion-label>Music</ion-label>
+          <ion-icon name="musical-note" />
+        </ion-tab-button>
+        <ion-tab-button tab="movies">
+          <ion-label>Movies</ion-label>
+          <ion-icon name="videocam" />
+        </ion-tab-button>
+        <ion-tab-button on:click={() => openPlayer.set(false)} tab="games">
+          <ion-label>Games</ion-label>
+          <ion-icon name="game-controller" />
+        </ion-tab-button>
+      </ion-tab-bar>
+    </ion-tabs>
+  </span>
+</span>

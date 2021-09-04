@@ -20,16 +20,20 @@ export const closeMenu = async () => {
 
 };
 
-export const openModal =
-  (component: HTMLElement, props?: Record<string, any>) => async () => {
+export const isOpenModal = () => Boolean(document.querySelector("ion-modal"));
 
-    const modal = await modalController.create({
-      component,
-      componentProps: props
-    });
-    await modal.present();
+export const openModal = async (
+  component: HTMLElement,
+  componentProps?: Record<string, any>
+) => {
 
-  };
+  const modal = await modalController.create({
+    component,
+    componentProps
+  });
+  await modal.present();
+
+};
 
 export const closeModal = async () => {
 
