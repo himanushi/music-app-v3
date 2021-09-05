@@ -3,11 +3,16 @@
 import {
   afterPageLoad, beforeUrlChange
 } from "@roxi/routify";
+import {
+  closeModal, isOpenModal
+} from "~/lib/ionic";
 import { googleAnalyticsId } from "~/lib/variable";
 import { currentPath } from "~/store/history";
 import { scrollLock } from "~/store/scroll-lock";
 
-const content: HTMLElement | null = document.querySelector("ion-app>ion-content");
+const content: HTMLElement | null = document.querySelector(
+  "ion-app>ion-content"
+);
 let scrollContent: HTMLElement | null;
 
 $: if (content) {
@@ -21,6 +26,13 @@ $: if (content) {
 }
 
 $beforeUrlChange(() => {
+
+  if (isOpenModal()) {
+
+    closeModal();
+    return false;
+
+  }
 
   if (scrollContent) {
 
