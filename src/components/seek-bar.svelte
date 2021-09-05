@@ -26,21 +26,21 @@ const range = "min" as unknown as boolean;
 
 <style lang="scss">
 :global(.rangeSlider.range.min) {
-  @apply bg-gray-300;
+  background-color: rgba(209, 213, 219);
   :global(.rangeNub) {
-    @apply bg-teal-500;
+    background-color: rgba(20, 184, 166);
   }
   :global(.rangeFloat) {
-    @apply bg-teal-500;
+    background-color: rgba(20, 184, 166);
   }
   :global(.rangeBar) {
-    @apply bg-teal-500;
+    background-color: rgba(20, 184, 166);
   }
 }
 
 :global(.rangeSlider.range.min.focus) {
   :global(.rangeNub) {
-    @apply bg-teal-500;
+    background-color: rgba(20, 184, 166);
   }
 }
 </style>

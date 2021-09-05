@@ -70,32 +70,16 @@ $: seekValue = seeking ? seekValue : $seek;
 </script>
 
 {#if player}
-  <div>
-    <div class="text">
-      <Text class="text-white px-4 pt-3">{toMMSS($player.context.seek)}</Text>
-      <Text class="text-white px-4 pt-3"
-        >{toMMSS($player.context.duration)}</Text
-      >
-    </div>
-    <div class="seek">
-      <SeekBar
-        value={seekValue}
-        min={0}
-        max={$player.context.duration}
-        formatter={toMMSS}
-        on:start={onStart}
-        on:stop={onStop}
-      />
-    </div>
-  </div>
+  <ion-item lines="none">
+    <ion-note slot="start">{toMMSS($player.context.seek)}</ion-note>
+    <ion-note slot="end">{toMMSS($player.context.duration)}</ion-note>
+  </ion-item>
+  <SeekBar
+    value={seekValue}
+    min={0}
+    max={$player.context.duration}
+    formatter={toMMSS}
+    on:start={onStart}
+    on:stop={onStop}
+  />
 {/if}
-
-<style lang="scss">
-div {
-  @apply w-full;
-
-  .text {
-    @apply flex justify-between;
-  }
-}
-</style>

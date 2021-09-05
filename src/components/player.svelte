@@ -1,26 +1,25 @@
 <script context="module" lang="ts">
 import { writable } from "svelte/store";
-export const openPlayer = writable<boolean>(false);
+import { v4 as uuid } from "uuid";
+const playerId = writable<string | null>(null);
+export const openPlayer = () => {
+
+  playerId.set(uuid());
+
+};
 </script>
 
 <script lang="ts">
+import Player from "~/components/music-player/index.svelte";
 import {
-  isOpenModal, openModal, closeModal
+  closeModal, openModal
 } from "~/lib/ionic";
+
 let component: HTMLElement;
-$: if (component) {
 
-  if ($openPlayer) {
+$: if (component && $playerId) {
 
-    openModal(component);
-
-  } else if (isOpenModal()) {
-
-    console.log(component);
-    closeModal();
-    console.log(component);
-
-  }
+  openModal(component);
 
 }
 </script>
@@ -29,22 +28,19 @@ $: if (component) {
 <span style="display:none">
   <span bind:this={component}>
     <ion-tabs>
-      <ion-tab tab="music">
+      <ion-tab tab="player">
         <ion-header translucent>
           <ion-toolbar>
-            <ion-title>Music</ion-title>
+            <ion-title>Music Player</ion-title>
           </ion-toolbar>
         </ion-header>
-
-        <ion-content fullscreen class="ion-padding">
-          <h1>Music</h1>
-        </ion-content>
+        <Player />
       </ion-tab>
 
-      <ion-tab tab="movies">
+      <ion-tab tab="queue">
         <ion-header translucent>
           <ion-toolbar>
-            <ion-title>Movies</ion-title>
+            <ion-title>Queue</ion-title>
           </ion-toolbar>
         </ion-header>
 
@@ -53,30 +49,14 @@ $: if (component) {
         </ion-content>
       </ion-tab>
 
-      <ion-tab tab="games">
-        <ion-header translucent>
-          <ion-toolbar>
-            <ion-title>Games</ion-title>
-          </ion-toolbar>
-        </ion-header>
-
-        <ion-content fullscreen class="ion-padding">
-          <h1>Games</h1>
-        </ion-content>
-      </ion-tab>
-
-      <ion-tab-bar slot="bottom">
-        <ion-tab-button tab="music">
-          <ion-label>Music</ion-label>
+      <ion-tab-bar color="main" slot="bottom">
+        <ion-tab-button tab="player">
+          <ion-label>Player</ion-label>
           <ion-icon name="musical-note" />
         </ion-tab-button>
-        <ion-tab-button tab="movies">
-          <ion-label>Movies</ion-label>
-          <ion-icon name="videocam" />
-        </ion-tab-button>
-        <ion-tab-button on:click={() => openPlayer.set(false)} tab="games">
-          <ion-label>Games</ion-label>
-          <ion-icon name="game-controller" />
+        <ion-tab-button tab="queue">
+          <ion-label>Queue</ion-label>
+          <ion-icon name="list" />
         </ion-tab-button>
       </ion-tab-bar>
     </ion-tabs>

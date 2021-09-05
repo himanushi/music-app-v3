@@ -40,8 +40,11 @@ $: me = $query?.data?.me;
 "playlists",
 "addPlaylistItems"
 ])}
-  <ion-button on:click|preventDefault|stopPropagation={showMyPlaylist}>
-    <ion-icon src={AddPlaylistIcon} />
+  <ion-button
+    size="large"
+    on:click|preventDefault|stopPropagation={showMyPlaylist}
+  >
+    <ion-icon slot="icon-only" src={AddPlaylistIcon} />
   </ion-button>
 {/if}
 

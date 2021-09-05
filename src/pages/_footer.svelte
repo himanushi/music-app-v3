@@ -46,7 +46,7 @@ let playerComponent: HTMLElement;
 
 const showPlayer = () => {
 
-  openPlayer.set(true);
+  openPlayer();
 
 };
 

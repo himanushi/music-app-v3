@@ -1,7 +1,5 @@
 import {
-  modalController,
-  popoverController,
-  menuController
+  modalController, popoverController
 } from "@ionic/core";
 
 export const openMenu = (name: string) => async (event: any) => {

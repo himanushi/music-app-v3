@@ -83,11 +83,11 @@ const onClick = async () => {
 </script>
 
 {#if me && isAllowed(me, "changeFavorites")}
-  <ion-button on:click|preventDefault|stopPropagation={onClick}>
+  <ion-button size="large" on:click|preventDefault|stopPropagation={onClick}>
     {#if favorite}
-      <ion-icon color="red" name="heart" />
+      <ion-icon slot="icon-only" color="red" name="heart" />
     {:else}
-      <ion-icon bind:this={icon} name="heart-outline" />
+      <ion-icon slot="icon-only" bind:this={icon} name="heart-outline" />
     {/if}
   </ion-button>
 {/if}

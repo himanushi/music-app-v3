@@ -1,12 +1,7 @@
 <script>
-import IconButton from "~/components/icon-button.svelte";
-import RepeatIcon from "~/icons/repeat.svelte";
 import { playerService } from "~/machines/jukebox-machine";
 
-let className = "h-10 w-10";
-export { className as class };
-
-$: enable = $playerService.context.repeat ? "" : "opacity-30";
+$: color = $playerService.context.repeat ? "main" : "gray";
 
 const repeat = () => {
 
@@ -15,6 +10,6 @@ const repeat = () => {
 };
 </script>
 
-<IconButton class={className} on:click={repeat}>
-  <RepeatIcon class={` text-white ${className} ${enable}`} />
-</IconButton>
+<ion-button {color} shape="round" on:click={repeat}>
+  <ion-icon slot="icon-only" name="repeat" />
+</ion-button>

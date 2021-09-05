@@ -2,8 +2,11 @@
 import PlayerController from "./player-controller.svelte";
 import SeekBar from "./seek-bar.svelte";
 import TrackInfo from "./track-info.svelte";
+import Content from "~/pages/_content.svelte";
 </script>
 
-<TrackInfo />
-<PlayerController />
-<SeekBar />
+<Content>
+  <TrackInfo />
+  <PlayerController />
+  <SeekBar />
+</Content>
