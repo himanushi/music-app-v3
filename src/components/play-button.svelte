@@ -61,6 +61,6 @@ const onClick = () => {
 };
 </script>
 
-<ion-button disabled={!$canPlay} class="w-10 h-10" on:click={onClick}>
+<ion-button disabled={!$canPlay} on:click={onClick}>
   <ion-icon name="play" />
 </ion-button>

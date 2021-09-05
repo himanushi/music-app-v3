@@ -11,9 +11,8 @@ export const openPlayer = () => {
 
 <script lang="ts">
 import Player from "~/components/music-player/index.svelte";
-import {
-  closeModal, openModal
-} from "~/lib/ionic";
+import Queue from "~/components/queue/index.svelte";
+import { openModal } from "~/lib/ionic";
 
 let component: HTMLElement;
 
@@ -38,15 +37,7 @@ $: if (component && $playerId) {
       </ion-tab>
 
       <ion-tab tab="queue">
-        <ion-header translucent>
-          <ion-toolbar>
-            <ion-title>Queue</ion-title>
-          </ion-toolbar>
-        </ion-header>
-
-        <ion-content fullscreen class="ion-padding">
-          <h1>Movies</h1>
-        </ion-content>
+        <Queue />
       </ion-tab>
 
       <ion-tab-bar color="main" slot="bottom">

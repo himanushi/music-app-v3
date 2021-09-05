@@ -7,30 +7,35 @@ import DndSelection from "~/components/dnd-selection.svelte";
 import type { ItemsType } from "~/components/dnd-selection.svelte";
 import { canPlay } from "~/components/play-button.svelte";
 import Text from "~/components/text.svelte";
+import type { Track } from "~/graphql/types";
 import Link from "~/icons/link.svelte";
 import MusicNote from "~/icons/music-note.svelte";
 import Play from "~/icons/play.svelte";
+import { closeModal } from "~/lib/ionic";
 import { playerService } from "~/machines/jukebox-machine";
+import Content from "~/pages/_content.svelte";
 
-const items: ItemsType = $playerService.context.tracks.map((track, index) => ({
-  id: index,
-  index,
-  item: track
-}));
-
+let tracks = $playerService.context.tracks.map((track) => track);
 $: playbackNo = $playerService.context.currentPlaybackNo;
 
 const decide = (
   event: CustomEvent & {
-    detail: { from: number; to: number };
+    detail: { from: number; to: number; complete: Function };
   }
 ) => {
 
+  console.log({
+    from: event.detail.from,
+    playbackNo,
+    to: event.detail.to
+  });
   playerService.send({
     from: event.detail.from,
     to: event.detail.to,
     type: "MOVE"
   });
+
+  tracks = event.detail.complete(tracks);
 
 };
 
@@ -60,81 +65,49 @@ const remove = (
 
 const link = () => {
 
-  modals.close();
-  $goto($playerService.context.link);
+  (async () => {
+
+    await closeModal();
+    $goto($playerService.context.link);
+
+  })();
 
 };
 </script>
 
-<div>
-  {#if playerService}
-    <div class="title">
-      <span class="name">
-        <Text>
-          {$playerService.context.name}
-        </Text>
-      </span>
-      <span class="buttons">
-        <IconButton on:click={link} class="h-7 w-7">
-          <Link class="h-7 w-7" />
-        </IconButton>
-        <AddPlaylistButton
-          class="w-7 h-7"
-          tracks={$playerService.context.tracks}
-        />
-      </span>
-    </div>
-  {/if}
-  <DndSelection
-    on:decide={decide}
-    on:remove={remove}
-    {items}
-    let:index
-    let:item
-    class={"max-h-[450px]"}
-  >
-    <span class="item">
-      {#if playbackNo === index}
-        <span class="icon">
-          <MusicNote class="h-7 w-7 text-teal-400" />
-        </span>
-      {:else}
-        <span class="icon" on:click={play(index)}>
-          <IconButton
-            disabled={!$canPlay}
-            class="h-7 w-7"
-            on:click={play(index)}
-          >
-            <Play class="h-7 w-7 text-white" />
-          </IconButton>
-        </span>
-      {/if}
-      <span>
-        <Text class="text-white">{item.item.name}</Text>
-      </span>
-    </span>
-  </DndSelection>
-</div>
-
-<style lang="scss">
-.title {
-  @apply flex flex-row justify-center;
-  @apply my-4 w-full text-white text-base;
-
-  .name {
-    @apply w-7/12 truncate self-center;
-  }
-
-  .buttons {
-    @apply ml-2 flex flex-row space-x-2;
-  }
-}
-
-.item {
-  @apply flex flex-row items-center;
-
-  .icon {
-    @apply m-2;
-  }
-}
-</style>
+{#if playerService}
+  <ion-header translucent>
+    <ion-toolbar>
+      <ion-title>{$playerService.context.name}</ion-title>
+      <ion-buttons slot="end">
+        <ion-button size="large" on:click={link}>
+          <ion-icon slot="icon-only" name="link" />
+        </ion-button>
+        <AddPlaylistButton {tracks} />
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+{/if}
+<Content>
+  <ion-reorder-group on:ionItemReorder={decide} disabled={false}>
+    {#each tracks as track, index}
+      <ion-item>
+        <ion-reorder slot="start">
+          <ion-icon name="reorder-two" />
+        </ion-reorder>
+        <ion-buttons slot="start">
+          {#if playbackNo === index}
+            <ion-button size="large">
+              <ion-icon slot="icon-only" color="main" name="musical-note" />
+            </ion-button>
+          {:else}
+            <ion-button disabled={!$canPlay} on:click={play(index)}>
+              <ion-icon name="play" />
+            </ion-button>
+          {/if}
+        </ion-buttons>
+        <ion-label>{track.name}</ion-label>
+      </ion-item>
+    {/each}
+  </ion-reorder-group>
+</Content>
