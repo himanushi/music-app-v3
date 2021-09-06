@@ -30,36 +30,42 @@ $: if ($radioQuery?.data && first) {
 }
 </script>
 
-{#if radio}
-  <ion-item-group>
-    <ion-item-divider sticky>
-      <ion-label>Radio</ion-label>
-    </ion-item-divider>
+<ion-item-group>
+  <ion-item-divider sticky>
+    <ion-label>Radio</ion-label>
+  </ion-item-divider>
 
-    <Image src={radio.track?.artworkL.url} />
+  <Image src={radio?.track?.artworkL.url} />
 
-    <ion-item>
+  <ion-item>
+    {#if radio}
       <ion-label class="ion-text-wrap">
         {radio.name}
       </ion-label>
-    </ion-item>
+    {:else}
+      <ion-skeleton-text animated />
+    {/if}
+  </ion-item>
 
-    <ion-item>
+  <ion-item>
+    {#if radio}
       <ion-label class="ion-text-wrap">
         {radio.description}
       </ion-label>
-    </ion-item>
-  </ion-item-group>
-  <ion-item-group>
-    <ion-item-divider sticky>
-      <ion-label>Live</ion-label>
-    </ion-item-divider>
-    {#if accountService && $accountService.matches("authorized")}
-      <LiveButton {id} />
     {:else}
-      <SettingAppleMusicButton
-        message="ラジオを聴くには Apple Music のログインが必須です"
-      />
+      <ion-skeleton-text animated />
     {/if}
-  </ion-item-group>
-{/if}
+  </ion-item>
+</ion-item-group>
+<ion-item-group>
+  <ion-item-divider sticky>
+    <ion-label>Live</ion-label>
+  </ion-item-divider>
+  {#if accountService && $accountService.matches("authorized")}
+    <LiveButton {id} />
+  {:else}
+    <SettingAppleMusicButton
+      message="ラジオを聴くには Apple Music のログインが必須です"
+    />
+  {/if}
+</ion-item-group>

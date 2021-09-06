@@ -62,59 +62,78 @@ $: if ($albumQuery.data && first) {
 }
 </script>
 
-{#if album && album.artworkL.url}
-  <ion-item-group>
-    <ion-item-divider sticky>
-      <ion-label>Album</ion-label>
-    </ion-item-divider>
+<ion-item-group>
+  <ion-item-divider sticky>
+    <ion-label>Album</ion-label>
+  </ion-item-divider>
 
-    <Image src={album.artworkL.url} />
+  <Image src={album?.artworkL?.url} />
 
-    {#if album.status !== "ACTIVE"}
-      <ion-item>
-        Status : {album.status}
-      </ion-item>
-    {/if}
-    <ion-item>
+  <ion-item>
+    {#if album}
       <ion-label class="ion-text-wrap">
         {album.name}
       </ion-label>
-    </ion-item>
-    <ion-item>
+    {:else}
+      <ion-skeleton-text animated />
+    {/if}
+  </ion-item>
+  <ion-item>
+    {#if album}
       <ion-label class="ion-text-wrap">
         {album.copyright}
       </ion-label>
-    </ion-item>
-    <ion-item>
+    {:else}
+      <ion-skeleton-text animated />
+    {/if}
+  </ion-item>
+  <ion-item>
+    {#if album}
       <ion-label class="ion-text-wrap"> 発売日/配信日 </ion-label>
       <ion-note slot="end">
         {convertDate(album.releaseDate)}
       </ion-note>
-    </ion-item>
-    <ion-item>
+    {:else}
+      <ion-skeleton-text animated />
+    {/if}
+  </ion-item>
+  <ion-item>
+    {#if album}
       <ion-label class="ion-text-wrap"> 曲数 </ion-label>
       <ion-note slot="end">
         {album.tracks.length}曲
       </ion-note>
-    </ion-item>
-    <ion-item>
+    {:else}
+      <ion-skeleton-text animated />
+    {/if}
+  </ion-item>
+  <ion-item>
+    {#if album}
       <ion-label class="ion-text-wrap"> 再生時間 </ion-label>
       <ion-note slot="end">
-        {convertTime(toMs(album.tracks))}
+        {album ? convertTime(toMs(album.tracks)) : ""}
       </ion-note>
-    </ion-item>
-    <ion-item>
+    {:else}
+      <ion-skeleton-text animated />
+    {/if}
+  </ion-item>
+  <ion-item>
+    {#if album}
       <ion-buttons slot="end">
         <Favorite type="album" id={album.id} />
         <AddPlaylistButton tracks={album.tracks.map((track) => track)} />
       </ion-buttons>
-    </ion-item>
-  </ion-item-group>
+    {:else}
+      <ion-skeleton-text animated />
+    {/if}
+  </ion-item>
+</ion-item-group>
 
-  <ion-item-group>
-    <ion-item-divider sticky>
-      <ion-label>Music Services</ion-label>
-    </ion-item-divider>
+<ion-item-group>
+  <ion-item-divider sticky>
+    <ion-label>Music Services</ion-label>
+  </ion-item-divider>
+  {#if album}
     {#if album.appleMusicAlbum}
       <AppleMusic id={album.appleMusicAlbum.appleMusicId} />
     {/if}
@@ -125,13 +144,19 @@ $: if ($albumQuery.data && first) {
     <AmazonMusic name={album.name} />
     <YoutubeMusic name={album.name} />
     <LineMusic name={album.name} />
-  </ion-item-group>
+  {:else}
+    <ion-item>
+      <ion-skeleton-text animated />
+    </ion-item>
+  {/if}
+</ion-item-group>
 
-  <ion-item-group>
-    <ion-item-divider sticky>
-      <ion-label>Tracks</ion-label>
-    </ion-item-divider>
+<ion-item-group>
+  <ion-item-divider sticky>
+    <ion-label>Tracks</ion-label>
+  </ion-item-divider>
 
+  {#if album}
     {#each album.tracks as track, index (track.id)}
       <ItemCard
         viewImage={false}
@@ -141,15 +166,23 @@ $: if ($albumQuery.data && first) {
         {index}
       />
     {/each}
-  </ion-item-group>
+  {:else}
+    <ion-item>
+      <ion-skeleton-text animated />
+    </ion-item>
+  {/if}
+</ion-item-group>
 
-  <ion-item-group>
-    <ion-item-divider sticky>
-      <ion-label>Artists</ion-label>
-    </ion-item-divider>
+<ion-item-group>
+  <ion-item-divider sticky>
+    <ion-label>Artists</ion-label>
+  </ion-item-divider>
 
-    {#if variables}
-      <Artists {variables} />
-    {/if}
-  </ion-item-group>
-{/if}
+  {#if variables}
+    <Artists {variables} />
+  {:else}
+    <ion-item>
+      <ion-skeleton-text animated />
+    </ion-item>
+  {/if}
+</ion-item-group>

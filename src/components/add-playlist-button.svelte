@@ -48,9 +48,10 @@ $: me = $query?.data?.me;
   </ion-button>
 {/if}
 
+<!-- 犯人 -->
 <!-- Modal -->
-<span style="display:none;">
+<!-- <span style="display:none;">
   <span bind:this={component}>
     <AddPlaylistSelection />
   </span>
-</span>
+</span> -->

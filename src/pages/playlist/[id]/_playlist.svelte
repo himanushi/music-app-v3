@@ -43,57 +43,81 @@ const hashtags = [
 ];
 </script>
 
-{#if playlist}
-  <ion-item-group>
-    <ion-item-divider sticky>
-      <ion-label>Playlist</ion-label>
-    </ion-item-divider>
+<ion-item-group>
+  <ion-item-divider sticky>
+    <ion-label>Playlist</ion-label>
+  </ion-item-divider>
 
-    <Image src={playlist.track?.artworkL?.url} />
+  <Image src={playlist?.track?.artworkL?.url} />
 
-    <ion-item>
+  <ion-item>
+    {#if playlist}
       <ion-label class="ion-text-wrap">
         {playlist.name}
       </ion-label>
-    </ion-item>
-    <ion-item>
+    {:else}
+      <ion-skeleton-text animated />
+    {/if}
+  </ion-item>
+  <ion-item>
+    {#if playlist}
       <ion-label class="ion-text-wrap">
         {playlist.description}
       </ion-label>
-    </ion-item>
-    {#if playlist.author}
-      <ion-item>
-        <ion-label class="ion-text-wrap"> 作者 </ion-label>
-        <ion-note slot="end">
-          {playlist.author.name}(@{playlist.author.username})
-        </ion-note>
-      </ion-item>
+    {:else}
+      <ion-skeleton-text animated />
     {/if}
+  </ion-item>
+  {#if playlist && playlist.author}
     <ion-item>
+      <ion-label class="ion-text-wrap"> 作者 </ion-label>
+      <ion-note slot="end">
+        {playlist.author.name}(@{playlist.author.username})
+      </ion-note>
+    </ion-item>
+  {/if}
+  <ion-item>
+    {#if playlist}
       <ion-label class="ion-text-wrap"> 曲数 </ion-label>
       <ion-note slot="end">
         {playlist.items.length}曲
       </ion-note>
-    </ion-item>
-    <ion-item>
+    {:else}
+      <ion-skeleton-text animated />
+    {/if}
+  </ion-item>
+  <ion-item>
+    {#if playlist}
       <ion-label class="ion-text-wrap"> 再生時間 </ion-label>
       <ion-note slot="end">
         {convertTime(toMs(playlist.items.map((item) => item.track)))}
       </ion-note>
-    </ion-item>
-    <ion-item>
+    {:else}
+      <ion-skeleton-text animated />
+    {/if}
+  </ion-item>
+  <ion-item>
+    {#if playlist}
       <ion-label class="ion-text-wrap"> 作成日 </ion-label>
       <ion-note slot="end">
         {convertDate(playlist.createdAt)}
       </ion-note>
-    </ion-item>
-    <ion-item>
+    {:else}
+      <ion-skeleton-text animated />
+    {/if}
+  </ion-item>
+  <ion-item>
+    {#if playlist}
       <ion-label class="ion-text-wrap"> 更新日 </ion-label>
       <ion-note slot="end">
         {convertDate(playlist.updatedAt)}
       </ion-note>
-    </ion-item>
-    <ion-item>
+    {:else}
+      <ion-skeleton-text animated />
+    {/if}
+  </ion-item>
+  <ion-item>
+    {#if playlist}
       <ion-buttons slot="end">
         <TwitterButton
           title={playlist.name}
@@ -103,22 +127,32 @@ const hashtags = [
         <Favorite type="playlist" id={playlist.id} />
         <AddPlaylistButton tracks={playlist.items.map((item) => item.track)} />
       </ion-buttons>
-    </ion-item>
-  </ion-item-group>
-  <ion-item-group>
-    <ion-item-divider sticky>
-      <ion-label>Music Services</ion-label>
-    </ion-item-divider>
+    {:else}
+      <ion-skeleton-text animated />
+    {/if}
+  </ion-item>
+</ion-item-group>
+<ion-item-group>
+  <ion-item-divider sticky>
+    <ion-label>Music Services</ion-label>
+  </ion-item-divider>
+  {#if playlist}
     <AddAppleMusicPlaylistButton
       name={playlist.name}
       description={`${location.origin}/playlist/${playlist.id}`}
       tracks={playlist.items.map((it) => it.track)}
     />
-  </ion-item-group>
-  <ion-item-group>
-    <ion-item-divider sticky>
-      <ion-label>Tracks</ion-label>
-    </ion-item-divider>
+  {:else}
+    <ion-item>
+      <ion-skeleton-text animated />
+    </ion-item>
+  {/if}
+</ion-item-group>
+<ion-item-group>
+  <ion-item-divider sticky>
+    <ion-label>Tracks</ion-label>
+  </ion-item-divider>
+  {#if playlist}
     {#each playlist.items as item, index (`${item.id}_${index}`)}
       <ItemCard
         name={playlist.name}
@@ -127,5 +161,9 @@ const hashtags = [
         {index}
       />
     {/each}
-  </ion-item-group>
-{/if}
+  {:else}
+    <ion-item>
+      <ion-skeleton-text animated />
+    </ion-item>
+  {/if}
+</ion-item-group>

@@ -61,8 +61,6 @@ $: if (
   !reported
 ) {
 
-  debugger;
-
   openToast({
     buttons: [
       {

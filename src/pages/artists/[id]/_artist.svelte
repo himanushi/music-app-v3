@@ -51,36 +51,40 @@ $: if ($artistQuery.data && first) {
 }
 </script>
 
-{#if artist}
-  <ion-item-group>
-    <ion-item-divider sticky>
-      <ion-label>Artist</ion-label>
-    </ion-item-divider>
-
-    {#if artist.status !== "ACTIVE"}
-      <ion-item>
-        Status : {artist.status}
-      </ion-item>
-    {/if}
-    <Image src={artist.artworkL?.url} />
-    <ion-item>
+<ion-item-group>
+  <ion-item-divider sticky>
+    <ion-label>Artist</ion-label>
+  </ion-item-divider>
+  <Image src={artist?.artworkL?.url} />
+  <ion-item>
+    {#if artist}
       <ion-label class="ion-text-wrap">
         {artist.name}
       </ion-label>
-    </ion-item>
-    <ion-item>
+    {:else}
+      <ion-skeleton-text animated />
+    {/if}
+  </ion-item>
+  <ion-item>
+    {#if artist}
       <ion-buttons slot="end">
         <Favorite type="artist" id={artist.id} />
       </ion-buttons>
-    </ion-item>
-  </ion-item-group>
-
-  <ion-item-group>
-    <ion-item-divider sticky>
-      <ion-label>Albums</ion-label>
-    </ion-item-divider>
-    {#if variables}
-      <Albums {variables} />
+    {:else}
+      <ion-skeleton-text animated />
     {/if}
-  </ion-item-group>
-{/if}
+  </ion-item>
+</ion-item-group>
+
+<ion-item-group>
+  <ion-item-divider sticky>
+    <ion-label>Albums</ion-label>
+  </ion-item-divider>
+  {#if variables}
+    <Albums {variables} />
+  {:else}
+    <ion-item>
+      <ion-skeleton-text animated />
+    </ion-item>
+  {/if}
+</ion-item-group>

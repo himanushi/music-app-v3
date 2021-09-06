@@ -48,43 +48,67 @@ $: if ($trackQuery.data && first) {
 }
 </script>
 
-{#if track && track.artworkL.url}
-  <ion-item-group>
-    <ion-item-divider>
-      <ion-label>Track</ion-label>
-    </ion-item-divider>
-    <Image src={track.artworkL.url} />
-    <ion-item>
+<ion-item-group>
+  <ion-item-divider>
+    <ion-label>Track</ion-label>
+  </ion-item-divider>
+  <Image src={track?.artworkL.url} />
+  <ion-item>
+    {#if track}
       <ion-label class="ion-text-wrap">
         {track.name}
       </ion-label>
-    </ion-item>
-    <ion-item>
+    {:else}
+      <ion-skeleton-text animated />
+    {/if}
+  </ion-item>
+  <ion-item>
+    {#if track}
       <ion-label class="ion-text-wrap"> 再生時間 </ion-label>
       <ion-note slot="end">
         {convertTime(track.durationMs)}
       </ion-note>
-    </ion-item>
-  </ion-item-group>
+    {:else}
+      <ion-skeleton-text animated />
+    {/if}
+  </ion-item>
+</ion-item-group>
 
-  <ion-item-group>
-    <ion-item-divider>
-      <ion-label>Tracks</ion-label>
-    </ion-item-divider>
+<ion-item-group>
+  <ion-item-divider>
+    <ion-label>Tracks</ion-label>
+  </ion-item-divider>
+  {#if track}
     <ItemCard name={track.name} item={track} items={[track]} index={0} />
-  </ion-item-group>
+  {:else}
+    <ion-item>
+      <ion-skeleton-text animated />
+    </ion-item>
+  {/if}
+</ion-item-group>
 
-  <ion-item-group>
-    <ion-item-divider>
-      <ion-label>Artists</ion-label>
-    </ion-item-divider>
+<ion-item-group>
+  <ion-item-divider>
+    <ion-label>Artists</ion-label>
+  </ion-item-divider>
+  {#if artistsVariables}
     <Artists variables={artistsVariables} />
-  </ion-item-group>
+  {:else}
+    <ion-item>
+      <ion-skeleton-text animated />
+    </ion-item>
+  {/if}
+</ion-item-group>
 
-  <ion-item-group>
-    <ion-item-divider>
-      <ion-label>Albums</ion-label>
-    </ion-item-divider>
+<ion-item-group>
+  <ion-item-divider>
+    <ion-label>Albums</ion-label>
+  </ion-item-divider>
+  {#if albumsVariables}
     <Albums variables={albumsVariables} />
-  </ion-item-group>
-{/if}
+  {:else}
+    <ion-item>
+      <ion-skeleton-text animated />
+    </ion-item>
+  {/if}
+</ion-item-group>
