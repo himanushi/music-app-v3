@@ -2,8 +2,6 @@
 import { ApolloError } from "@apollo/client/core";
 import { goto } from "@roxi/routify";
 import { mutation } from "svelte-apollo";
-import Message from "~/components/toast-messages/message.svelte";
-import { toasts } from "~/components/toasts.svelte";
 import {
   LogoutDocument, MeDocument
 } from "~/graphql/types";
@@ -11,6 +9,7 @@ import type {
   LogoutMutationVariables, LogoutMutation
 } from "~/graphql/types";
 import { errorMessages } from "~/lib/error";
+import { openToast } from "~/lib/ionic";
 
 let messages: Record<string, string[]> = {};
 
@@ -26,13 +25,10 @@ const logout = async () => {
       variables: { input: {} }
     });
 
-    toasts.open({
-      closeMs: 3000,
-      component: Message,
-      props: {
-        text: "ログアウトしました",
-        type: "success"
-      }
+    openToast({
+      color: "green",
+      duration: 3000,
+      message: "ログアウトしました"
     });
 
     $goto("/me");

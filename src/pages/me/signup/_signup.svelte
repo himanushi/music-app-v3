@@ -7,8 +7,6 @@ import InputCheckbox from "~/components/input-checkbox.svelte";
 import InputText from "~/components/input-item.svelte";
 import Messages from "~/components/messages.svelte";
 import RecaptchaV2 from "~/components/recaptcha-v2.svelte";
-import Message from "~/components/toast-messages/message.svelte";
-import { toasts } from "~/components/toasts.svelte";
 import {
   SignupDocument, MeDocument
 } from "~/graphql/types";
@@ -16,6 +14,7 @@ import type {
   SignupMutationVariables, SignupMutation
 } from "~/graphql/types";
 import { errorMessages } from "~/lib/error";
+import { openToast } from "~/lib/ionic";
 
 let name: string;
 let username: string;
@@ -42,13 +41,10 @@ const signup = async () => {
       } }
     });
 
-    toasts.open({
-      closeMs: 8000,
-      component: Message,
-      props: {
-        text: "登録しました。音楽を楽しみましょう！",
-        type: "success"
-      }
+    openToast({
+      color: "green",
+      duration: 8000,
+      message: "登録しました。音楽を楽しみましょう！"
     });
 
     $goto("/");

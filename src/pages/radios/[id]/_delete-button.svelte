@@ -5,8 +5,6 @@ import type { Props } from "~/components/confirm.svelte";
 import Confirm from "~/components/confirm.svelte";
 import IconButton from "~/components/icon-button.svelte";
 import { modals } from "~/components/modals.svelte";
-import Message from "~/components/toast-messages/message.svelte";
-import { toasts } from "~/components/toasts.svelte";
 import type {
   Playlist,
   DeleteRadioMutation,
@@ -14,6 +12,7 @@ import type {
 } from "~/graphql/types";
 import { DeleteRadioDocument } from "~/graphql/types";
 import Trash from "~/icons/trash.svelte";
+import { openToast } from "~/lib/ionic";
 import {
   isAllowed, meQuery
 } from "~/lib/me";
@@ -40,13 +39,10 @@ const remove = () => {
           const result = await deleteRadio({ variables: { input: { radioId: id } } });
           const playlist = result?.data?.deleteRadio?.playlist as Playlist;
 
-          toasts.open({
-            closeMs: 5000,
-            component: Message,
-            props: {
-              text: "ラジオを削除しました",
-              type: "success"
-            }
+          openToast({
+            color: "green",
+            duration: 5000,
+            message: "ラジオを削除しました"
           });
 
           modals.close();
@@ -54,13 +50,10 @@ const remove = () => {
 
         } catch (error) {
 
-          toasts.open({
-            closeMs: 5000,
-            component: Message,
-            props: {
-              text: "エラーが発生しました",
-              type: "error"
-            }
+          openToast({
+            color: "red",
+            duration: 5000,
+            message: "エラーが発生しました"
           });
 
           modals.close();

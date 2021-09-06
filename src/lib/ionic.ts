@@ -55,7 +55,21 @@ export const closeSidebar = () => {
 
 export const openToast = async (props: ToastOptions) => {
 
-  const toast = await toastController.create(props);
+  const defaultProps: ToastOptions = {
+    buttons: [
+      {
+        handler: () => true,
+        text: "OK"
+      }
+    ],
+    cssClass: "tabs-bottom",
+    position: "bottom"
+  };
+
+  const toast = await toastController.create({
+    ...defaultProps,
+    ...props
+  });
   await toast.present();
 
 };

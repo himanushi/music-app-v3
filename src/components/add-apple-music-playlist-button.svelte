@@ -1,9 +1,7 @@
 <script lang="ts">
 import SettingAppleMusicButton from "./setting-apple-music-button.svelte";
-import InfoMessage from "~/components/info-message.svelte";
-import Message from "~/components/toast-messages/message.svelte";
-import { toasts } from "~/components/toasts.svelte";
 import type { Track } from "~/graphql/types";
+import { openToast } from "~/lib/ionic";
 import { accountService } from "~/machines/apple-music-account-machine";
 import { service } from "~/machines/apple-music-create-playlist";
 
@@ -27,26 +25,20 @@ const addPlaylist = () => {
 
 $: if ($service.matches("done")) {
 
-  toasts.open({
-    closeMs: 5000,
-    component: Message,
-    props: {
-      text: "Apple Music にプレイリストを追加しました。",
-      type: "success"
-    }
+  openToast({
+    color: "green",
+    duration: 5000,
+    message: "Apple Music にプレイリストを追加しました。"
   });
 
   disabled = false;
 
 } else if ($service.matches("error")) {
 
-  toasts.open({
-    closeMs: 5000,
-    component: Message,
-    props: {
-      text: "エラーが発生しました。",
-      type: "error"
-    }
+  openToast({
+    color: "red",
+    duration: 5000,
+    message: "エラーが発生しました。"
   });
 
   disabled = false;

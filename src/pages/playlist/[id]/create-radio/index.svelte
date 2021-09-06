@@ -5,8 +5,6 @@ import { mutation } from "svelte-apollo";
 import Button from "~/components/button.svelte";
 import InputCheckbox from "~/components/input-checkbox.svelte";
 import Separate from "~/components/separate.svelte";
-import Message from "~/components/toast-messages/message.svelte";
-import { toasts } from "~/components/toasts.svelte";
 import { CreateRadioDocument } from "~/graphql/types";
 import type {
   Radio,
@@ -14,6 +12,7 @@ import type {
   CreateRadioMutation
 } from "~/graphql/types";
 import { errorMessages } from "~/lib/error";
+import { openToast } from "~/lib/ionic";
 
 export let id: string;
 let random = false;
@@ -38,13 +37,10 @@ const live = async () => {
 
     const radio = result?.data?.createRadio?.radio as Radio;
 
-    toasts.open({
-      closeMs: 3000,
-      component: Message,
-      props: {
-        text: "ラジオの放送を開始しました",
-        type: "success"
-      }
+    openToast({
+      color: "green",
+      duration: 3000,
+      message: "ラジオの放送を開始しました"
     });
 
     $goto("/radios/:id", { id: radio.id });

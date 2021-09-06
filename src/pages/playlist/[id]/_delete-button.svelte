@@ -14,6 +14,7 @@ import type {
 } from "~/graphql/types";
 import { DeletePlaylistDocument } from "~/graphql/types";
 import Trash from "~/icons/trash.svelte";
+import { openToast } from "~/lib/ionic";
 import {
   isAllowed, meQuery
 } from "~/lib/me";
@@ -39,24 +40,18 @@ const remove = () => {
 
           await deletePlaylist({ variables: { input: { playlistId: id } } });
 
-          toasts.open({
-            closeMs: 5000,
-            component: Message,
-            props: {
-              text: "プレイリストを削除しました",
-              type: "success"
-            }
+          openToast({
+            color: "green",
+            duration: 5000,
+            message: "プレイリストを削除しました"
           });
 
         } catch (error) {
 
-          toasts.open({
-            closeMs: 5000,
-            component: Message,
-            props: {
-              text: "エラーが発生しました",
-              type: "error"
-            }
+          openToast({
+            color: "red",
+            duration: 5000,
+            message: "エラーが発生しました"
           });
 
         }

@@ -62,16 +62,9 @@ $: if (
 ) {
 
   openToast({
-    buttons: [
-      {
-        handler: () => true,
-        text: "OK"
-      }
-    ],
     color: "blue",
     duration: 5000,
-    message: "一致する検索結果はありませんでした",
-    position: "middle"
+    message: "一致する検索結果はありませんでした"
   });
 
   reported = true;

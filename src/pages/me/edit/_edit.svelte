@@ -3,8 +3,6 @@ import { ApolloError } from "@apollo/client/core";
 import { goto } from "@roxi/routify";
 import { mutation } from "svelte-apollo";
 import InputText from "~/components/input-item.svelte";
-import Message from "~/components/toast-messages/message.svelte";
-import { toasts } from "~/components/toasts.svelte";
 import {
   UpdateMeDocument, MeDocument
 } from "~/graphql/types";
@@ -13,6 +11,7 @@ import type {
   UpdateMeMutation
 } from "~/graphql/types";
 import { errorMessages } from "~/lib/error";
+import { openToast } from "~/lib/ionic";
 
 export let name: string;
 let currentPassword: string;
@@ -37,13 +36,10 @@ const signup = async () => {
       } }
     });
 
-    toasts.open({
-      closeMs: 3000,
-      component: Message,
-      props: {
-        text: "更新しました",
-        type: "success"
-      }
+    openToast({
+      color: "green",
+      duration: 3000,
+      message: "更新しました"
     });
 
     $goto("/me");
