@@ -6,7 +6,6 @@ import SearchDetailButton from "~/components/search-detail-button.svelte";
 import {
   isAllowed, meQuery
 } from "~/lib/me";
-import Content from "~/pages/_content.svelte";
 
 const query = meQuery();
 $: me = $query?.data?.me;
@@ -14,14 +13,12 @@ $: me = $query?.data?.me;
 let modal: HTMLElement;
 </script>
 
-<Content>
-  {#if me && isAllowed(me, "albums")}
-    <ion-list>
-      <Albums params={$params} />
-    </ion-list>
-    <SearchDetailButton component={modal} />
-  {/if}
-</Content>
+{#if me && isAllowed(me, "albums")}
+  <ion-list>
+    <Albums params={$params} />
+  </ion-list>
+  <SearchDetailButton component={modal} />
+{/if}
 
 <!-- Modal -->
 <span style="display:none">

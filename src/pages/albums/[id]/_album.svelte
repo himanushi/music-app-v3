@@ -32,7 +32,8 @@ const albumQuery = query<AlbumQuery>(AlbumDocument, {
 let album: Album | undefined;
 let variables: ArtistsQueryVariables | undefined;
 
-$: if ($albumQuery.data) {
+let first = true;
+$: if ($albumQuery.data && first) {
 
   album = $albumQuery.data.album as Album;
   let status: StatusEnum[] = ["ACTIVE"];
@@ -55,6 +56,8 @@ $: if ($albumQuery.data) {
       type: "DESC"
     }
   };
+
+  first = false;
 
 }
 </script>

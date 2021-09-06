@@ -1,6 +1,9 @@
 import {
-  modalController, popoverController
+  modalController,
+  popoverController,
+  toastController
 } from "@ionic/core";
+import type { ToastOptions } from "@ionic/core";
 
 export const openMenu = (name: string) => async (event: any) => {
 
@@ -47,5 +50,12 @@ export const closeSidebar = () => {
     sidebar.close();
 
   }
+
+};
+
+export const openToast = async (props: ToastOptions) => {
+
+  const toast = await toastController.create(props);
+  await toast.present();
 
 };

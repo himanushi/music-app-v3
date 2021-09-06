@@ -9,7 +9,6 @@ import client from "~/graphql/client";
 import {
   isAllowed, meQuery
 } from "~/lib/me";
-import Content from "~/pages/_content.svelte";
 
 $: tggle = true;
 const render = () => {
@@ -29,16 +28,14 @@ $: me = $query?.data?.me;
 let component: HTMLElement;
 </script>
 
-<Content>
-  {#if me && isAllowed(me, "playlists")}
-    {#key tggle}
-      <ion-list>
-        <Playlists params={$params} />
-      </ion-list>
-    {/key}
-    <SearchDetailButton {component} />
-  {/if}
-</Content>
+{#if me && isAllowed(me, "playlists")}
+  {#key tggle}
+    <ion-list>
+      <Playlists params={$params} />
+    </ion-list>
+  {/key}
+  <SearchDetailButton {component} />
+{/if}
 
 <!-- Modal -->
 <span style="display:none">

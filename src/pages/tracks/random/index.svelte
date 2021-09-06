@@ -5,7 +5,6 @@ import client from "~/graphql/client";
 import {
   isAllowed, meQuery
 } from "~/lib/me";
-import Content from "~/pages/_content.svelte";
 
 $: tggle = true;
 const render = () => {
@@ -23,10 +22,8 @@ const query = meQuery();
 $: me = $query?.data?.me;
 </script>
 
-<Content>
-  {#if me && isAllowed(me, "tracks")}
-    {#key tggle}
-      <Random />
-    {/key}
-  {/if}
-</Content>
+{#if me && isAllowed(me, "tracks")}
+  {#key tggle}
+    <Random />
+  {/key}
+{/if}

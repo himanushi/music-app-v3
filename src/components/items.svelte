@@ -4,9 +4,8 @@ import {
   onMount, onDestroy
 } from "svelte";
 import { interpret } from "xstate";
-import Message from "./toast-messages/message.svelte";
-import { toasts } from "./toasts.svelte";
 import type { ParameterPrefix } from "~/lib/build-parameters";
+import { openToast } from "~/lib/ionic";
 import { itemsMachine } from "~/machines/items-machine";
 
 export let type: ParameterPrefix;
@@ -57,17 +56,24 @@ let reported = false;
 $: if (
   service &&
   $service.matches("active") &&
+  !$service.context.hasNext &&
   items.length === 0 &&
   !reported
 ) {
 
-  toasts.open({
-    closeMs: 5000,
-    component: Message,
-    props: {
-      text: "一致する検索結果はありませんでした",
-      type: "info"
-    }
+  debugger;
+
+  openToast({
+    buttons: [
+      {
+        handler: () => true,
+        text: "OK"
+      }
+    ],
+    color: "blue",
+    duration: 5000,
+    message: "一致する検索結果はありませんでした",
+    position: "middle"
   });
 
   reported = true;

@@ -1,6 +1,7 @@
 <script lang="ts">
 import { setClient } from "svelte-apollo";
 import ChangePage from "./_change-page.svelte";
+import Content from "./_content.svelte";
 import Footer from "./_footer.svelte";
 import Header from "./_header.svelte";
 import Sidebar from "./_sidebar.svelte";
@@ -13,7 +14,9 @@ setClient(client);
 
 <Initializer />
 <Header />
-<slot />
+<Content>
+  <slot />
+</Content>
 <ChangePage />
 <Footer />
 <Sidebar />

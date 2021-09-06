@@ -21,30 +21,31 @@ const trackQuery = query<TrackQuery>(TrackDocument, {
 });
 
 let track: Track | undefined;
+let artistsVariables: ArtistsQueryVariables;
+let albumsVariables: AlbumsQueryVariables;
 
-$: if ($trackQuery.data) {
+let first = true;
+$: if ($trackQuery.data && first) {
 
   track = $trackQuery.data.track as Track;
+  artistsVariables = {
+    conditions: { tracks: { id: [id] } },
+    sort: {
+      order: "POPULARITY",
+      type: "DESC"
+    }
+  };
+  albumsVariables = {
+    conditions: { tracks: { id: [id] } },
+    sort: {
+      order: "NEW",
+      type: "DESC"
+    }
+  };
+
+  first = false;
 
 }
-
-let artistsVariables: ArtistsQueryVariables;
-$: artistsVariables = {
-  conditions: { tracks: { id: [id] } },
-  sort: {
-    order: "POPULARITY",
-    type: "DESC"
-  }
-};
-
-let albumsVariables: AlbumsQueryVariables;
-$: albumsVariables = {
-  conditions: { tracks: { id: [id] } },
-  sort: {
-    order: "NEW",
-    type: "DESC"
-  }
-};
 </script>
 
 {#if track && track.artworkL.url}

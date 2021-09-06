@@ -21,7 +21,8 @@ const artistQuery = query<ArtistQuery>(ArtistDocument, {
 let artist: Artist | undefined;
 let variables: AlbumsQueryVariables | undefined;
 
-$: if ($artistQuery.data) {
+let first = true;
+$: if ($artistQuery.data && first) {
 
   artist = $artistQuery.data.artist as Artist;
   let status: StatusEnum[] = ["ACTIVE"];
@@ -44,6 +45,8 @@ $: if ($artistQuery.data) {
       type: "DESC"
     }
   };
+
+  first = false;
 
 }
 </script>

@@ -28,10 +28,12 @@ $: playlistQuery = query<PlaylistQuery>(PlaylistDocument, {
 let playlist: Playlist | undefined;
 let isMyPlaylist = false;
 
-$: if ($playlistQuery.data) {
+let first = true;
+$: if ($playlistQuery.data && first) {
 
   playlist = $playlistQuery.data.playlist as Playlist;
   isMyPlaylist = playlist?.isMine || false;
+  first = false;
 
 }
 
