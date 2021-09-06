@@ -2,11 +2,11 @@
 import PlayerController from "./player-controller.svelte";
 import SeekBar from "./seek-bar.svelte";
 import TrackInfo from "./track-info.svelte";
-import Content from "~/pages/_content.svelte";
+import Modal from "~/pages/_modal.svelte";
 </script>
 
-<Content>
+<Modal>
   <TrackInfo />
   <PlayerController />
   <SeekBar />
-</Content>
+</Modal>
