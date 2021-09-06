@@ -10,20 +10,7 @@ import { googleAnalyticsId } from "~/lib/variable";
 import { currentPath } from "~/store/history";
 import { scrollLock } from "~/store/scroll-lock";
 
-const content: HTMLElement | null = document.querySelector(
-  "ion-app>ion-content"
-);
-let scrollContent: HTMLElement | null;
-
-$: if (content) {
-
-  content.getScrollElement().then((element) => {
-
-    scrollContent = element;
-
-  });
-
-}
+export let scrollElement: HTMLElement | null;
 
 $beforeUrlChange(() => {
 
@@ -34,9 +21,9 @@ $beforeUrlChange(() => {
 
   }
 
-  if (scrollContent) {
+  if (scrollElement) {
 
-    scrollLock.update($currentPath, scrollContent.scrollTop);
+    scrollLock.update($currentPath, scrollElement.scrollTop);
 
   }
 
@@ -46,9 +33,9 @@ $beforeUrlChange(() => {
 
 $afterPageLoad(() => {
 
-  if (scrollContent) {
+  if (scrollElement) {
 
-    scrollContent.scrollTop = $scrollLock[window.location.href] || 0;
+    scrollElement.scrollTop = $scrollLock[window.location.href] || 0;
     currentPath.set(window.location.href);
 
   }
