@@ -1,16 +1,7 @@
 <script lang="ts">
 import { goto } from "@roxi/routify";
-import IconButton from "../icon-button.svelte";
-import { modals } from "../modals.svelte";
 import AddPlaylistButton from "~/components/add-playlist-button.svelte";
-import DndSelection from "~/components/dnd-selection.svelte";
-import type { ItemsType } from "~/components/dnd-selection.svelte";
 import { canPlay } from "~/components/play-button.svelte";
-import Text from "~/components/text.svelte";
-import type { Track } from "~/graphql/types";
-import Link from "~/icons/link.svelte";
-import MusicNote from "~/icons/music-note.svelte";
-import Play from "~/icons/play.svelte";
 import { closeModal } from "~/lib/ionic";
 import { playerService } from "~/machines/jukebox-machine";
 import Content from "~/pages/_content.svelte";
@@ -24,11 +15,6 @@ const decide = (
   }
 ) => {
 
-  console.log({
-    from: event.detail.from,
-    playbackNo,
-    to: event.detail.to
-  });
   playerService.send({
     from: event.detail.from,
     to: event.detail.to,
@@ -50,16 +36,14 @@ const play = (currentPlaybackNo: number) => () => {
 
 };
 
-const remove = (
-  event: CustomEvent & {
-    detail: { index: number };
-  }
-) => {
+const remove = (index: number) => () => {
 
   playerService.send({
-    removeIndex: event.detail.index,
+    removeIndex: index,
     type: "REMOVE"
   });
+
+  tracks = tracks.filter((_, idx) => idx !== index);
 
 };
 
@@ -101,12 +85,21 @@ const link = () => {
               <ion-icon slot="icon-only" color="main" name="musical-note" />
             </ion-button>
           {:else}
-            <ion-button disabled={!$canPlay} on:click={play(index)}>
-              <ion-icon name="play" />
+            <ion-button
+              size="large"
+              disabled={!$canPlay}
+              on:click={play(index)}
+            >
+              <ion-icon slot="icon-only" name="play" />
             </ion-button>
           {/if}
         </ion-buttons>
         <ion-label>{track.name}</ion-label>
+        <ion-buttons slot="end">
+          <ion-button on:click={remove(index)}>
+            <ion-icon name="trash-outline" color="red" />
+          </ion-button>
+        </ion-buttons>
       </ion-item>
     {/each}
   </ion-reorder-group>

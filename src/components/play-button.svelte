@@ -25,9 +25,7 @@ export const canPlay = createCanPlay();
 </script>
 
 <script lang="ts">
-import IconButton from "./icon-button.svelte";
 import type { Track } from "~/graphql/types";
-import Play from "~/icons/play.svelte";
 import { playerService } from "~/machines/jukebox-machine";
 
 export let name: string;

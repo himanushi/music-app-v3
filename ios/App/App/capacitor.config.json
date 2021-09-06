@@ -2,5 +2,8 @@
 	"appId": "io.ionic.starter",
 	"appName": "music-app",
 	"bundledWebRuntime": false,
-	"webDir": "build"
+	"webDir": "build",
+	"server": {
+		"url": "http://localhost:8080"
+	}
 }
