@@ -7,7 +7,6 @@ import { interpret } from "xstate";
 import Message from "./toast-messages/message.svelte";
 import { toasts } from "./toasts.svelte";
 import Waypoint from "~/components/waypoint.svelte";
-import Loading from "~/icons/loading.svelte";
 import type { ParameterPrefix } from "~/lib/build-parameters";
 import { itemsMachine } from "~/machines/items-machine";
 
@@ -84,7 +83,9 @@ const elementScroll: HTMLElement = window as unknown as HTMLElement;
 {/each}
 
 {#if service && !$service.matches("active")}
-  <Loading />
+  <ion-item lines="none">
+    <ion-skeleton-text animated />
+  </ion-item>
 {/if}
 
 <Waypoint
