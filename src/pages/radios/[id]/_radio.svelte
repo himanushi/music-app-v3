@@ -20,10 +20,12 @@ const radioQuery = query<RadioQuery>(RadioDocument, {
 let radio: Radio;
 let isMine = false;
 
-$: if ($radioQuery?.data) {
+let first = true;
+$: if ($radioQuery?.data && first) {
 
   radio = $radioQuery?.data.radio as Radio;
   isMine = Boolean(radio.isMine);
+  first = false;
 
 }
 </script>
