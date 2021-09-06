@@ -4,7 +4,6 @@ import { twitterAccount } from "~/lib/variable";
 import {
   currentVersion, reset
 } from "~/lib/version";
-import Content from "~/pages/_content.svelte";
 
 const version = currentVersion() || "";
 
@@ -32,10 +31,8 @@ ${version}
 `);
 </script>
 
-<Content>
-  <div class="ion-padding">
-    {@html html}
-  </div>
+<div class="ion-padding">
+  {@html html}
+</div>
 
-  <ion-button color="green" on:click={reset}>リセット</ion-button>
-</Content>
+<ion-button color="green" on:click={reset}>リセット</ion-button>

@@ -1,7 +1,6 @@
 <script lang="ts">
 import { markdown } from "~/lib/markdown";
 import { title } from "~/lib/variable";
-import Content from "~/pages/_content.svelte";
 
 const html = markdown(`
 # クッキーポリシー
@@ -35,8 +34,6 @@ Google Analytics により収集、記録、分析された情報には、特定
 `);
 </script>
 
-<Content>
-  <div class="ion-padding">
-    {@html html}
-  </div>
-</Content>
+<div class="ion-padding">
+  {@html html}
+</div>
