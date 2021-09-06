@@ -6,7 +6,6 @@ import {
 import { interpret } from "xstate";
 import Message from "./toast-messages/message.svelte";
 import { toasts } from "./toasts.svelte";
-import Waypoint from "~/components/waypoint.svelte";
 import type { ParameterPrefix } from "~/lib/build-parameters";
 import { itemsMachine } from "~/machines/items-machine";
 
@@ -75,21 +74,31 @@ $: if (
 
 }
 
-const elementScroll: HTMLElement = window as unknown as HTMLElement;
+let target: EventTarget | null = null;
+const ionInfinite = (event: Event) => {
+
+  service.send("FETCH_MORE");
+  // eslint-disable-next-line prefer-destructuring
+  target = event.target;
+
+};
+$: if (service && $service.matches("active") && target) {
+
+  target.complete();
+  if (!$service.context.hasNext) {
+
+    target.disabled = true;
+
+  }
+  target = null;
+
+}
 </script>
 
 {#each items as item, index (`${item.id}_${index}`)}
   <slot {items} {item} {index} />
 {/each}
 
-{#if service && !$service.matches("active")}
-  <ion-item lines="none">
-    <ion-skeleton-text animated />
-  </ion-item>
-{/if}
-
-<Waypoint
-  threshold={100}
-  {elementScroll}
-  on:loadMore={() => service.send("FETCH_MORE")}
-/>
+<ion-infinite-scroll on:ionInfinite={ionInfinite} threshold="100px">
+  <ion-infinite-scroll-content loading-spinner="lines" />
+</ion-infinite-scroll>

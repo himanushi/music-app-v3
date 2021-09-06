@@ -11,7 +11,7 @@ import Content from "~/pages/_content.svelte";
 const query = meQuery();
 $: me = $query?.data?.me;
 
-let component: HTMLElement;
+let modal: HTMLElement;
 </script>
 
 <Content>
@@ -19,13 +19,13 @@ let component: HTMLElement;
     <ion-list>
       <Albums params={$params} />
     </ion-list>
-    <SearchDetailButton {component} />
+    <SearchDetailButton component={modal} />
   {/if}
 </Content>
 
 <!-- Modal -->
 <span style="display:none">
-  <span bind:this={component}>
+  <span bind:this={modal}>
     <SearchDetail />
   </span>
 </span>

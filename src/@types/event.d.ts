@@ -3,3 +3,8 @@ interface Event {
   request: any;
   respondWith: any;
 }
+
+interface EventTarget {
+  disabled: boolean;
+  complete: Function;
+}
