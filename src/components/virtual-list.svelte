@@ -3,8 +3,12 @@ import {
   onDestroy, onMount
 } from "svelte";
 import { scrollElement } from "~/store/scroll-element";
+import { initItems } from "~/store/virtual-list";
 
+export let id: string;
 export let items: any[];
+
+const key = `${id}:${window.location.href}`;
 
 let start: number | undefined = undefined;
 let end: number = 0;
@@ -13,9 +17,13 @@ let itemHeight: number = 0;
 let listElement: HTMLElement;
 let viewItems: any[] = [];
 
-$: if (start === undefined) {
+$: if (start === undefined && $initItems[key] === undefined) {
 
   viewItems = items;
+
+} else if (start === undefined && $initItems[key]) {
+
+  viewItems = items.slice($initItems[key].start, $initItems[key].end);
 
 } else {
 
@@ -83,19 +91,38 @@ const render = () => {
       listElement.style.paddingTop = `${listHeight}px`;
       start = 0;
       end = 0;
+      initItems.update(key, start, end);
 
     } else {
 
       // list が content 内にあるため一部表示
+
+      const paddingCount = 5;
 
       const viewTop = contentTop < listTop ? listTop : contentTop;
       const viewBottom =
         contentBottom > listBottom ? listBottom : contentBottom;
       const viewHeight = viewBottom - viewTop;
 
+      let paddingTop = 0;
       if (contentTop > listTop) {
 
+        const prevStart = start;
         start = Math.floor((contentTop - listTop) / itemHeight);
+        if (prevStart && prevStart > start) {
+
+          // 戻る場合
+          console.log("もどる");
+          start -= 1;
+          paddingTop = itemHeight * (start + 2);
+
+        } else {
+
+          // 進む場合
+          console.log("進む");
+          paddingTop = itemHeight * start;
+
+        }
 
       } else {
 
@@ -103,9 +130,10 @@ const render = () => {
 
       }
 
-      end = start + Math.floor(viewHeight / itemHeight) + 5;
+      end = start + Math.floor(viewHeight / itemHeight) + paddingCount;
 
-      const paddingTop = start * itemHeight;
+      initItems.update(key, start, end);
+
       const paddingBottom = (items.length - end) * itemHeight;
       listElement.style.paddingTop = `${paddingTop}px`;
       listElement.style.paddingBottom = `${paddingBottom}px`;

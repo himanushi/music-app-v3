@@ -31,7 +31,7 @@ let component: HTMLElement;
 {#if me && isAllowed(me, "playlists")}
   {#key tggle}
     <ion-list>
-      <Playlists params={$params} />
+      <Playlists id="playlists" params={$params} />
     </ion-list>
   {/key}
   <SearchDetailButton {component} />

@@ -9,6 +9,7 @@ import type { ParameterPrefix } from "~/lib/build-parameters";
 import { openToast } from "~/lib/ionic";
 import { itemsMachine } from "~/machines/items-machine";
 
+export let id: string;
 export let type: ParameterPrefix;
 export let document: DocumentNode;
 export let params: { [key: string]: any } | undefined = undefined;
@@ -97,7 +98,7 @@ $: if (service && $service.matches("active") && target) {
   <slot {items} {item} {index} />
 {/each} -->
 
-<VirtualList {items} let:item let:index>
+<VirtualList {id} {items} let:item let:index>
   <slot {items} {item} {index} />
 </VirtualList>
 

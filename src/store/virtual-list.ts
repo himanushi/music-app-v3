@@ -1,3 +1,33 @@
 import { writable } from "svelte/store";
 
-export const initStart = writable<Record<string, number>>({});
+type startType = {
+  [key: string]: { start: number; end: number };
+};
+
+const createInitItems = () => {
+
+  const {
+    subscribe, update
+  } = writable<startType>({});
+
+  return {
+    subscribe,
+    update: (id: string, start: number, end: number) => {
+
+      update((object) => {
+
+        object[id] = {
+          end,
+          start
+        };
+
+        return object;
+
+      });
+
+    }
+  };
+
+};
+
+export const initItems = createInitItems();

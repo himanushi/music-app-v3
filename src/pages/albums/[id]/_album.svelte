@@ -179,7 +179,7 @@ $: if ($albumQuery.data && first) {
   </ion-item-divider>
 
   {#if variables}
-    <Artists {variables} />
+    <Artists id="album-artists" {variables} />
   {:else}
     <ion-item>
       <ion-skeleton-text animated />

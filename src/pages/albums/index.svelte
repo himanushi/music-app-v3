@@ -15,7 +15,7 @@ let modal: HTMLElement;
 
 {#if me && isAllowed(me, "albums")}
   <ion-list>
-    <Albums params={$params} />
+    <Albums id="albums" params={$params} />
   </ion-list>
   <SearchDetailButton component={modal} />
 {/if}

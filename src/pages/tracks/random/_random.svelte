@@ -43,6 +43,7 @@ const setTracks = (ts: Track[]) => {
   </ion-item-divider>
 
   <Items
+    id="random-tracks"
     {variables}
     type="track"
     document={TracksDocument}

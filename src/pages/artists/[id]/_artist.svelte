@@ -81,7 +81,7 @@ $: if ($artistQuery.data && first) {
     <ion-label>Albums</ion-label>
   </ion-item-divider>
   {#if variables}
-    <Albums {variables} />
+    <Albums id="artist-albums" {variables} />
   {:else}
     <ion-item>
       <ion-skeleton-text animated />

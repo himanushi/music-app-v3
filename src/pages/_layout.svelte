@@ -12,7 +12,7 @@ setClient(client);
 </script>
 
 <Initializer />
-<Header />
+<!-- <Header /> -->
 <Content>
   <slot />
 </Content>

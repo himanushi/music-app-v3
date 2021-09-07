@@ -30,7 +30,7 @@ let component: HTMLElement;
 {#if me && isAllowed(me, "radios")}
   {#key tggle}
     <ion-list>
-      <Radios params={$params} />
+      <Radios id="radios" params={$params} />
     </ion-list>
   {/key}
   <SearchDetailButton {component} />
