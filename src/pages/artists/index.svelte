@@ -15,7 +15,7 @@ let component: HTMLElement;
 
 {#if me && isAllowed(me, "artists")}
   <ion-list>
-    <Artists id="artists" params={$params} />
+    <Artists params={$params} />
   </ion-list>
   <SearchDetailButton {component} />
 {/if}

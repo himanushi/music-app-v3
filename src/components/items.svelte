@@ -4,12 +4,10 @@ import {
   onMount, onDestroy
 } from "svelte";
 import { interpret } from "xstate";
-import VirtualList from "./virtual-list.svelte";
 import type { ParameterPrefix } from "~/lib/build-parameters";
 import { openToast } from "~/lib/ionic";
 import { itemsMachine } from "~/machines/items-machine";
 
-export let id: string;
 export let type: ParameterPrefix;
 export let document: DocumentNode;
 export let params: { [key: string]: any } | undefined = undefined;
@@ -94,13 +92,9 @@ $: if (service && $service.matches("active") && target) {
 }
 </script>
 
-<!-- {#each items as item, index (`${item.id}_${index}`)}
+{#each items as item, index (`${item.id}_${index}`)}
   <slot {items} {item} {index} />
-{/each} -->
-
-<VirtualList {id} {items} let:item let:index>
-  <slot {items} {item} {index} />
-</VirtualList>
+{/each}
 
 <ion-infinite-scroll on:ionInfinite={ionInfinite} threshold="100px">
   <ion-infinite-scroll-content loading-spinner="lines" />

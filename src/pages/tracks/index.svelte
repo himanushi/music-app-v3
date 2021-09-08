@@ -32,7 +32,7 @@ let component: HTMLElement;
 {#if me && isAllowed(me, "tracks")}
   {#if canSearch}
     <ion-list>
-      <Tracks id="tracks" params={$params} />
+      <Tracks params={$params} />
     </ion-list>
   {/if}
   <SearchDetailButton {component} />

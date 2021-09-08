@@ -92,7 +92,7 @@ $: if ($trackQuery.data && first) {
     <ion-label>Artists</ion-label>
   </ion-item-divider>
   {#if artistsVariables}
-    <Artists id="track-artists" variables={artistsVariables} />
+    <Artists variables={artistsVariables} />
   {:else}
     <ion-item>
       <ion-skeleton-text animated />
@@ -105,7 +105,7 @@ $: if ($trackQuery.data && first) {
     <ion-label>Albums</ion-label>
   </ion-item-divider>
   {#if albumsVariables}
-    <Albums id="track-albums" variables={albumsVariables} />
+    <Albums variables={albumsVariables} />
   {:else}
     <ion-item>
       <ion-skeleton-text animated />
