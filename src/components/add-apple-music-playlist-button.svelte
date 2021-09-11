@@ -54,6 +54,6 @@ $: if ($service.matches("done")) {
   </ion-item>
 {:else}
   <SettingAppleMusicButton
-    message="Apple Music にプレイリストに追加するには Apple Music のログインが必須です"
+    message="Apple Music にプレイリストを追加するには Apple Music のログインが必須です"
   />
 {/if}
