@@ -1,6 +1,7 @@
 <script lang="ts">
 import { fly } from "svelte/transition";
 import { modals } from "~/components/modals.svelte";
+import { canPlay } from "~/components/play-button.svelte";
 import Player, { openPlayer } from "~/components/player.svelte";
 import SquareImage from "~/components/square-image.svelte";
 import { openModal } from "~/lib/ionic";
@@ -42,15 +43,11 @@ const live = () => {
 
 };
 
-let playerComponent: HTMLElement;
-
 const showPlayer = () => {
 
   openPlayer();
 
 };
-
-const goBack = () => window.history.go(-1);
 </script>
 
 <ion-footer
@@ -62,23 +59,29 @@ const goBack = () => window.history.go(-1);
   }}
 >
   <ion-toolbar color="main">
-    {#if track}
+    {#if track && player}
       {#key track.id}
         <ion-thumbnail on:click={showPlayer} slot="start">
           <SquareImage src={track.artworkM.url} />
         </ion-thumbnail>
-        <ion-title button>{track.name}</ion-title>
+        <ion-title on:click={showPlayer}>{track.name}</ion-title>
         <ion-buttons slot="end">
-          <ion-button>
-            <ion-icon name="play" />
+          <ion-button {disabled} on:click={play_or_pause}>
+            {#if $player.value === "playing"}
+              <ion-icon name="pause" />
+            {:else if $player.value === "loading" || $player.value === "playerSelecting"}
+              <ion-icon name="sync" />
+            {:else}
+              <ion-icon name="play" />
+            {/if}
           </ion-button>
-          <ion-button>
+          <ion-button {disabled} on:click={skip}>
             <ion-icon name="play-forward" />
           </ion-button>
         </ion-buttons>
       {/key}
     {:else}
-      <ion-thumbnail slot="secondary">
+      <ion-thumbnail slot="start">
         <SquareImage />
       </ion-thumbnail>
       <ion-buttons slot="end">
