@@ -4,7 +4,7 @@ import BackButton from "~/components/back-button.svelte";
 
 <ion-content>
   <slot />
-  <BackButton />
+  <BackButton iconName="close" />
 </ion-content>
 
 <style lang="scss">

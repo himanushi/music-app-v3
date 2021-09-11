@@ -4,7 +4,7 @@ import AddPlaylistButton from "~/components/add-playlist-button.svelte";
 import { canPlay } from "~/components/play-button.svelte";
 import { closeModal } from "~/lib/ionic";
 import { playerService } from "~/machines/jukebox-machine";
-import Modal from "~/pages/_modal.svelte";
+import ModalContent from "~/pages/_modal-content.svelte";
 
 $: tracks = $playerService.context.tracks.map((track) => track);
 $: playbackNo = $playerService.context.currentPlaybackNo;
@@ -72,7 +72,7 @@ const link = () => {
     </ion-toolbar>
   </ion-header>
 {/if}
-<Modal>
+<ModalContent>
   <ion-reorder-group on:ionItemReorder={decide} disabled={false}>
     {#each tracks as track, index}
       <ion-item>
@@ -103,4 +103,4 @@ const link = () => {
       </ion-item>
     {/each}
   </ion-reorder-group>
-</Modal>
+</ModalContent>
