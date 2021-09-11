@@ -6,7 +6,7 @@ import { closeModal } from "~/lib/ionic";
 import { playerService } from "~/machines/jukebox-machine";
 import Modal from "~/pages/_modal.svelte";
 
-let tracks = $playerService.context.tracks.map((track) => track);
+$: tracks = $playerService.context.tracks.map((track) => track);
 $: playbackNo = $playerService.context.currentPlaybackNo;
 
 const decide = (
