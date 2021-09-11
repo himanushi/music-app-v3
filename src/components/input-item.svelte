@@ -85,7 +85,7 @@ const onChange = (event: Event) => {
 </script>
 
 <ion-item>
-  <ion-label position="floating">{label}</ion-label>
+  <ion-label position="stacked">{label}</ion-label>
   <ion-input
     {value}
     {placeholder}
