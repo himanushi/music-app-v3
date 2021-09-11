@@ -1,13 +1,13 @@
 <script lang="ts">
 import Random from "./_random.svelte";
-import SyncButton from "./_sync-button.svelte";
+import Refresher from "~/components/refresher.svelte";
 import client from "~/graphql/client";
 import {
   isAllowed, meQuery
 } from "~/lib/me";
 
 $: tggle = true;
-const render = () => {
+const refresh = () => {
 
   client.cache.evict({
     fieldName: "tracks",
@@ -23,6 +23,7 @@ $: me = $query?.data?.me;
 </script>
 
 {#if me && isAllowed(me, "tracks")}
+  <Refresher {refresh} />
   {#key tggle}
     <Random />
   {/key}

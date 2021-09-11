@@ -3,7 +3,7 @@ import { params } from "@roxi/routify";
 import NewButton from "./_new-button.svelte";
 import Playlists from "./_playlists.svelte";
 import SearchDetail from "./_search-detail.svelte";
-import SyncButton from "./_sync-button.svelte";
+import Refresher from "~/components/refresher.svelte";
 import SearchDetailButton from "~/components/search-detail-button.svelte";
 import client from "~/graphql/client";
 import {
@@ -11,7 +11,7 @@ import {
 } from "~/lib/me";
 
 $: tggle = true;
-const render = () => {
+const refresh = () => {
 
   client.cache.evict({
     fieldName: "playlists",
@@ -29,11 +29,12 @@ let component: HTMLElement;
 </script>
 
 {#if me && isAllowed(me, "playlists")}
-  {#key tggle}
-    <ion-list>
+  <Refresher {refresh} />
+  <ion-list>
+    {#key tggle}
       <Playlists params={$params} />
-    </ion-list>
-  {/key}
+    {/key}
+  </ion-list>
   <SearchDetailButton {component} />
 {/if}
 

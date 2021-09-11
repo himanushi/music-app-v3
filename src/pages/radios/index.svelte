@@ -2,6 +2,7 @@
 import { params } from "@roxi/routify";
 import Radios from "./_radios.svelte";
 import SearchDetail from "./_search-detail.svelte";
+import Refresher from "~/components/refresher.svelte";
 import SearchDetailButton from "~/components/search-detail-button.svelte";
 import client from "~/graphql/client";
 import {
@@ -10,7 +11,7 @@ import {
 
 $: tggle = true;
 
-const render = () => {
+const refresh = () => {
 
   client.cache.evict({
     fieldName: "radios",
@@ -28,11 +29,12 @@ let component: HTMLElement;
 </script>
 
 {#if me && isAllowed(me, "radios")}
-  {#key tggle}
-    <ion-list>
+  <Refresher {refresh} />
+  <ion-list>
+    {#key tggle}
       <Radios params={$params} />
-    </ion-list>
-  {/key}
+    {/key}
+  </ion-list>
   <SearchDetailButton {component} />
 {/if}
 
