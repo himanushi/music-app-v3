@@ -5,6 +5,7 @@ import { PlaylistsDocument } from "~/graphql/types";
 
 export let params: { [key: string]: any } | undefined = undefined;
 export let variables: any | undefined = undefined;
+export let loaded: boolean = false;
 </script>
 
 <Items
@@ -12,6 +13,7 @@ export let variables: any | undefined = undefined;
   {variables}
   type="playlist"
   document={PlaylistsDocument}
+  bind:loaded
   let:item
 >
   <ItemCard {item} />

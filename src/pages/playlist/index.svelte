@@ -10,7 +10,8 @@ import {
   isAllowed, meQuery
 } from "~/lib/me";
 
-$: tggle = true;
+let tggle = true;
+let loaded = false;
 const refresh = () => {
 
   client.cache.evict({
@@ -29,10 +30,10 @@ let component: HTMLElement;
 </script>
 
 {#if me && isAllowed(me, "playlists")}
-  <Refresher {refresh} />
+  <Refresher {refresh} bind:loaded />
   <ion-list>
     {#key tggle}
-      <Playlists params={$params} />
+      <Playlists params={$params} bind:loaded />
     {/key}
   </ion-list>
   <SearchDetailButton {component} />

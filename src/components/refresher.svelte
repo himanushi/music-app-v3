@@ -1,5 +1,6 @@
 <script lang="ts">
 export let refresh: () => void;
+export let loaded: boolean;
 
 let refresher: HTMLElement;
 $: if (refresher && !refresher.slot) {
@@ -10,10 +11,16 @@ $: if (refresher && !refresher.slot) {
 
 const ionRefresh = () => {
 
+  loaded = false;
   refresh();
-  refresher.complete();
 
 };
+
+$: if (loaded) {
+
+  refresher.complete();
+
+}
 </script>
 
 <ion-refresher bind:this={refresher} on:ionRefresh={ionRefresh}>

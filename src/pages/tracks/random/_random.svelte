@@ -7,6 +7,8 @@ import type {
 } from "~/graphql/types";
 import { TracksDocument } from "~/graphql/types";
 
+export let loaded: boolean = false;
+
 const variables: TracksQueryVariables = {
   conditions: { random: true },
   cursor: { limit: 45 }
@@ -46,6 +48,7 @@ const setTracks = (ts: Track[]) => {
     {variables}
     type="track"
     document={TracksDocument}
+    bind:loaded
     let:items
     let:item
     let:index

@@ -5,8 +5,16 @@ import { ArtistsDocument } from "~/graphql/types";
 
 export let params: { [key: string]: any } | undefined = undefined;
 export let variables: any | undefined = undefined;
+export let loaded: boolean = false;
 </script>
 
-<Items {params} {variables} type="artist" document={ArtistsDocument} let:item>
+<Items
+  {params}
+  {variables}
+  type="artist"
+  document={ArtistsDocument}
+  bind:loaded
+  let:item
+>
   <ItemCard {item} />
 </Items>

@@ -6,7 +6,8 @@ import {
   isAllowed, meQuery
 } from "~/lib/me";
 
-$: tggle = true;
+let tggle = true;
+let loaded = false;
 const refresh = () => {
 
   client.cache.evict({
@@ -23,8 +24,8 @@ $: me = $query?.data?.me;
 </script>
 
 {#if me && isAllowed(me, "tracks")}
-  <Refresher {refresh} />
+  <Refresher {refresh} bind:loaded />
   {#key tggle}
-    <Random />
+    <Random bind:loaded />
   {/key}
 {/if}

@@ -12,6 +12,7 @@ export let type: ParameterPrefix;
 export let document: DocumentNode;
 export let params: { [key: string]: any } | undefined = undefined;
 export let variables: any | undefined = undefined;
+export let loaded: boolean = false;
 
 let service: any;
 
@@ -79,6 +80,7 @@ const ionInfinite = () => {
 };
 $: if (service && $service.matches("active") && infiniteScroll) {
 
+  loaded = true;
   infiniteScroll.complete();
   if (!$service.context.hasNext) {
 
