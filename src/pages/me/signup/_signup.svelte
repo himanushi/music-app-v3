@@ -2,7 +2,6 @@
 import { ApolloError } from "@apollo/client/core";
 import { goto } from "@roxi/routify";
 import { mutation } from "svelte-apollo";
-import Button from "~/components/button.svelte";
 import InputCheckbox from "~/components/input-checkbox.svelte";
 import InputText from "~/components/input-item.svelte";
 import Messages from "~/components/messages.svelte";
@@ -14,7 +13,11 @@ import type {
   SignupMutationVariables, SignupMutation
 } from "~/graphql/types";
 import { errorMessages } from "~/lib/error";
-import { openToast } from "~/lib/ionic";
+import {
+  closeModal, openModal, openToast
+} from "~/lib/ionic";
+import ModalContent from "~/pages/_modal-content.svelte";
+import Terms from "~/pages/terms.svelte";
 
 let name: string;
 let username: string;
@@ -61,60 +64,78 @@ const signup = async () => {
   }
 
 };
+
+let terms: HTMLElement;
+const openTerms = async () => {
+
+  await closeModal();
+  await openModal(terms);
+
+};
 </script>
 
-<form on:submit|preventDefault>
-  <InputText
-    label="名前(変更可能)"
-    bind:value={name}
-    errorMessages={messages.name}
-    class="w-80"
-  />
-  <InputText
-    label="ユーザーID(変更不可, 半角英数 と _ のみ)"
-    bind:value={username}
-    errorMessages={messages.username}
-    autocomplete="username"
-    class="w-80"
-  />
-  <InputText
-    label="パスワード(8文字以上, 半角英数)"
-    type="password"
-    bind:value={newPassword}
-    errorMessages={messages.newPassword}
-    autocomplete="new-password"
-    class="w-80"
-  />
-  <InputText
-    label="パスワード再確認"
-    type="password"
-    bind:value={newPasswordConfirmation}
-    errorMessages={messages.newPasswordConfirmation}
-    class="w-80"
-  />
+<ion-list>
+  <ion-item-group>
+    <ion-item-divider sticky>
+      <ion-label>ユーザー登録</ion-label>
+    </ion-item-divider>
+    <form on:submit|preventDefault>
+      <InputText
+        label="名前(変更可能)"
+        bind:value={name}
+        errorMessages={messages.name}
+      />
+      <InputText
+        label="ユーザーID(変更不可, 半角英数 と _ のみ)"
+        bind:value={username}
+        errorMessages={messages.username}
+        autocomplete="username"
+      />
+      <InputText
+        label="パスワード(8文字以上, 半角英数)"
+        type="password"
+        bind:value={newPassword}
+        errorMessages={messages.newPassword}
+        autocomplete="new-password"
+      />
+      <InputText
+        label="パスワード再確認"
+        type="password"
+        bind:value={newPasswordConfirmation}
+        errorMessages={messages.newPasswordConfirmation}
+      />
 
-  <a target="_blank" href="/terms">利用規約はこちら</a>
-  <InputCheckbox label="利用規約に同意する" bind:checked={term} />
+      <ion-item button on:click={openTerms}>
+        <ion-icon color="yellow" name="document-text-outline" slot="start" />
+        <ion-label>利用規約はこちら</ion-label>
+      </ion-item>
 
-  <RecaptchaV2 bind:this={recaptcha} />
-  <Messages class="text-center" type="error" messages={messages.recaptcha} />
+      <InputCheckbox label="利用規約に同意する" bind:checked={term} />
 
-  <Button
-    disabled={!term}
-    class="text-center"
-    on:click={signup}
-    messages={messages._}
-  >
-    登録
-  </Button>
-</form>
+      <RecaptchaV2 bind:this={recaptcha} />
+      <Messages
+        class="text-center"
+        type="error"
+        messages={messages.recaptcha}
+      />
 
-<style lang="scss">
-form {
-  @apply text-white flex flex-col items-center space-y-5 py-5;
+      <ion-item
+        disabled={!term || !name || !newPassword || !newPasswordConfirmation}
+        on:click={signup}
+        button
+      >
+        <ion-icon color="green" name="person-add-outline" slot="start" />
+        <ion-label>登録</ion-label>
+      </ion-item>
+    </form>
+  </ion-item-group>
+</ion-list>
 
-  a {
-    @apply font-bold underline;
-  }
-}
-</style>
+<!-- Modal -->
+<span style="display:none">
+  <span bind:this={terms}>
+    <ModalContent>
+      <Terms />
+    </ModalContent>
+  </span>
+</span>

@@ -38,7 +38,11 @@ export const openModal = async (
 
 export const closeModal = async () => {
 
-  await modalController.dismiss();
+  if (isOpenModal()) {
+
+    await modalController.dismiss();
+
+  }
 
 };
 

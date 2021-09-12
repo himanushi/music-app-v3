@@ -9,9 +9,6 @@ let widgetId = 0;
 
 const resetCookie = () => cookie.remove("reCAPTCHAv2Token");
 
-let className = "";
-export { className as class };
-
 export const reset = () => {
 
   resetCookie();
@@ -54,6 +51,6 @@ onDestroy(() => {
 });
 </script>
 
-<div class={className}>
+<ion-item>
   <div id="g-recaptcha" />
-</div>
+</ion-item>
