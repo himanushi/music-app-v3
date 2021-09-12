@@ -33,6 +33,7 @@ if (isMobile(window.navigator).apple.device) {
 
 {#if accountService && $accountService.matches("unauthorized")}
   <ion-item button class="apple" target="_blank" {href}>
-    Apple Music に加入
+    <ion-icon color="pink" name="logo-apple" slot="start" />
+    <ion-label> Apple Music に加入 </ion-label>
   </ion-item>
 {/if}
