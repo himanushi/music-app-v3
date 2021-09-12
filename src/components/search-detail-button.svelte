@@ -3,15 +3,15 @@ import { openModal } from "~/lib/ionic";
 
 export let component: HTMLElement;
 export let props: Record<string, any> = {};
-let fabComponent: HTMLElement;
-$: if (fabComponent) {
+let fab: HTMLElement;
+$: if (fab) {
 
-  fabComponent.setAttribute("slot", "fixed");
+  fab.setAttribute("slot", "fixed");
 
 }
 </script>
 
-<ion-fab vertical="bottom" horizontal="end" bind:this={fabComponent}>
+<ion-fab vertical="bottom" horizontal="end" bind:this={fab}>
   <ion-fab-button on:click={() => openModal(component, props)}>
     <ion-icon name="search-outline" />
   </ion-fab-button>

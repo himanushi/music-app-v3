@@ -37,6 +37,7 @@ let component: HTMLElement;
     {/key}
   </ion-list>
   <SearchDetailButton {component} />
+  <NewButton />
 {/if}
 
 <!-- Modal -->
