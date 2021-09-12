@@ -1,17 +1,22 @@
 <script lang="ts">
-import { goto } from "@roxi/routify";
-
 import { cookie } from "~/lib/cookie";
-import { openToast } from "~/lib/ionic";
+import {
+  closeModal, openModal, openToast
+} from "~/lib/ionic";
+import ModalContent from "~/pages/_modal-content.svelte";
+import CookiePolicy from "~/pages/cookie-policy.svelte";
+
+let cookiePolicy: HTMLElement;
 
 if (cookie.get("cookieNotice") !== "true") {
 
   openToast({
     buttons: [
       {
-        handler: () => {
+        handler: async () => {
 
-          $goto("/cookie-policy");
+          await closeModal();
+          await openModal(cookiePolicy);
           return false;
 
         },
@@ -36,3 +41,12 @@ if (cookie.get("cookieNotice") !== "true") {
 
 }
 </script>
+
+<!-- Modal -->
+<span style="display:none">
+  <span bind:this={cookiePolicy}>
+    <ModalContent>
+      <CookiePolicy />
+    </ModalContent>
+  </span>
+</span>
