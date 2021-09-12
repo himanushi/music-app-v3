@@ -71,23 +71,20 @@ $: if (
 
 }
 
-let target: EventTarget | null = null;
-const ionInfinite = (event: Event) => {
+let infiniteScroll: HTMLElement;
+const ionInfinite = () => {
 
   service.send("FETCH_MORE");
-  // eslint-disable-next-line prefer-destructuring
-  target = event.target;
 
 };
-$: if (service && $service.matches("active") && target) {
+$: if (service && $service.matches("active") && infiniteScroll) {
 
-  target.complete();
+  infiniteScroll.complete();
   if (!$service.context.hasNext) {
 
-    target.disabled = true;
+    infiniteScroll.disabled = true;
 
   }
-  target = null;
 
 }
 </script>
@@ -96,6 +93,10 @@ $: if (service && $service.matches("active") && target) {
   <slot {items} {item} {index} />
 {/each}
 
-<ion-infinite-scroll on:ionInfinite={ionInfinite} threshold="100px">
+<ion-infinite-scroll
+  on:ionInfinite={ionInfinite}
+  threshold="100px"
+  bind:this={infiniteScroll}
+>
   <ion-infinite-scroll-content loading-spinner="lines" />
 </ion-infinite-scroll>
