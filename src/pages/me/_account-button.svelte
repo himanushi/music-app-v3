@@ -27,7 +27,7 @@ $: me = $query?.data?.me;
   <LogoutButton />
 {:else if me && isAllowed(me, "login")}
   <ion-item button on:click={go("/me/login")}>
-    <ion-icon color="blue" name="home-outline" slot="start" />
+    <ion-icon color="blue" name="log-in-outline" slot="start" />
     ログイン
   </ion-item>
   <ion-item button on:click={go("/me/signup")}>

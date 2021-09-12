@@ -2,7 +2,6 @@
 import { ApolloError } from "@apollo/client/core";
 import { goto } from "@roxi/routify";
 import { mutation } from "svelte-apollo";
-import Button from "~/components/button.svelte";
 import InputText from "~/components/input-item.svelte";
 import Messages from "~/components/messages.svelte";
 import RecaptchaV2 from "~/components/recaptcha-v2.svelte";
@@ -56,32 +55,36 @@ const login = async () => {
 };
 </script>
 
-<form on:submit|preventDefault>
-  <InputText
-    label="ユーザー名"
-    bind:value={username}
-    errorMessages={messages.username}
-    autocomplete="username"
-    class="w-80"
-  />
-  <InputText
-    label="パスワード"
-    type="password"
-    bind:value={currentPassword}
-    errorMessages={messages.currentPassword}
-    autocomplete="current-password"
-    class="w-80"
-  />
-  <RecaptchaV2 bind:this={recaptcha} />
-  <Messages class="text-center" type="error" messages={messages.recaptcha} />
+<ion-list>
+  <ion-item-group>
+    <ion-item-divider sticky>
+      <ion-label>ログイン</ion-label>
+    </ion-item-divider>
+    <form on:submit|preventDefault>
+      <InputText
+        label="ユーザー名"
+        bind:value={username}
+        errorMessages={messages.username}
+        autocomplete="username"
+      />
+      <InputText
+        label="パスワード"
+        type="password"
+        bind:value={currentPassword}
+        errorMessages={messages.currentPassword}
+        autocomplete="current-password"
+      />
+      <RecaptchaV2 bind:this={recaptcha} />
+      <Messages
+        class="text-center"
+        type="error"
+        messages={messages.recaptcha}
+      />
 
-  <Button class="text-center" on:click={login} messages={messages._}>
-    ログイン
-  </Button>
-</form>
-
-<style lang="scss">
-form {
-  @apply text-white flex flex-col items-center space-y-5 py-2;
-}
-</style>
+      <ion-item on:click={login} button>
+        <ion-icon color="blue" name="log-in-outline" slot="start" />
+        <ion-label>ログイン</ion-label>
+      </ion-item>
+    </form>
+  </ion-item-group>
+</ion-list>
