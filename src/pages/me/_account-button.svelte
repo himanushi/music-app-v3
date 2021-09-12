@@ -1,7 +1,7 @@
 <script lang="ts">
 import { goto } from "@roxi/routify";
 import LogoutButton from "./_logout-button.svelte";
-import InfoMessage from "~/components/info-message.svelte";
+import Messages from "~/components/messages.svelte";
 import {
   isAllowed, meQuery
 } from "~/lib/me";
@@ -34,7 +34,7 @@ $: me = $query?.data?.me;
     <ion-icon color="green" name="person-add-outline" slot="start" />
     登録する
   </ion-item>
-  <InfoMessage>
-    ログインすると、プレイリストの作成公開、ラジオの作成公開などが出来るようになります。
-  </InfoMessage>
+  <Messages
+    messages={["ログインすると、プレイリストの作成公開、ラジオの作成公開などが出来るようになります。"]}
+  />
 {/if}

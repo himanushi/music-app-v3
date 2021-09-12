@@ -1,5 +1,6 @@
 <script>
-// ref: https://ionicframework.com/jp/docs/api/input
+import Messages from "./messages.svelte";
+
 export let placeholder: string | undefined = undefined;
 export let label = "";
 export let errorMessages: string[] | undefined = undefined;
@@ -94,3 +95,6 @@ const onChange = (event: Event) => {
     on:ionChange={onChange}
   />
 </ion-item>
+{#if errorMessages}
+  <Messages type="error" messages={errorMessages} />
+{/if}

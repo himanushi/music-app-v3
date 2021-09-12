@@ -1,6 +1,6 @@
 <script lang="ts">
 import { goto } from "@roxi/routify";
-import InfoMessage from "~/components/info-message.svelte";
+import Messages from "~/components/messages.svelte";
 import { accountService } from "~/machines/apple-music-account-machine";
 
 export let message: string | undefined = undefined;
@@ -12,6 +12,6 @@ export let message: string | undefined = undefined;
     <ion-label> Apple Music の設定へ </ion-label>
   </ion-item>
   {#if message}
-    <InfoMessage>{message}</InfoMessage>
+    <Messages messages={[message]} />
   {/if}
 {/if}

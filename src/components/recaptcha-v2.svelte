@@ -11,8 +11,12 @@ const resetCookie = () => cookie.remove("reCAPTCHAv2Token");
 
 export const reset = () => {
 
-  resetCookie();
-  grecaptcha.reset(widgetId);
+  if (recaptchaKey) {
+
+    resetCookie();
+    grecaptcha.reset(widgetId);
+
+  }
 
 };
 
@@ -46,11 +50,17 @@ onMount(() => {
 
 onDestroy(() => {
 
-  resetCookie();
+  if (recaptchaKey) {
+
+    resetCookie();
+
+  }
 
 });
 </script>
 
-<ion-item>
-  <div id="g-recaptcha" />
-</ion-item>
+{#if recaptchaKey}
+  <ion-item>
+    <div id="g-recaptcha" />
+  </ion-item>
+{/if}

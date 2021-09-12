@@ -3,6 +3,7 @@ import { ApolloError } from "@apollo/client/core";
 import { goto } from "@roxi/routify";
 import { mutation } from "svelte-apollo";
 import InputText from "~/components/input-item.svelte";
+import Messages from "~/components/messages.svelte";
 import {
   UpdateMeDocument, MeDocument
 } from "~/graphql/types";
@@ -70,41 +71,45 @@ const signup = async () => {
       errorMessages={messages.name}
     />
 
-    <ion-item button on:click={signup} messages={messages._}>
+    <ion-item button on:click={signup}>
       <ion-icon name="build-outline" slot="start" />
       更新する
     </ion-item>
+    <Messages type="error" messages={messages._} />
   </ion-item-group>
 
   <ion-item-group>
     <ion-item-divider sticky>
       <ion-label>Password</ion-label>
     </ion-item-divider>
-    <InputText
-      label="現在のパスワード"
-      type="password"
-      bind:value={currentPassword}
-      errorMessages={messages.currentPassword}
-      autocomplete="current-password"
-    />
-    <InputText
-      label="新しいパスワード"
-      type="password"
-      bind:value={newPassword}
-      errorMessages={messages.newPassword}
-      autocomplete="new-password"
-    />
-    <InputText
-      label="新しいパスワード再確認"
-      type="password"
-      bind:value={newPasswordConfirmation}
-      errorMessages={messages.newPasswordConfirmation}
-      autocomplete="new-password"
-    />
+    <form on:submit|preventDefault>
+      <InputText
+        label="現在のパスワード"
+        type="password"
+        bind:value={currentPassword}
+        errorMessages={messages.currentPassword}
+        autocomplete="current-password"
+      />
+      <InputText
+        label="新しいパスワード"
+        type="password"
+        bind:value={newPassword}
+        errorMessages={messages.newPassword}
+        autocomplete="new-password"
+      />
+      <InputText
+        label="新しいパスワード再確認"
+        type="password"
+        bind:value={newPasswordConfirmation}
+        errorMessages={messages.newPasswordConfirmation}
+        autocomplete="new-password"
+      />
 
-    <ion-item button on:click={signup} messages={messages._}>
-      <ion-icon name="build-outline" slot="start" />
-      更新する
-    </ion-item>
+      <ion-item button on:click={signup}>
+        <ion-icon name="build-outline" slot="start" />
+        更新する
+      </ion-item>
+      <Messages type="error" messages={messages._} />
+    </form>
   </ion-item-group>
 </ion-list>

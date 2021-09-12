@@ -113,11 +113,7 @@ const openTerms = async () => {
       <InputCheckbox label="利用規約に同意する" bind:checked={term} />
 
       <RecaptchaV2 bind:this={recaptcha} />
-      <Messages
-        class="text-center"
-        type="error"
-        messages={messages.recaptcha}
-      />
+      <Messages type="error" messages={messages.recaptcha} />
 
       <ion-item
         disabled={!term || !name || !newPassword || !newPasswordConfirmation}
@@ -127,6 +123,7 @@ const openTerms = async () => {
         <ion-icon color="green" name="person-add-outline" slot="start" />
         <ion-label>登録</ion-label>
       </ion-item>
+      <Messages type="error" messages={messages._} />
     </form>
   </ion-item-group>
 </ion-list>

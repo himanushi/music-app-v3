@@ -75,11 +75,7 @@ const login = async () => {
         autocomplete="current-password"
       />
       <RecaptchaV2 bind:this={recaptcha} />
-      <Messages
-        class="text-center"
-        type="error"
-        messages={messages.recaptcha}
-      />
+      <Messages type="error" messages={messages.recaptcha} />
 
       <ion-item on:click={login} button>
         <ion-icon color="blue" name="log-in-outline" slot="start" />

@@ -1,31 +1,32 @@
 <script lang="ts">
 export let type: "info" | "warn" | "error" = "info";
 export let messages: string[] | undefined;
-
-let className = "";
-export { className as class };
+let color = "";
+let iconName = "";
 
 $: if (type === "info") {
-  // 指定された色を表示
+
+  color = "blue";
+  iconName = "information-circle-outline";
+
 } else if (type === "warn") {
 
-  className += " text-yellow-500";
+  color = "yellow";
+  iconName = "alert-circle-outline";
 
 } else if (type === "error") {
 
-  className += " text-red-500";
+  color = "red";
+  iconName = "alert-circle-outline";
 
 }
 </script>
 
 {#if messages}
   {#each messages as message}
-    <p class={className}>{message}</p>
+    <ion-item>
+      <ion-icon {color} name={iconName} slot="start" />
+      <ion-label class="ion-text-wrap">{message}</ion-label>
+    </ion-item>
   {/each}
 {/if}
-
-<style lang="scss">
-p {
-  @apply text-sm;
-}
-</style>
