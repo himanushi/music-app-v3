@@ -6,6 +6,9 @@ import { closeSidebar } from "~/lib/ionic";
 import {
   isAllowed, meQuery
 } from "~/lib/me";
+import { playerService } from "~/machines/jukebox-machine";
+
+$: track = $playerService.context.currentTrack;
 
 const showPlayer = () => {
 
@@ -100,7 +103,7 @@ $: me = $query?.data?.me;
         <ion-icon name="settings-outline" slot="start" />
         <ion-label>設定</ion-label>
       </ion-item>
-      <ion-item button on:click={showPlayer}>
+      <ion-item button disabled={!track} on:click={showPlayer}>
         <ion-icon name="musical-notes-outline" slot="start" />
         <ion-label>ミュージックプレイヤー</ion-label>
       </ion-item>
