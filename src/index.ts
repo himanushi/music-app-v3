@@ -1,5 +1,6 @@
 import { defineCustomElements } from "@ionic/core/loader";
 import App from "./app.svelte";
+import { unregister } from "./register-service-worker";
 
 if (typeof window !== "undefined") {
 
@@ -25,3 +26,5 @@ if (import.meta.hot) {
   });
 
 }
+
+unregister();
