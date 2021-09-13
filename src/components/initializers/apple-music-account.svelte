@@ -25,9 +25,6 @@ $: {
       type: "SET_TOKEN"
     });
 
-    // eslint-disable-next-line no-console
-    console.log("init Apple Music");
-
   }
 
 }

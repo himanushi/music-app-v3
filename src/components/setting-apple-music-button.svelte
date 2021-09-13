@@ -1,6 +1,7 @@
 <script lang="ts">
 import { goto } from "@roxi/routify";
 import Messages from "~/components/messages.svelte";
+import Logo from "~/icons/logo-apple-music.svg";
 import { accountService } from "~/machines/apple-music-account-machine";
 
 export let message: string | undefined = undefined;
@@ -8,7 +9,7 @@ export let message: string | undefined = undefined;
 
 {#if accountService && $accountService.matches("unauthorized")}
   <ion-item button on:click={() => $goto("/me")}>
-    <ion-icon color="pink" name="logo-apple" slot="start" />
+    <ion-icon slot="start" src={Logo} />
     <ion-label> Apple Music の設定へ </ion-label>
   </ion-item>
   {#if message}

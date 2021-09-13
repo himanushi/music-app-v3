@@ -1,5 +1,6 @@
 <script lang="ts">
 import isMobile from "ismobilejs";
+import Logo from "~/icons/logo-apple-music.svg";
 import { appleAffiliateToken } from "~/lib/variable";
 import { accountService } from "~/machines/apple-music-account-machine";
 
@@ -33,7 +34,7 @@ if (isMobile(window.navigator).apple.device) {
 
 {#if accountService && $accountService.matches("unauthorized")}
   <ion-item button class="apple" target="_blank" {href}>
-    <ion-icon color="pink" name="logo-apple" slot="start" />
+    <ion-icon slot="start" src={Logo} />
     <ion-label> Apple Music に加入 </ion-label>
   </ion-item>
 {/if}

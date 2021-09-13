@@ -35,4 +35,7 @@ ${version}
   {@html html}
 </div>
 
-<ion-button color="green" on:click={reset}>リセット</ion-button>
+<ion-item button on:click={reset}>
+  <ion-icon name="refresh-outline" slot="start" />
+  リセット
+</ion-item>

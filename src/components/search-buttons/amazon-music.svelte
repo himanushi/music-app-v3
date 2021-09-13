@@ -1,13 +1,12 @@
 <script>
-import SearchButton from "./search-button.svelte";
-
 export let name: string;
-name = name.replaceAll(/\s/giu, "+");
 </script>
 
-<SearchButton
-  class="bg-white"
+<ion-item
+  button
   href={`https://amazon.co.jp/s?i=digital-music&k=${name}`}
+  target="_blank"
 >
-  Amazon Music で検索
-</SearchButton>
+  <ion-icon slot="start" color="blue" name="logo-amazon" />
+  <ion-label> Amazon Music で検索 </ion-label>
+</ion-item>

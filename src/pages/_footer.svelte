@@ -10,23 +10,9 @@ $: track = $playerService.context.currentTrack;
 $: player = $playerService.context.musicPlayerRef;
 $: disabled = player && ($player.value === "loading" || !$canPlay);
 
-const play_or_pause = () => {
-
-  playerService.send("PLAY_OR_PAUSE");
-
-};
-
-const skip = () => {
-
-  playerService.send("NEXT_PLAY");
-
-};
-
-const stop = () => {
-
-  playerService.send("PAUSE");
-
-};
+const play_or_pause = () => playerService.send("PLAY_OR_PAUSE");
+const skip = () => playerService.send("NEXT_PLAY");
+const stop = () => playerService.send("PAUSE");
 
 const live = () => {
 
@@ -41,11 +27,7 @@ const live = () => {
 
 };
 
-const showPlayer = () => {
-
-  openPlayer();
-
-};
+const showPlayer = () => openPlayer();
 </script>
 
 <ion-footer
