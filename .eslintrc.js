@@ -160,6 +160,9 @@ module.exports = {
     // const 宣言をまとめない
     "one-var": "off",
 
+    // object のプロパティを取得する際に { value } = object のような書き方をしなくても良い
+    "prefer-destructuring": "off",
+
     // object key のダブルクォーツを強制しない
     "quote-props": [
       "error",

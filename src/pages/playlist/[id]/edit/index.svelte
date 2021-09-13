@@ -30,7 +30,6 @@ export let id = "";
 let name = "";
 let description = "";
 let publicType: PlaylistPublicTypeEnum = "NON_OPEN";
-let initialize = true;
 let items: ItemsType = [];
 let messages: Record<string, string[]> = {};
 
@@ -41,6 +40,7 @@ const playlistQuery = query<PlaylistQuery>(PlaylistDocument, {
 
 // 初期化
 let playlist: Playlist;
+let initialize = true;
 $: if ($playlistQuery.data?.playlist && initialize) {
 
   playlist = $playlistQuery.data.playlist as Playlist;
@@ -112,69 +112,60 @@ const publicTypes = [
 
 const meq = meQuery();
 $: me = $meq?.data?.me;
+$: viewable =
+  me && isAllowed(me, "upsertPlaylist") && playlist && playlist.isMine;
 </script>
 
-{#if me && isAllowed(me, "upsertPlaylist") && playlist && me.username === playlist?.author?.username}
-  <form on:submit|preventDefault>
-    <div class="info">
-      <InputText
-        label="タイトル"
-        bind:value={name}
-        errorMessages={messages.name}
-      />
-      <InputTextarea
-        label="説明"
-        class="h-80"
-        bind:value={description}
-        errorMessages={messages.description}
-      />
-      <InputSelection
-        label="公開設定"
-        bind:value={publicType}
-        items={publicTypes}
-      />
-    </div>
+<ion-list>
+  <ion-item-group>
+    <ion-item-divider sticky>
+      <ion-label>Playlist</ion-label>
+    </ion-item-divider>
 
-    <div class="items">
-      <DndSelection
-        on:remove={changeItems}
-        on:decide={changeItems}
-        {items}
-        let:item
-        let:index
-        class={"max-h-[500px]"}
-      >
-        <span class="item">
-          <span class="icon">
-            <PlayButton {name} {index} tracks={items.map((it) => it.item)} />
-          </span>
-          <Text>{item.item.name}</Text>
-        </span>
-      </DndSelection>
-    </div>
+    {#if viewable}
+      <form on:submit|preventDefault>
+        <InputText
+          label="タイトル"
+          bind:value={name}
+          errorMessages={messages.name}
+        />
+        <InputTextarea
+          label="説明"
+          bind:value={description}
+          errorMessages={messages.description}
+        />
+        <InputSelection
+          label="公開設定"
+          bind:value={publicType}
+          items={publicTypes}
+        />
 
-    <Button class="text-center" on:click={update} messages={messages._}>
-      保存
-    </Button>
-  </form>
-{/if}
+        <div class="items">
+          <DndSelection
+            on:remove={changeItems}
+            on:decide={changeItems}
+            {items}
+            let:item
+            let:index
+            class={"max-h-[500px]"}
+          >
+            <span class="item">
+              <span class="icon">
+                <PlayButton
+                  {name}
+                  {index}
+                  tracks={items.map((it) => it.item)}
+                />
+              </span>
+              <Text>{item.item.name}</Text>
+            </span>
+          </DndSelection>
+        </div>
 
-<style lang="scss">
-form {
-  @apply text-white flex flex-col space-y-5 pb-3;
-
-  .info {
-    @apply m-7 flex flex-col space-y-5;
-  }
-
-  .items {
-    .item {
-      @apply flex flex-row items-center;
-
-      .icon {
-        @apply m-2;
-      }
-    }
-  }
-}
-</style>
+        <Button class="text-center" on:click={update} messages={messages._}>
+          保存
+        </Button>
+      </form>
+    {/if}
+  </ion-item-group>
+</ion-list>

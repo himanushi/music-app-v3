@@ -16,7 +16,12 @@ const onChange = (event: Event) => {
 
 <ion-item>
   <ion-label>{label}</ion-label>
-  <ion-select {value} on:ionChange={onChange} ok-text="OK" cancel-text="Cancel">
+  <ion-select
+    {value}
+    on:ionChange={onChange}
+    ok-text="変更"
+    cancel-text="キャンセル"
+  >
     {#each items as item}
       <ion-select-option value={item.value}>
         {item.label}
