@@ -1,5 +1,6 @@
 <script lang="ts">
 import { query } from "svelte-apollo";
+import CenterItem from "~/components/center-item.svelte";
 import Favorite from "~/components/favorite.svelte";
 import LoadingItems from "~/components/loading-items.svelte";
 import Image from "~/components/square-image.svelte";
@@ -56,7 +57,9 @@ $: if ($artistQuery.data && first) {
   <ion-item-divider sticky>
     <ion-label>Artist</ion-label>
   </ion-item-divider>
-  <Image src={artist?.artworkL?.url} />
+  <CenterItem>
+    <Image src={artist?.artworkL?.url} />
+  </CenterItem>
   {#if artist}
     <ion-item>
       <ion-label class="ion-text-wrap">

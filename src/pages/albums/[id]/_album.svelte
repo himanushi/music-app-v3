@@ -1,6 +1,7 @@
 <script lang="ts">
 import { query } from "svelte-apollo";
 import AddPlaylistButton from "~/components/add-playlist-button.svelte";
+import CenterItem from "~/components/center-item.svelte";
 import Favorite from "~/components/favorite.svelte";
 import LoadingItems from "~/components/loading-items.svelte";
 import AmazonMusic from "~/components/search-buttons/amazon-music.svelte";
@@ -68,7 +69,9 @@ $: if ($albumQuery.data && first) {
     <ion-label>Album</ion-label>
   </ion-item-divider>
 
-  <Image src={album?.artworkL?.url} />
+  <CenterItem>
+    <Image src={album?.artworkL?.url} />
+  </CenterItem>
 
   {#if album}
     <ion-item>

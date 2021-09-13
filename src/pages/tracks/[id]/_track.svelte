@@ -1,5 +1,6 @@
 <script lang="ts">
 import { query } from "svelte-apollo";
+import CenterItem from "~/components/center-item.svelte";
 import LoadingItems from "~/components/loading-items.svelte";
 import Image from "~/components/square-image.svelte";
 import { TrackDocument } from "~/graphql/types";
@@ -53,8 +54,9 @@ $: if ($trackQuery.data && first) {
   <ion-item-divider sticky>
     <ion-label>Track</ion-label>
   </ion-item-divider>
-  <Image src={track?.artworkL.url} />
-
+  <CenterItem>
+    <Image src={track?.artworkL.url} />
+  </CenterItem>
   {#if track}
     <ion-item>
       <ion-label class="ion-text-wrap">

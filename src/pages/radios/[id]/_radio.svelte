@@ -2,6 +2,7 @@
 import { query } from "svelte-apollo";
 import FabButton from "./_fab-button.svelte";
 import LiveButton from "./_live-button.svelte";
+import CenterItem from "~/components/center-item.svelte";
 import LoadingItems from "~/components/loading-items.svelte";
 import SettingAppleMusicButton from "~/components/setting-apple-music-button.svelte";
 import Image from "~/components/square-image.svelte";
@@ -35,8 +36,9 @@ $: if ($radioQuery?.data && first) {
   <ion-item-divider sticky>
     <ion-label>Radio</ion-label>
   </ion-item-divider>
-
-  <Image src={radio?.track?.artworkL.url} />
+  <CenterItem>
+    <Image src={radio?.track?.artworkL.url} />
+  </CenterItem>
   {#if radio}
     <ion-item>
       <ion-label class="ion-text-wrap">

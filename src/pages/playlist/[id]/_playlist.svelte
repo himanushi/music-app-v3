@@ -3,6 +3,7 @@ import { query } from "svelte-apollo";
 import FabButton from "./_fab-button.svelte";
 import AddAppleMusicPlaylistButton from "~/components/add-apple-music-playlist-button.svelte";
 import AddPlaylistButton from "~/components/add-playlist-button.svelte";
+import CenterItem from "~/components/center-item.svelte";
 import Favorite from "~/components/favorite.svelte";
 import LoadingItems from "~/components/loading-items.svelte";
 import Image from "~/components/square-image.svelte";
@@ -46,9 +47,9 @@ const hashtags = [
   <ion-item-divider sticky>
     <ion-label>Playlist</ion-label>
   </ion-item-divider>
-
-  <Image src={playlist?.track?.artworkL?.url} />
-
+  <CenterItem>
+    <Image src={playlist?.track?.artworkL?.url} />
+  </CenterItem>
   {#if playlist}
     <ion-item>
       <ion-label class="ion-text-wrap">
