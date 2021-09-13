@@ -1,15 +1,15 @@
 <script lang="ts">
 import { goto } from "@roxi/routify";
+
 import { mutation } from "svelte-apollo";
-import type { Props } from "~/components/confirm.svelte";
-import Confirm from "~/components/confirm.svelte";
-import { modals } from "~/components/modals.svelte";
 import type {
   DeletePlaylistMutation,
   DeletePlaylistMutationVariables
 } from "~/graphql/types";
 import { DeletePlaylistDocument } from "~/graphql/types";
-import { openToast } from "~/lib/ionic";
+import {
+  openConfirm, openToast
+} from "~/lib/ionic";
 import {
   isAllowed, meQuery
 } from "~/lib/me";
@@ -23,38 +23,48 @@ const deletePlaylist = mutation<
 
 const remove = () => {
 
-  modals.open<Props>({
-    component: Confirm,
-    props: {
-      noClick: () => modals.close(),
-      title: "削除しますか？",
-      yesClick: async () => {
+  openConfirm({
+    buttons: [
+      {
+        cssClass: "secondary",
+        handler: () => true,
+        role: "cancel",
+        text: "キャンセル"
+      },
+      {
+        handler: () => {
 
-        try {
+          (async () => {
 
-          await deletePlaylist({ variables: { input: { playlistId: id } } });
+            try {
 
-          openToast({
-            color: "green",
-            duration: 5000,
-            message: "プレイリストを削除しました"
-          });
+              await deletePlaylist({ variables: { input: { playlistId: id } } });
 
-        } catch (error) {
+              openToast({
+                color: "green",
+                duration: 5000,
+                message: "プレイリストを削除しました"
+              });
 
-          openToast({
-            color: "red",
-            duration: 5000,
-            message: "エラーが発生しました"
-          });
+              $goto("/playlist", { pm: 1 });
 
-        }
+            } catch (error) {
 
-        modals.close();
-        $goto("/playlist", { pm: "1" });
+              openToast({
+                color: "red",
+                duration: 5000,
+                message: "エラーが発生しました"
+              });
 
+            }
+
+          })();
+
+        },
+        text: "削除"
       }
-    }
+    ],
+    header: "削除しますか？"
   });
 
 };

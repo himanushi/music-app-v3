@@ -1,7 +1,9 @@
 import {
   modalController,
   popoverController,
-  toastController
+  toastController,
+  alertController,
+  AlertOptions
 } from "@ionic/core";
 import type { ToastOptions } from "@ionic/core";
 
@@ -75,5 +77,12 @@ export const openToast = async (props: ToastOptions) => {
     ...props
   });
   await toast.present();
+
+};
+
+export const openConfirm = async (props: AlertOptions) => {
+
+  const alert = await alertController.create(props);
+  await alert.present();
 
 };
