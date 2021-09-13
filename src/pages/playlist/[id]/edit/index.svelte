@@ -180,17 +180,17 @@ $: viewable =
             </ion-item>
           {/each}
         </ion-reorder-group>
+
+        <ion-item button {disabled} on:click={update}>
+          <ion-icon name="cloud-upload-outline" color="main" slot="start" />
+          保存
+        </ion-item>
+        <Messages type="error" messages={messages._} />
       {:else}
         <ion-item>
           <ion-skeleton-text animated />
         </ion-item>
       {/if}
-
-      <ion-item button {disabled} on:click={update}>
-        <ion-icon name="musical-notes-outline" color="main" slot="start" />
-        保存
-      </ion-item>
-      <Messages type="error" messages={messages._} />
     </ion-item-group>
   </form>
 </ion-list>
