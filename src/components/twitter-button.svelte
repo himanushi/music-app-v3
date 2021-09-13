@@ -1,6 +1,4 @@
 <script>
-import IconButton from "~/components/icon-button.svelte";
-import Twitter from "~/icons/twitter.svelte";
 import { title as pageTitle } from "~/lib/variable";
 
 export let path: string;
