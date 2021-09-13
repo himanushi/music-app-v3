@@ -2,7 +2,6 @@
 import { ApolloError } from "@apollo/client/core";
 import { goto } from "@roxi/routify";
 import { mutation } from "svelte-apollo";
-import Button from "~/components/button.svelte";
 import InputText from "~/components/input-item.svelte";
 import Messages from "~/components/messages.svelte";
 import { UpsertPlaylistDocument } from "~/graphql/types";
@@ -20,8 +19,11 @@ const upsertPlaylist = mutation<
 let name = "";
 let description = "";
 let messages: Record<string, string[]> = {};
+let disabled = false;
 
 const create = async () => {
+
+  disabled = true;
 
   try {
 
@@ -42,35 +44,40 @@ const create = async () => {
 
     }
 
+  } finally {
+
+    disabled = false;
+
   }
 
 };
 </script>
 
-<form on:submit|preventDefault>
-  <InputText
-    label="タイトル"
-    bind:value={name}
-    errorMessages={messages.name}
-    class="w-80"
-  />
+<ion-list>
+  <ion-item-group>
+    <ion-item-divider sticky>
+      <ion-label>Create Playlist</ion-label>
+    </ion-item-divider>
+    <form on:submit|preventDefault>
+      <InputText
+        label="タイトル"
+        bind:value={name}
+        errorMessages={messages.name}
+      />
 
-  <InputText
-    label="説明"
-    bind:value={description}
-    errorMessages={messages.description}
-    class="w-80"
-  />
+      <InputText
+        label="説明"
+        bind:value={description}
+        errorMessages={messages.description}
+      />
 
-  <Messages messages={messages.publicType} />
+      <Messages type="error" messages={messages.publicType} />
 
-  <Button class="text-center" on:click={create} messages={messages._}>
-    保存
-  </Button>
-</form>
-
-<style lang="scss">
-form {
-  @apply text-white flex flex-col items-center space-y-5 py-2;
-}
-</style>
+      <ion-item {disabled} button on:click={create}>
+        <ion-icon name="add" slot="start" />
+        保存
+      </ion-item>
+      <Messages type="error" messages={messages._} />
+    </form>
+  </ion-item-group>
+</ion-list>
