@@ -45,16 +45,14 @@ const login = async () => {
 
   } catch (error) {
 
+    disabled = false;
+
     if (error instanceof ApolloError) {
 
       messages = errorMessages(error);
       recaptcha.reset();
 
     }
-
-  } finally {
-
-    disabled = false;
 
   }
 

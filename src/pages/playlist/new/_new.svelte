@@ -38,15 +38,13 @@ const create = async () => {
 
   } catch (error) {
 
+    disabled = false;
+
     if (error instanceof ApolloError) {
 
       messages = errorMessages(error);
 
     }
-
-  } finally {
-
-    disabled = false;
 
   }
 

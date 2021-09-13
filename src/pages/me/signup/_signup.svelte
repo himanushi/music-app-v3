@@ -56,16 +56,14 @@ const signup = async () => {
 
   } catch (error) {
 
+    disabled = false;
+
     if (error instanceof ApolloError) {
 
       recaptcha.reset();
       messages = errorMessages(error);
 
     }
-
-  } finally {
-
-    disabled = false;
 
   }
 
