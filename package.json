@@ -9,13 +9,13 @@
     "ios:build": "ionic capacitor build ios",
     "ios:live": "ionic capacitor run ios --livereload-url=http://localhost:8080",
     "ios:run": "ionic capacitor run ios",
-    "web:build": "rm -fr build && routify -b && snowpack build && . scripts/cache-buster.bash && . scripts/rename-index.bash",
-    "build": "rm -fr build && routify -b && snowpack build",
+    "build": "rm -fr build && routify -b && snowpack build && . scripts/cache-buster.bash && . scripts/rename-index.bash",
+    "origin:build": "rm -fr build && routify -b && snowpack build",
     "lint": "prettier --write . && eslint --fix --ext .js,.ts . && eslint --fix --ext .svelte .",
     "route": "routify -b",
     "routing": "routify",
     "generate": "npx graphql-codegen --config=codegen.yml",
-    "ionic:build": "run-s build",
+    "ionic:build": "run-s origin:build",
     "ionic:serve": "run-s start"
   },
   "dependencies": {
