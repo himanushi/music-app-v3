@@ -20,12 +20,25 @@ import "~/theme/variables.css";
 import "~/theme/custom.css";
 
 import { setupConfig } from "@ionic/core";
+import { defineCustomElements } from "@ionic/core/loader";
 import { Router } from "@roxi/routify";
 import { routes } from "routify/routes";
 
-setupConfig({ mode: "ios" });
+let ready = false;
+
+const initialise = async () => {
+
+  setupConfig({ mode: "ios" });
+  await defineCustomElements(window);
+  ready = true;
+
+};
+
+initialise();
 </script>
 
-<ion-app>
-  <Router {routes} />
-</ion-app>
+{#if ready}
+  <ion-app>
+    <Router {routes} />
+  </ion-app>
+{/if}
