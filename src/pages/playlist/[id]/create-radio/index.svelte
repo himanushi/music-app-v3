@@ -2,9 +2,8 @@
 import { ApolloError } from "@apollo/client/core";
 import { goto } from "@roxi/routify";
 import { mutation } from "svelte-apollo";
-import Button from "~/components/button.svelte";
 import InputCheckbox from "~/components/input-checkbox.svelte";
-import Separate from "~/components/separate.svelte";
+import Messages from "~/components/messages.svelte";
 import { CreateRadioDocument } from "~/graphql/types";
 import type {
   Radio,
@@ -47,37 +46,39 @@ const live = async () => {
 
   } catch (error) {
 
+    disabled = false;
+
     if (error instanceof ApolloError) {
 
       messages = errorMessages(error);
 
     }
 
-  } finally {
-
-    disabled = false;
-
   }
 
 };
 </script>
 
-<form on:submit|preventDefault>
-  <Separate text="Radio" />
+<ion-list>
+  <ion-item-group>
+    <ion-item-divider sticky>
+      <ion-label>Radio</ion-label>
+    </ion-item-divider>
+    <form on:submit|preventDefault>
+      <InputCheckbox
+        label="ランダム放送"
+        bind:checked={random}
+        errorMessages={messages.random}
+      />
+      <Messages
+        messages={["ランダム放送を有効にするとプレイリストの順序がランダムで放送されます"]}
+      />
 
-  <InputCheckbox
-    label="ランダム放送"
-    bind:checked={random}
-    errorMessages={messages.random}
-  />
-
-  <Button class="text-center" {disabled} on:click={live} messages={messages._}>
-    放送開始
-  </Button>
-</form>
-
-<style lang="scss">
-form {
-  @apply text-white flex flex-col items-center space-y-5 py-2;
-}
-</style>
+      <ion-item button {disabled} on:click={live}>
+        <ion-icon color="red" name="radio" slot="start" />
+        放送開始
+      </ion-item>
+      <Messages messages={messages._} />
+    </form>
+  </ion-item-group>
+</ion-list>

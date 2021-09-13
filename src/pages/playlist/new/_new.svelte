@@ -56,7 +56,7 @@ const create = async () => {
 <ion-list>
   <ion-item-group>
     <ion-item-divider sticky>
-      <ion-label>Create Playlist</ion-label>
+      <ion-label>Playlist</ion-label>
     </ion-item-divider>
     <form on:submit|preventDefault>
       <InputText
