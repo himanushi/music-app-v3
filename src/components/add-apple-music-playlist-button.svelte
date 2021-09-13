@@ -48,6 +48,7 @@ $: if ($service.matches("done")) {
 
 {#if tracks.length > 0 && accountService && $accountService.matches("authorized")}
   <ion-item button>
+    <ion-icon name="logo-apple" color="pink" slot="start" />
     <ion-label {disabled} on:click={addPlaylist}>
       {disabled ? "追加中..." : "Apple Music に追加"}
     </ion-label>

@@ -30,11 +30,18 @@ let component: HTMLElement;
 
 {#if me && isAllowed(me, "radios")}
   <Refresher {refresh} bind:loaded />
-  <ion-list>
-    {#key tggle}
-      <Radios params={$params} bind:loaded />
-    {/key}
-  </ion-list>
+
+  <ion-item-group>
+    <ion-item-divider sticky>
+      <ion-label>Radios</ion-label>
+    </ion-item-divider>
+    <ion-list>
+      {#key tggle}
+        <Radios params={$params} bind:loaded />
+      {/key}
+    </ion-list>
+  </ion-item-group>
+
   <SearchDetailButton {component} />
 {/if}
 

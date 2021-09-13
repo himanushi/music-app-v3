@@ -37,9 +37,7 @@ $: me = $query?.data?.me;
     {/if}
 
     <AccountButton />
-  </ion-item-group>
 
-  <ion-item-group>
     <ion-item-divider sticky>
       <ion-label>Music Services</ion-label>
     </ion-item-divider>

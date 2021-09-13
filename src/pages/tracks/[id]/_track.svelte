@@ -1,5 +1,6 @@
 <script lang="ts">
 import { query } from "svelte-apollo";
+import LoadingItems from "~/components/loading-items.svelte";
 import Image from "~/components/square-image.svelte";
 import { TrackDocument } from "~/graphql/types";
 import type {
@@ -49,66 +50,51 @@ $: if ($trackQuery.data && first) {
 </script>
 
 <ion-item-group>
-  <ion-item-divider>
+  <ion-item-divider sticky>
     <ion-label>Track</ion-label>
   </ion-item-divider>
   <Image src={track?.artworkL.url} />
-  <ion-item>
-    {#if track}
+
+  {#if track}
+    <ion-item>
       <ion-label class="ion-text-wrap">
         {track.name}
       </ion-label>
-    {:else}
-      <ion-skeleton-text animated />
-    {/if}
-  </ion-item>
-  <ion-item>
-    {#if track}
+    </ion-item>
+    <ion-item>
       <ion-label class="ion-text-wrap"> 再生時間 </ion-label>
       <ion-note slot="end">
         {convertTime(track.durationMs)}
       </ion-note>
-    {:else}
-      <ion-skeleton-text animated />
-    {/if}
-  </ion-item>
-</ion-item-group>
+    </ion-item>
+  {:else}
+    <LoadingItems count={2} />
+  {/if}
 
-<ion-item-group>
-  <ion-item-divider>
+  <ion-item-divider sticky>
     <ion-label>Tracks</ion-label>
   </ion-item-divider>
   {#if track}
     <ItemCard name={track.name} item={track} items={[track]} index={0} />
   {:else}
-    <ion-item>
-      <ion-skeleton-text animated />
-    </ion-item>
+    <LoadingItems />
   {/if}
-</ion-item-group>
 
-<ion-item-group>
-  <ion-item-divider>
+  <ion-item-divider sticky>
     <ion-label>Artists</ion-label>
   </ion-item-divider>
   {#if artistsVariables}
     <Artists variables={artistsVariables} />
   {:else}
-    <ion-item>
-      <ion-skeleton-text animated />
-    </ion-item>
+    <LoadingItems />
   {/if}
-</ion-item-group>
 
-<ion-item-group>
-  <ion-item-divider>
+  <ion-item-divider sticky>
     <ion-label>Albums</ion-label>
   </ion-item-divider>
   {#if albumsVariables}
     <Albums variables={albumsVariables} />
   {:else}
-    <ion-item>
-      <ion-skeleton-text animated />
-    </ion-item>
+    <LoadingItems />
   {/if}
 </ion-item-group>

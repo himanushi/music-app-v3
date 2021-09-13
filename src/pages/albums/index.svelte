@@ -30,11 +30,18 @@ let modal: HTMLElement;
 
 {#if me && isAllowed(me, "albums")}
   <Refresher {refresh} bind:loaded />
-  <ion-list>
-    {#key tggle}
-      <Albums params={$params} bind:loaded />
-    {/key}
-  </ion-list>
+
+  <ion-item-group>
+    <ion-item-divider sticky>
+      <ion-label>Albums</ion-label>
+    </ion-item-divider>
+    <ion-list>
+      {#key tggle}
+        <Albums params={$params} bind:loaded />
+      {/key}
+    </ion-list>
+  </ion-item-group>
+
   <SearchDetailButton component={modal} />
 {/if}
 

@@ -4,6 +4,7 @@ import FabButton from "./_fab-button.svelte";
 import AddAppleMusicPlaylistButton from "~/components/add-apple-music-playlist-button.svelte";
 import AddPlaylistButton from "~/components/add-playlist-button.svelte";
 import Favorite from "~/components/favorite.svelte";
+import LoadingItems from "~/components/loading-items.svelte";
 import Image from "~/components/square-image.svelte";
 import TwitterButton from "~/components/twitter-button.svelte";
 import { PlaylistDocument } from "~/graphql/types";
@@ -48,74 +49,50 @@ const hashtags = [
 
   <Image src={playlist?.track?.artworkL?.url} />
 
-  <ion-item>
-    {#if playlist}
+  {#if playlist}
+    <ion-item>
       <ion-label class="ion-text-wrap">
         {playlist.name}
       </ion-label>
-    {:else}
-      <ion-skeleton-text animated />
-    {/if}
-  </ion-item>
-  <ion-item>
-    {#if playlist}
+    </ion-item>
+    <ion-item>
       <ion-label class="ion-text-wrap">
         {playlist.description}
       </ion-label>
-    {:else}
-      <ion-skeleton-text animated />
-    {/if}
-  </ion-item>
-  {#if playlist && playlist.author}
-    <ion-item>
-      <ion-label class="ion-text-wrap"> 作者 </ion-label>
-      <ion-note slot="end">
-        {playlist.author.name}(@{playlist.author.username})
-      </ion-note>
     </ion-item>
-  {/if}
-  <ion-item>
-    {#if playlist}
+    {#if playlist && playlist.author}
+      <ion-item>
+        <ion-label class="ion-text-wrap"> 作者 </ion-label>
+        <ion-note slot="end">
+          {playlist.author.name}(@{playlist.author.username})
+        </ion-note>
+      </ion-item>
+    {/if}
+    <ion-item>
       <ion-label class="ion-text-wrap"> 曲数 </ion-label>
       <ion-note slot="end">
         {playlist.items.length}曲
       </ion-note>
-    {:else}
-      <ion-skeleton-text animated />
-    {/if}
-  </ion-item>
-  <ion-item>
-    {#if playlist}
+    </ion-item>
+    <ion-item>
       <ion-label class="ion-text-wrap"> 再生時間 </ion-label>
       <ion-note slot="end">
         {convertTime(toMs(playlist.items.map((item) => item.track)))}
       </ion-note>
-    {:else}
-      <ion-skeleton-text animated />
-    {/if}
-  </ion-item>
-  <ion-item>
-    {#if playlist}
+    </ion-item>
+    <ion-item>
       <ion-label class="ion-text-wrap"> 作成日 </ion-label>
       <ion-note slot="end">
         {convertDate(playlist.createdAt)}
       </ion-note>
-    {:else}
-      <ion-skeleton-text animated />
-    {/if}
-  </ion-item>
-  <ion-item>
-    {#if playlist}
+    </ion-item>
+    <ion-item>
       <ion-label class="ion-text-wrap"> 更新日 </ion-label>
       <ion-note slot="end">
         {convertDate(playlist.updatedAt)}
       </ion-note>
-    {:else}
-      <ion-skeleton-text animated />
-    {/if}
-  </ion-item>
-  <ion-item>
-    {#if playlist}
+    </ion-item>
+    <ion-item>
       <ion-buttons slot="end">
         <TwitterButton
           title={playlist.name}
@@ -125,12 +102,11 @@ const hashtags = [
         <Favorite type="playlist" id={playlist.id} />
         <AddPlaylistButton tracks={playlist.items.map((item) => item.track)} />
       </ion-buttons>
-    {:else}
-      <ion-skeleton-text animated />
-    {/if}
-  </ion-item>
-</ion-item-group>
-<ion-item-group>
+    </ion-item>
+  {:else}
+    <LoadingItems count={8} />
+  {/if}
+
   <ion-item-divider sticky>
     <ion-label>Music Services</ion-label>
   </ion-item-divider>
@@ -141,12 +117,9 @@ const hashtags = [
       tracks={playlist.items.map((it) => it.track)}
     />
   {:else}
-    <ion-item>
-      <ion-skeleton-text animated />
-    </ion-item>
+    <LoadingItems />
   {/if}
-</ion-item-group>
-<ion-item-group>
+
   <ion-item-divider sticky>
     <ion-label>Tracks</ion-label>
   </ion-item-divider>
@@ -160,9 +133,7 @@ const hashtags = [
       />
     {/each}
   {:else}
-    <ion-item>
-      <ion-skeleton-text animated />
-    </ion-item>
+    <LoadingItems />
   {/if}
 </ion-item-group>
 

@@ -155,9 +155,7 @@ $: viewable =
           </ion-item>
         {/each}
       {/if}
-    </ion-item-group>
 
-    <ion-item-group>
       <ion-item-divider sticky>
         <ion-label>Playlist Tracks</ion-label>
       </ion-item-divider>

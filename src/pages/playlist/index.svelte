@@ -31,11 +31,18 @@ let component: HTMLElement;
 
 {#if me && isAllowed(me, "playlists")}
   <Refresher {refresh} bind:loaded />
-  <ion-list>
-    {#key tggle}
-      <Playlists params={$params} bind:loaded />
-    {/key}
-  </ion-list>
+
+  <ion-item-group>
+    <ion-item-divider sticky>
+      <ion-label>Playlists</ion-label>
+    </ion-item-divider>
+    <ion-list>
+      {#key tggle}
+        <Playlists params={$params} bind:loaded />
+      {/key}
+    </ion-list>
+  </ion-item-group>
+
   <SearchDetailButton {component} />
   <NewButton />
 {/if}

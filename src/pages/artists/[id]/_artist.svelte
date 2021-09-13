@@ -1,6 +1,7 @@
 <script lang="ts">
 import { query } from "svelte-apollo";
 import Favorite from "~/components/favorite.svelte";
+import LoadingItems from "~/components/loading-items.svelte";
 import Image from "~/components/square-image.svelte";
 import { ArtistDocument } from "~/graphql/types";
 import type {
@@ -56,35 +57,27 @@ $: if ($artistQuery.data && first) {
     <ion-label>Artist</ion-label>
   </ion-item-divider>
   <Image src={artist?.artworkL?.url} />
-  <ion-item>
-    {#if artist}
+  {#if artist}
+    <ion-item>
       <ion-label class="ion-text-wrap">
         {artist.name}
       </ion-label>
-    {:else}
-      <ion-skeleton-text animated />
-    {/if}
-  </ion-item>
-  <ion-item>
-    {#if artist}
+    </ion-item>
+    <ion-item>
       <ion-buttons slot="end">
         <Favorite type="artist" id={artist.id} />
       </ion-buttons>
-    {:else}
-      <ion-skeleton-text animated />
-    {/if}
-  </ion-item>
-</ion-item-group>
+    </ion-item>
+  {:else}
+    <LoadingItems count={2} />
+  {/if}
 
-<ion-item-group>
   <ion-item-divider sticky>
     <ion-label>Albums</ion-label>
   </ion-item-divider>
   {#if variables}
     <Albums {variables} />
   {:else}
-    <ion-item>
-      <ion-skeleton-text animated />
-    </ion-item>
+    <LoadingItems />
   {/if}
 </ion-item-group>

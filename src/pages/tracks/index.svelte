@@ -30,11 +30,17 @@ let component: HTMLElement;
 </script>
 
 {#if me && isAllowed(me, "tracks")}
-  {#if canSearch}
-    <ion-list>
-      <Tracks params={$params} />
-    </ion-list>
-  {/if}
+  <ion-item-group>
+    <ion-item-divider sticky>
+      <ion-label>Tracks</ion-label>
+    </ion-item-divider>
+    {#if canSearch}
+      <ion-list>
+        <Tracks params={$params} />
+      </ion-list>
+    {/if}
+  </ion-item-group>
+
   <SearchDetailButton {component} />
 {/if}
 

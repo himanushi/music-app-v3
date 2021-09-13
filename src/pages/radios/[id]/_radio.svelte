@@ -2,6 +2,7 @@
 import { query } from "svelte-apollo";
 import DeleteButton from "./_delete-button.svelte";
 import LiveButton from "./_live-button.svelte";
+import LoadingItems from "~/components/loading-items.svelte";
 import SettingAppleMusicButton from "~/components/setting-apple-music-button.svelte";
 import Image from "~/components/square-image.svelte";
 import { RadioDocument } from "~/graphql/types";
@@ -36,28 +37,21 @@ $: if ($radioQuery?.data && first) {
   </ion-item-divider>
 
   <Image src={radio?.track?.artworkL.url} />
-
-  <ion-item>
-    {#if radio}
+  {#if radio}
+    <ion-item>
       <ion-label class="ion-text-wrap">
         {radio.name}
       </ion-label>
-    {:else}
-      <ion-skeleton-text animated />
-    {/if}
-  </ion-item>
-
-  <ion-item>
-    {#if radio}
+    </ion-item>
+    <ion-item>
       <ion-label class="ion-text-wrap">
         {radio.description}
       </ion-label>
-    {:else}
-      <ion-skeleton-text animated />
-    {/if}
-  </ion-item>
-</ion-item-group>
-<ion-item-group>
+    </ion-item>
+  {:else}
+    <LoadingItems count={2} />
+  {/if}
+
   <ion-item-divider sticky>
     <ion-label>Live</ion-label>
   </ion-item-divider>

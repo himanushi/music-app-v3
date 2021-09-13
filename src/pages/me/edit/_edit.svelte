@@ -80,9 +80,7 @@ const signup = async () => {
       更新する
     </ion-item>
     <Messages type="error" messages={messages._} />
-  </ion-item-group>
 
-  <ion-item-group>
     <ion-item-divider sticky>
       <ion-label>Password</ion-label>
     </ion-item-divider>
