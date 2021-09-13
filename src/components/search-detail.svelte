@@ -1,17 +1,16 @@
 <script lang="ts">
 import { closeModal } from "~/lib/ionic";
+import ModalContent from "~/pages/_modal-content.svelte";
 
 export let title: string;
 export let onClick: () => void;
 
-const click = () => {
+const click = async () => {
 
+  await closeModal();
   onClick();
-  closeModal();
 
 };
-
-const close = () => closeModal();
 </script>
 
 <ion-header>
@@ -19,26 +18,17 @@ const close = () => closeModal();
     <ion-title>{title}</ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content>
+<ModalContent>
   <ion-list>
     <slot />
+    <ion-item button on:click={click}>
+      <ion-icon name="search-outline" slot="start" />
+      検索
+    </ion-item>
   </ion-list>
-  <ion-grid>
-    <ion-row class="ion-text-center">
-      <ion-col>
-        <ion-button on:click={click}>
-          <ion-icon name="search-outline" />
-        </ion-button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-</ion-content>
+</ModalContent>
 <ion-footer>
   <ion-toolbar color="main">
-    <ion-buttons slot="end">
-      <ion-button on:click={close}>
-        <ion-icon name="close" />
-      </ion-button>
-    </ion-buttons>
+    <ion-thumbnail />
   </ion-toolbar>
 </ion-footer>

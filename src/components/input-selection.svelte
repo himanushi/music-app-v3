@@ -15,7 +15,7 @@ const onChange = (event: Event) => {
 </script>
 
 <ion-item>
-  <ion-label>{label}</ion-label>
+  <ion-label position="stacked">{label}</ion-label>
   <ion-select
     {value}
     on:ionChange={onChange}
