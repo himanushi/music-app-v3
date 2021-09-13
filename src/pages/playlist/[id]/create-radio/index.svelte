@@ -78,7 +78,10 @@ const live = async () => {
         <ion-icon color="red" name="radio" slot="start" />
         放送開始
       </ion-item>
-      <Messages messages={messages._} />
+      <Messages
+        messages={["すでにこのプレイリストで放送開始している場合はラジオが更新されます"]}
+      />
+      <Messages type="error" messages={messages._} />
     </form>
   </ion-item-group>
 </ion-list>

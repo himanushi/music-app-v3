@@ -1,6 +1,6 @@
 <script lang="ts">
 import { query } from "svelte-apollo";
-import DeleteButton from "./_delete-button.svelte";
+import FabButton from "./_fab-button.svelte";
 import LiveButton from "./_live-button.svelte";
 import LoadingItems from "~/components/loading-items.svelte";
 import SettingAppleMusicButton from "~/components/setting-apple-music-button.svelte";
@@ -63,3 +63,7 @@ $: if ($radioQuery?.data && first) {
     />
   {/if}
 </ion-item-group>
+
+{#if isMine}
+  <FabButton {id} />
+{/if}

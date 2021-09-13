@@ -1,22 +1,17 @@
 <script lang="ts">
 import { goto } from "@roxi/routify";
 import { mutation } from "svelte-apollo";
-import type { Props } from "~/components/confirm.svelte";
-import Confirm from "~/components/confirm.svelte";
-import IconButton from "~/components/icon-button.svelte";
-import { modals } from "~/components/modals.svelte";
 import type {
-  Playlist,
   DeleteRadioMutation,
   DeleteRadioMutationVariables
 } from "~/graphql/types";
 import { DeleteRadioDocument } from "~/graphql/types";
-import Trash from "~/icons/trash.svelte";
-import { openToast } from "~/lib/ionic";
+import {
+  openConfirm, openToast
+} from "~/lib/ionic";
 import {
   isAllowed, meQuery
 } from "~/lib/me";
-import { playerService } from "~/machines/jukebox-machine";
 
 export let id: string;
 
@@ -27,70 +22,58 @@ const deleteRadio =
 
 const remove = () => {
 
-  modals.open<Props>({
-    component: Confirm,
-    props: {
-      noClick: () => modals.close(),
-      title: "削除しますか？",
-      yesClick: async () => {
+  openConfirm({
+    buttons: [
+      {
+        cssClass: "secondary",
+        handler: () => true,
+        role: "cancel",
+        text: "キャンセル"
+      },
+      {
+        handler: () => {
 
-        try {
+          (async () => {
 
-          const result = await deleteRadio({ variables: { input: { radioId: id } } });
-          const playlist = result?.data?.deleteRadio?.playlist as Playlist;
+            try {
 
-          openToast({
-            color: "green",
-            duration: 5000,
-            message: "ラジオを削除しました"
-          });
+              await deleteRadio({ variables: { input: { radioId: id } } });
 
-          modals.close();
-          $goto("/playlist/:id", { id: playlist.id });
+              openToast({
+                color: "green",
+                duration: 5000,
+                message: "ラジオを削除しました"
+              });
 
-        } catch (error) {
+              $goto("/radios");
 
-          openToast({
-            color: "red",
-            duration: 5000,
-            message: "エラーが発生しました"
-          });
+            } catch (error) {
 
-          modals.close();
+              openToast({
+                color: "red",
+                duration: 5000,
+                message: "エラーが発生しました"
+              });
 
-        }
+            }
 
+          })();
+
+        },
+        text: "削除"
       }
-    }
+    ],
+    header: "削除しますか？"
   });
 
 };
-
-let className = "bottom-4";
-
-$: if ($playerService.context.currentTrack) {
-
-  className = "bottom-20";
-
-}
 
 const query = meQuery();
 $: me = $query?.data?.me;
 </script>
 
 {#if me && isAllowed(me, "deleteRadio")}
-  <span class={className} on:click={remove}>
-    <IconButton class="w-14 h-14">
-      <Trash class="w-8 h-8" />
-    </IconButton>
-  </span>
+  <ion-fab-button color="red" on:click={remove}>
+    <ion-icon name="trash-outline" />
+  </ion-fab-button>
 {/if}
-
-<style lang="scss">
-span {
-  @apply fixed right-5;
-  @apply flex items-center justify-center;
-  @apply h-14 w-14 rounded-full bg-red-400;
-  @apply shadow;
-}
-</style>
