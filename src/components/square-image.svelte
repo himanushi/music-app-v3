@@ -4,7 +4,7 @@ export let alt: string | null | undefined = null;
 
 $: if (!src) {
 
-  src = "/no-image.jpeg";
+  src = "/no-image.png";
 
 }
 </script>
