@@ -19,8 +19,11 @@ import "@ionic/core/css/display.css";
 import "~/theme/variables.css";
 import "~/theme/custom.css";
 
+import { setupConfig } from "@ionic/core";
 import { Router } from "@roxi/routify";
 import { routes } from "routify/routes";
+
+setupConfig({ mode: "ios" });
 </script>
 
 <ion-app>
