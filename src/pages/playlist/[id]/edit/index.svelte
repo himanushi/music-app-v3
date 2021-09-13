@@ -1,19 +1,18 @@
 <script lang="ts">
+import { ApolloError } from "@apollo/client";
 import { goto } from "@roxi/routify";
 import {
   mutation, query
 } from "svelte-apollo";
-import Button from "~/components/button.svelte";
-import DndSelection from "~/components/dnd-selection.svelte";
-import type { ItemsType } from "~/components/dnd-selection.svelte";
 import InputText from "~/components/input-item.svelte";
 import InputSelection from "~/components/input-selection.svelte";
 import InputTextarea from "~/components/input-textarea.svelte";
+import Messages from "~/components/messages.svelte";
 import PlayButton from "~/components/play-button.svelte";
-import Text from "~/components/text.svelte";
 import {
   PlaylistDocument, UpsertPlaylistDocument
 } from "~/graphql/types";
+import type { Track } from "~/graphql/types";
 import type {
   Playlist,
   PlaylistQuery,
@@ -30,7 +29,7 @@ export let id = "";
 let name = "";
 let description = "";
 let publicType: PlaylistPublicTypeEnum = "NON_OPEN";
-let items: ItemsType = [];
+let tracks: Track[] = [];
 let messages: Record<string, string[]> = {};
 
 const playlistQuery = query<PlaylistQuery>(PlaylistDocument, {
@@ -49,11 +48,7 @@ $: if ($playlistQuery.data?.playlist && initialize) {
     name, description, publicType
   } = playlist);
 
-  items = playlist.items.map((it, index) => ({
-    id: index,
-    index,
-    item: it.track
-  }));
+  tracks = playlist.items.map((item) => item.track);
 
   initialize = false;
 
@@ -63,8 +58,10 @@ const upsertPlaylist = mutation<unknown, UpsertPlaylistMutationVariables>(
   UpsertPlaylistDocument
 );
 
+let disabled = false;
 const update = async () => {
 
+  disabled = true;
   try {
 
     await upsertPlaylist({ variables: { input: {
@@ -72,14 +69,20 @@ const update = async () => {
       name,
       playlistId: id,
       publicType,
-      trackIds: items.map((it) => it.item.id)
+      trackIds: tracks.map((track) => track.id)
     } } });
 
     $goto("/playlist/:id", { id });
 
   } catch (error) {
 
-    messages = errorMessages(error);
+    disabled = false;
+
+    if (error instanceof ApolloError) {
+
+      messages = errorMessages(error);
+
+    }
 
   }
 
@@ -87,11 +90,17 @@ const update = async () => {
 
 const changeItems = (
   event: CustomEvent & {
-    detail: { items: any[] };
+    detail: { from: number; to: number; complete: Function };
   }
 ) => {
 
-  ({ items } = event.detail);
+  tracks = event.detail.complete(tracks);
+
+};
+
+const removeItem = (index: number) => () => {
+
+  tracks = tracks.filter((_, idx) => idx !== index);
 
 };
 
@@ -117,13 +126,13 @@ $: viewable =
 </script>
 
 <ion-list>
-  <ion-item-group>
-    <ion-item-divider sticky>
-      <ion-label>Playlist</ion-label>
-    </ion-item-divider>
+  <form on:submit|preventDefault>
+    <ion-item-group>
+      <ion-item-divider sticky>
+        <ion-label>Playlist</ion-label>
+      </ion-item-divider>
 
-    {#if viewable}
-      <form on:submit|preventDefault>
+      {#if viewable}
         <InputText
           label="タイトル"
           bind:value={name}
@@ -139,33 +148,49 @@ $: viewable =
           bind:value={publicType}
           items={publicTypes}
         />
+      {:else}
+        {#each new Array(8) as item}
+          <ion-item>
+            <ion-skeleton-text animated />
+          </ion-item>
+        {/each}
+      {/if}
+    </ion-item-group>
 
-        <div class="items">
-          <DndSelection
-            on:remove={changeItems}
-            on:decide={changeItems}
-            {items}
-            let:item
-            let:index
-            class={"max-h-[500px]"}
-          >
-            <span class="item">
-              <span class="icon">
-                <PlayButton
-                  {name}
-                  {index}
-                  tracks={items.map((it) => it.item)}
-                />
-              </span>
-              <Text>{item.item.name}</Text>
-            </span>
-          </DndSelection>
-        </div>
+    <ion-item-group>
+      <ion-item-divider sticky>
+        <ion-label>Playlist Tracks</ion-label>
+      </ion-item-divider>
+      {#if viewable}
+        <ion-reorder-group on:ionItemReorder={changeItems} disabled={false}>
+          {#each tracks as track, index}
+            <ion-item>
+              <ion-reorder slot="start">
+                <ion-icon name="reorder-two" />
+              </ion-reorder>
+              <ion-buttons slot="start">
+                <PlayButton {name} {index} {tracks} />
+              </ion-buttons>
+              <ion-label>{track.name}</ion-label>
+              <ion-buttons slot="end">
+                <ion-button on:click={removeItem(index)}>
+                  <ion-icon name="trash-outline" color="red" />
+                </ion-button>
+              </ion-buttons>
+            </ion-item>
+          {/each}
+        </ion-reorder-group>
+      {:else}
+        <ion-item>
+          <ion-skeleton-text animated />
+        </ion-item>
+      {/if}
 
-        <Button class="text-center" on:click={update} messages={messages._}>
-          保存
-        </Button>
-      </form>
-    {/if}
-  </ion-item-group>
+      <ion-item button {disabled} on:click={update}>
+        <ion-icon name="musical-notes-outline" color="main" slot="start" />
+        保存
+      </ion-item>
+      <Messages type="error" messages={messages._} />
+    </ion-item-group>
+  </form>
 </ion-list>
