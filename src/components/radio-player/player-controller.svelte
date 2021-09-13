@@ -2,24 +2,14 @@
 import { goto } from "@roxi/routify";
 import AddPlaylistButton from "../add-playlist-button.svelte";
 import Favorite from "../favorite.svelte";
-import { modals } from "../modals.svelte";
-import IconButton from "~/components/icon-button.svelte";
-import Link from "~/icons/link.svelte";
-import Live from "~/icons/live.svelte";
-import LoadingIcon from "~/icons/loading.svelte";
-import Stop from "~/icons/stop.svelte";
+import { closeModal } from "~/lib/ionic";
 import { playerService } from "~/machines/jukebox-machine";
 import { radioService } from "~/machines/radio-machine";
 
 $: player = $playerService.context.musicPlayerRef;
-
 $: disabled = player && $player.value === "loading";
 
-const stop = () => {
-
-  playerService.send("PAUSE");
-
-};
+const stop = () => playerService.send("PAUSE");
 
 const live = () => {
 
@@ -34,12 +24,12 @@ const live = () => {
 
 };
 
-const trackLink = () => {
+const link = async () => {
 
   if (player && $player.context.track?.id) {
 
+    await closeModal();
     const { id } = $player.context.track;
-    modals.close();
     $goto("/tracks/:id", { id });
 
   }
@@ -47,43 +37,36 @@ const trackLink = () => {
 };
 </script>
 
-<div>
-  <div>
-    {#if player}
-      {#if $player.value === "playing"}
-        <IconButton {disabled} class="h-16 w-16" on:click={stop}>
-          <Stop class="text-white h-12 w-12" />
-        </IconButton>
-      {:else if $player.value === "loading"}
-        <IconButton class="h-16 w-16">
-          <LoadingIcon />
-        </IconButton>
-      {:else}
-        <IconButton {disabled} class="h-16 w-16" on:click={live}>
-          <Live class="text-red-500 h-12 w-12 mb-2" />
-        </IconButton>
-      {/if}
-    {/if}
-  </div>
-
-  <div>
+<ion-item>
+  <ion-buttons slot="end">
     {#if player && $player.context.track}
+      <ion-button size="large" on:click={link}>
+        <ion-icon slot="icon-only" name="link" />
+      </ion-button>
       <Favorite type="track" id={$player.context.track.id} />
-      <AddPlaylistButton class="h-11 w-11" tracks={[$player.context.track]} />
+      <AddPlaylistButton tracks={[$player.context.track]} />
     {/if}
+  </ion-buttons>
+</ion-item>
 
-    <IconButton class="h-11 w-11" on:click={trackLink}>
-      <Link class="h-11 w-11 text-white" />
-    </IconButton>
-  </div>
-</div>
-
-<style lang="scss">
-div {
-  @apply flex flex-col items-center justify-center;
-
-  div {
-    @apply grid grid-flow-col gap-2;
-  }
-}
-</style>
+<ion-grid>
+  <ion-row>
+    <ion-col class="ion-text-center">
+      {#if player}
+        {#if $player.value === "playing"}
+          <ion-button shape="round" size="large" {disabled} on:click={stop}>
+            <ion-icon slot="icon-only" name="stop" />
+          </ion-button>
+        {:else if $player.value === "loading"}
+          <ion-button shape="round" size="large" {disabled}>
+            <ion-icon slot="icon-only" name="sync" />
+          </ion-button>
+        {:else}
+          <ion-button shape="round" size="large" {disabled} on:click={live}>
+            <ion-icon slot="icon-only" color="red" name="radio" />
+          </ion-button>
+        {/if}
+      {/if}
+    </ion-col>
+  </ion-row>
+</ion-grid>

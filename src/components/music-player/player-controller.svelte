@@ -49,10 +49,10 @@ const link = () => {
 
 <ion-item>
   <ion-buttons slot="end">
-    <ion-button size="large" on:click={link}>
-      <ion-icon slot="icon-only" name="link" />
-    </ion-button>
     {#if player && $player.context.track}
+      <ion-button size="large" on:click={link}>
+        <ion-icon slot="icon-only" name="link" />
+      </ion-button>
       <Favorite type="track" id={$player.context.track.id} />
       <AddPlaylistButton tracks={[$player.context.track]} />
     {/if}

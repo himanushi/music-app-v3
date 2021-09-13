@@ -1,7 +1,6 @@
 <script lang="ts">
 import { tweened } from "svelte/motion";
 import SeekBar from "~/components/seek-bar.svelte";
-import Text from "~/components/text.svelte";
 import { playerService } from "~/machines/jukebox-machine";
 
 // seek を滑らかに動かす

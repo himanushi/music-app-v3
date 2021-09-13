@@ -12,7 +12,9 @@ export const openPlayer = () => {
 <script lang="ts">
 import Player from "~/components/music-player/index.svelte";
 import Queue from "~/components/queue/index.svelte";
+import Radio from "~/components/radio-player/index.svelte";
 import { openModal } from "~/lib/ionic";
+import { playerService } from "~/machines/jukebox-machine";
 
 let component: HTMLElement;
 
@@ -27,28 +29,36 @@ $: if (component && $playerId) {
 <span style="display:none">
   <span bind:this={component}>
     <ion-tabs>
-      <ion-tab tab="player">
-        <ion-header translucent>
-          <ion-toolbar>
-            <ion-title>Music Player</ion-title>
-          </ion-toolbar>
-        </ion-header>
-        <Player />
-      </ion-tab>
+      {#if $playerService.context.isRadio}
+        <ion-tab tab="radio">
+          <Radio />
+        </ion-tab>
+      {:else}
+        <ion-tab tab="player">
+          <Player />
+        </ion-tab>
 
-      <ion-tab tab="queue">
-        <Queue />
-      </ion-tab>
+        <ion-tab tab="queue">
+          <Queue />
+        </ion-tab>
+      {/if}
 
       <ion-tab-bar color="main" slot="bottom">
-        <ion-tab-button tab="player">
-          <ion-label>Player</ion-label>
-          <ion-icon name="musical-note" />
-        </ion-tab-button>
-        <ion-tab-button tab="queue">
-          <ion-label>Queue</ion-label>
-          <ion-icon name="list" />
-        </ion-tab-button>
+        {#if $playerService.context.isRadio}
+          <ion-tab-button tab="radio">
+            <ion-label>Radio</ion-label>
+            <ion-icon color="red" name="radio" />
+          </ion-tab-button>
+        {:else}
+          <ion-tab-button tab="player">
+            <ion-label>Player</ion-label>
+            <ion-icon name="musical-note" />
+          </ion-tab-button>
+          <ion-tab-button tab="queue">
+            <ion-label>Queue</ion-label>
+            <ion-icon name="list" />
+          </ion-tab-button>
+        {/if}
       </ion-tab-bar>
     </ion-tabs>
   </span>
