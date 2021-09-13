@@ -91,6 +91,11 @@ $: if (service && $service.matches("active") && infiniteScroll) {
 }
 </script>
 
+{#if !loaded}
+  <!-- 初回表示 -->
+  <ion-spinner name="lines" />
+{/if}
+
 {#each items as item, index (`${item.id}_${index}`)}
   <slot {items} {item} {index} />
 {/each}
@@ -102,3 +107,10 @@ $: if (service && $service.matches("active") && infiniteScroll) {
 >
   <ion-infinite-scroll-content loading-spinner="lines" />
 </ion-infinite-scroll>
+
+<style lang="scss">
+ion-spinner {
+  display: block;
+  margin: auto;
+}
+</style>
