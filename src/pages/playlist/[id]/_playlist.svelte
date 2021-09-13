@@ -1,5 +1,6 @@
 <script lang="ts">
 import { query } from "svelte-apollo";
+import FabButton from "./_fab-button.svelte";
 import AddAppleMusicPlaylistButton from "~/components/add-apple-music-playlist-button.svelte";
 import AddPlaylistButton from "~/components/add-playlist-button.svelte";
 import Favorite from "~/components/favorite.svelte";
@@ -164,3 +165,7 @@ const hashtags = [
     </ion-item>
   {/if}
 </ion-item-group>
+
+{#if playlist && playlist.isMine}
+  <FabButton {id} />
+{/if}

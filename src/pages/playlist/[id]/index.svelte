@@ -1,5 +1,4 @@
 <script lang="ts">
-import FabButton from "./_fab-button.svelte";
 import Playlist from "./_playlist.svelte";
 import {
   isAllowed, meQuery
@@ -13,5 +12,4 @@ $: me = $query?.data?.me;
 
 {#if me && isAllowed(me, "playlist")}
   <Playlist {id} />
-  <FabButton {id} />
 {/if}
