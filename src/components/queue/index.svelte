@@ -1,6 +1,7 @@
 <script lang="ts">
 import { goto } from "@roxi/routify";
 import AddPlaylistButton from "~/components/add-playlist-button.svelte";
+import Favorite from "~/components/favorite.svelte";
 import { canPlay } from "~/components/play-button.svelte";
 import { closeModal } from "~/lib/ionic";
 import { playerService } from "~/machines/jukebox-machine";
@@ -96,6 +97,7 @@ const link = () => {
         </ion-buttons>
         <ion-label>{track.name}</ion-label>
         <ion-buttons slot="end">
+          <Favorite type="track" id={track.id} />
           <ion-button on:click={remove(index)}>
             <ion-icon name="trash-outline" color="red" />
           </ion-button>

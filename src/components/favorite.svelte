@@ -18,7 +18,7 @@ const query = meQuery();
 $: me = $query?.data?.me;
 
 let favorite = false;
-let icon: HTMLElement;
+let icon: any;
 
 $: if (me) {
 
