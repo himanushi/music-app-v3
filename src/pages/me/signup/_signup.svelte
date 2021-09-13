@@ -26,12 +26,14 @@ let newPasswordConfirmation: string;
 let recaptcha: RecaptchaV2;
 let messages: Record<string, string[]> = {};
 let term: boolean;
+let disabled = false;
 
 const mutate =
   mutation<SignupMutation, SignupMutationVariables>(SignupDocument);
 
 const signup = async () => {
 
+  disabled = true;
   try {
 
     await mutate({
@@ -60,6 +62,10 @@ const signup = async () => {
       messages = errorMessages(error);
 
     }
+
+  } finally {
+
+    disabled = false;
 
   }
 
@@ -116,7 +122,11 @@ const openTerms = async () => {
       <Messages type="error" messages={messages.recaptcha} />
 
       <ion-item
-        disabled={!term || !name || !newPassword || !newPasswordConfirmation}
+        disabled={!term ||
+          !name ||
+          !newPassword ||
+          !newPasswordConfirmation ||
+          disabled}
         on:click={signup}
         button
       >

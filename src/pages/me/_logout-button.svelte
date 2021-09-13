@@ -2,6 +2,7 @@
 import { ApolloError } from "@apollo/client/core";
 import { goto } from "@roxi/routify";
 import { mutation } from "svelte-apollo";
+import Messages from "~/components/messages.svelte";
 import {
   LogoutDocument, MeDocument
 } from "~/graphql/types";
@@ -12,12 +13,14 @@ import { errorMessages } from "~/lib/error";
 import { openToast } from "~/lib/ionic";
 
 let messages: Record<string, string[]> = {};
+let disabled = false;
 
 const mutate =
   mutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument);
 
 const logout = async () => {
 
+  disabled = true;
   try {
 
     await mutate({
@@ -41,12 +44,17 @@ const logout = async () => {
 
     }
 
+  } finally {
+
+    disabled = false;
+
   }
 
 };
 </script>
 
-<ion-item button on:click={logout}>
+<ion-item {disabled} button on:click={logout}>
   <ion-icon color="red" name="exit-outline" slot="start" />
   ログアウト
 </ion-item>
+<Messages type="error" messages={messages._} />

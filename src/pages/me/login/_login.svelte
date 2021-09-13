@@ -18,11 +18,13 @@ let currentPassword: string;
 let username: string;
 let recaptcha: RecaptchaV2;
 let messages: Record<string, string[]> = {};
+let disabled = false;
 
 const mutate = mutation<LoginMutation, LoginMutationVariables>(LoginDocument);
 
 const login = async () => {
 
+  disabled = true;
   try {
 
     await mutate({
@@ -49,6 +51,10 @@ const login = async () => {
       recaptcha.reset();
 
     }
+
+  } finally {
+
+    disabled = false;
 
   }
 
@@ -77,10 +83,11 @@ const login = async () => {
       <RecaptchaV2 bind:this={recaptcha} />
       <Messages type="error" messages={messages.recaptcha} />
 
-      <ion-item on:click={login} button>
+      <ion-item {disabled} on:click={login} button>
         <ion-icon color="blue" name="log-in-outline" slot="start" />
         <ion-label>ログイン</ion-label>
       </ion-item>
+      <Messages type="error" messages={messages._} />
     </form>
   </ion-item-group>
 </ion-list>

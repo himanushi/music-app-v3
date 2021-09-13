@@ -19,12 +19,14 @@ let currentPassword: string;
 let newPassword: string;
 let newPasswordConfirmation: string;
 let messages: Record<string, string[]> = {};
+let disabled = false;
 
 const mutate =
   mutation<UpdateMeMutation, UpdateMeMutationVariables>(UpdateMeDocument);
 
 const signup = async () => {
 
+  disabled = true;
   try {
 
     await mutate({
@@ -53,6 +55,10 @@ const signup = async () => {
 
     }
 
+  } finally {
+
+    disabled = false;
+
   }
 
 };
@@ -71,7 +77,7 @@ const signup = async () => {
       errorMessages={messages.name}
     />
 
-    <ion-item button on:click={signup}>
+    <ion-item {disabled} button on:click={signup}>
       <ion-icon name="build-outline" slot="start" />
       更新する
     </ion-item>
@@ -105,7 +111,7 @@ const signup = async () => {
         autocomplete="new-password"
       />
 
-      <ion-item button on:click={signup}>
+      <ion-item {disabled} button on:click={signup}>
         <ion-icon name="build-outline" slot="start" />
         更新する
       </ion-item>
