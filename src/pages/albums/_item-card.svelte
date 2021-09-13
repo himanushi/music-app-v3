@@ -2,8 +2,6 @@
 import { goto } from "@roxi/routify";
 import Favorite from "~/components/favorite.svelte";
 import type { Album } from "~/graphql/types";
-import Logo from "~/icons/logo-apple-music.svg";
-import LogoItunes from "~/icons/logo-itunes.svg";
 
 export let item: Album;
 
@@ -16,9 +14,9 @@ const isAppleMusic = Boolean(item.appleMusicAlbum);
     <ion-img src={item.artworkM?.url} alt={item.name} />
   </ion-thumbnail>
   {#if isAppleMusic}
-    <ion-icon slot="start" src={Logo} />
+    <ion-icon slot="start" src="/assets/logo-apple-music.svg" />
   {:else}
-    <ion-icon slot="start" src={LogoItunes} />
+    <ion-icon slot="start" src="/assets/logo-itunes.svg" />
   {/if}
   <ion-label>{item.name}</ion-label>
   <ion-buttons slot="end">

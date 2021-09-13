@@ -1,5 +1,4 @@
 <script lang="ts">
-import Logo from "~/icons/logo-apple-music.svg";
 import {
   isAllowed, meQuery
 } from "~/lib/me";
@@ -16,7 +15,7 @@ $: me = $query?.data?.me;
 
 {#if me && isAllowed(me, "appleMusicToken")}
   <ion-item button on:click={onClick}>
-    <ion-icon slot="start" src={Logo} />
+    <ion-icon slot="start" src="/assets/logo-apple-music.svg" />
     <ion-label>
       Apple Music {meta.label}
     </ion-label>

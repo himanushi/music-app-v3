@@ -1,6 +1,5 @@
 <script lang="ts">
 import { url } from "@roxi/routify";
-import Logo from "~/icons/logo-apple-music.svg";
 import { appleAffiliateToken } from "~/lib/variable";
 
 export let id: string;
@@ -18,6 +17,6 @@ if (appleAffiliateToken) {
   href={$url(`https://music.apple.com/jp/album/${id}?app=music${token}`)}
   target="_blank"
 >
-  <ion-icon slot="start" src={Logo} />
+  <ion-icon slot="start" src="/assets/logo-apple-music.svg" />
   <ion-label> Apple Music で聴く </ion-label>
 </ion-item>

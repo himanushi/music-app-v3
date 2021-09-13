@@ -1,7 +1,6 @@
 <script lang="ts">
 import AddPlaylistSelection from "~/components/add-playlist-selection.svelte";
 import type { Track } from "~/graphql/types";
-import AddPlaylistIcon from "~/icons/add-playlist.svg";
 import { openModal } from "~/lib/ionic";
 import {
   isAllowed, meQuery
@@ -30,7 +29,7 @@ $: me = $query?.data?.me;
     size="large"
     on:click|preventDefault|stopPropagation={showMyPlaylist}
   >
-    <ion-icon slot="icon-only" src={AddPlaylistIcon} />
+    <ion-icon slot="icon-only" src="/assets/add-playlist.svg" />
   </ion-button>
 {/if}
 

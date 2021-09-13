@@ -1,7 +1,6 @@
 <script lang="ts">
 import { goto } from "@roxi/routify";
 import { openPlayer } from "~/components/player.svelte";
-import PlaylistSearch from "~/icons/playlist-search.svg";
 import { closeSidebar } from "~/lib/ionic";
 import {
   isAllowed, meQuery
@@ -77,19 +76,19 @@ $: me = $query?.data?.me;
       {/if}
       {#if me && isAllowed(me, "tracks")}
         <ion-item button on:click={go("/tracks/random")}>
-          <ion-icon src={PlaylistSearch} slot="start" />
+          <ion-icon src="/assets/playlist-search.svg" slot="start" />
           <ion-label>おまかせプレイリスト</ion-label>
         </ion-item>
       {/if}
       {#if me && isAllowed(me, "playlists")}
         <ion-item button on:click={go("/playlist")}>
-          <ion-icon src={PlaylistSearch} slot="start" />
+          <ion-icon src="/assets/playlist-search.svg" slot="start" />
           <ion-label>みんなのプレイリスト</ion-label>
         </ion-item>
       {/if}
       {#if me && isAllowed(me, myPlaylist)}
         <ion-item button on:click={go("/playlist", { pm: "1" })}>
-          <ion-icon src={PlaylistSearch} slot="start" />
+          <ion-icon src="/assets/playlist-search.svg" slot="start" />
           <ion-label>マイプレイリスト</ion-label>
         </ion-item>
       {/if}
