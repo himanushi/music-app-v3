@@ -1,8 +1,5 @@
 <script lang="ts">
 import { query } from "svelte-apollo";
-import CreateRadioButton from "./_create-radio-button.svelte";
-import DeleteButton from "./_delete-button.svelte";
-import EditButton from "./_edit-button.svelte";
 import AddAppleMusicPlaylistButton from "~/components/add-apple-music-playlist-button.svelte";
 import AddPlaylistButton from "~/components/add-playlist-button.svelte";
 import Favorite from "~/components/favorite.svelte";
