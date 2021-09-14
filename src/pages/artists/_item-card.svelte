@@ -13,6 +13,13 @@ const path = `/artists/${item.id}`;
   <ion-thumbnail slot="start">
     <SquareImage src={item.artworkM?.url} alt={item.name} />
   </ion-thumbnail>
+  {#if item.status !== "ACTIVE"}
+    <ion-icon
+      color={item.status === "PENDING" ? "yellow" : "red"}
+      slot="start"
+      name="alert-circle-outline"
+    />
+  {/if}
   <ion-label>{item.name}</ion-label>
   <ion-buttons slot="end">
     <Favorite type="artist" id={item.id} />

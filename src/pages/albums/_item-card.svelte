@@ -18,6 +18,13 @@ const isAppleMusic = Boolean(item.appleMusicAlbum);
   {:else}
     <ion-icon slot="start" src="/assets/logo-itunes.svg" />
   {/if}
+  {#if item.status !== "ACTIVE"}
+    <ion-icon
+      color={item.status === "PENDING" ? "yellow" : "red"}
+      slot="start"
+      name="alert-circle-outline"
+    />
+  {/if}
   <ion-label>{item.name}</ion-label>
   <ion-buttons slot="end">
     <Favorite type="album" id={item.id} />

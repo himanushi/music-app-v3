@@ -18,13 +18,16 @@ import type {
   ArtistsQueryVariables,
   StatusEnum
 } from "~/graphql/types";
+import type { CurrentUser } from "~/graphql/types";
 import {
   convertDate, convertTime, toMs
 } from "~/lib/convert";
+import { isAllowed } from "~/lib/me";
 import Artists from "~/pages/artists/_artists.svelte";
 import ItemCard from "~/pages/tracks/_item-card.svelte";
 
 export let id = "";
+export let me: CurrentUser | undefined;
 
 const albumQuery = query<AlbumQuery>(AlbumDocument, {
   fetchPolicy: "cache-first",
@@ -35,11 +38,11 @@ let album: Album | undefined;
 let variables: ArtistsQueryVariables | undefined;
 
 let first = true;
-$: if ($albumQuery.data && first) {
+$: if (me && $albumQuery.data && first) {
 
   album = $albumQuery.data.album as Album;
   let status: StatusEnum[] = ["ACTIVE"];
-  if (album.status !== "ACTIVE") {
+  if (isAllowed(me, "changeStatus")) {
 
     status = [
       "ACTIVE",
@@ -74,6 +77,16 @@ $: if ($albumQuery.data && first) {
   </CenterItem>
 
   {#if album}
+    {#if album.status !== "ACTIVE"}
+      <ion-item>
+        <ion-label
+          color={album.status === "PENDING" ? "yellow" : "red"}
+          class="ion-text-wrap"
+        >
+          {album.status}
+        </ion-label>
+      </ion-item>
+    {/if}
     <ion-item>
       <ion-label class="ion-text-wrap">
         {album.name}

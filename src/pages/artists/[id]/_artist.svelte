@@ -11,9 +11,12 @@ import type {
   AlbumsQueryVariables,
   StatusEnum
 } from "~/graphql/types";
+import type { CurrentUser } from "~/graphql/types";
+import { isAllowed } from "~/lib/me";
 import Albums from "~/pages/albums/_albums.svelte";
 
 export let id = "";
+export let me: CurrentUser | undefined;
 
 const artistQuery = query<ArtistQuery>(ArtistDocument, {
   fetchPolicy: "cache-first",
@@ -24,11 +27,11 @@ let artist: Artist | undefined;
 let variables: AlbumsQueryVariables | undefined;
 
 let first = true;
-$: if ($artistQuery.data && first) {
+$: if (me && $artistQuery.data && first) {
 
   artist = $artistQuery.data.artist as Artist;
   let status: StatusEnum[] = ["ACTIVE"];
-  if (artist.status !== "ACTIVE") {
+  if (isAllowed(me, "changeStatus")) {
 
     status = [
       "ACTIVE",
@@ -61,6 +64,16 @@ $: if ($artistQuery.data && first) {
     <Image src={artist?.artworkL?.url} />
   </CenterItem>
   {#if artist}
+    {#if artist.status !== "ACTIVE"}
+      <ion-item>
+        <ion-label
+          color={artist.status === "PENDING" ? "yellow" : "red"}
+          class="ion-text-wrap"
+        >
+          {artist.status}
+        </ion-label>
+      </ion-item>
+    {/if}
     <ion-item>
       <ion-label class="ion-text-wrap">
         {artist.name}
