@@ -93,6 +93,9 @@ module.exports = {
     // ファイルの最大行数を制限しない
     "max-lines": "off",
 
+    // 関数の最大行数制限なし
+    "max-lines-per-function": "off",
+
     "max-statements": "off",
 
     // 複数行用のコメント記述法を強制しない
