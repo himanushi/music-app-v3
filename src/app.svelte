@@ -26,7 +26,7 @@ import { routes } from "routify/routes";
 
 let ready = false;
 
-const initialise = async () => {
+const initialize = async () => {
 
   setupConfig({ mode: "ios" });
   await defineCustomElements(window);
@@ -34,7 +34,7 @@ const initialise = async () => {
 
 };
 
-initialise();
+initialize();
 </script>
 
 {#if ready}
