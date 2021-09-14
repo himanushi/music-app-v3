@@ -110,6 +110,9 @@ module.exports = {
     // アロー関数を有効にする
     "no-confusing-arrow": "off",
 
+    // コンソール ok
+    "no-console": "off",
+
     "no-duplicate-imports": "off",
 
     // マジックナンバーを許可する

@@ -1,5 +1,5 @@
 import App from "./app.svelte";
-import { unregister } from "./register-service-worker";
+import { unregister } from "./unregister-service-worker";
 
 const app = new App({ target: document.body });
 
