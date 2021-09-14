@@ -26,7 +26,7 @@ const addPlaylist = () => {
 $: if ($service.matches("done")) {
 
   openToast({
-    color: "green",
+    color: "light-green",
     duration: 5000,
     message: "Apple Music にプレイリストを追加しました。"
   });
@@ -36,7 +36,7 @@ $: if ($service.matches("done")) {
 } else if ($service.matches("error")) {
 
   openToast({
-    color: "red",
+    color: "light-red",
     duration: 5000,
     message: "エラーが発生しました。"
   });

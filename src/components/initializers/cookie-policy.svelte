@@ -32,7 +32,7 @@ if (cookie.get("cookieNotice") !== "true") {
         text: "OK"
       }
     ],
-    color: "blue",
+    color: "light-yellow",
     header: "クッキーポリシー",
     message:
       "当サービスを利用することにより、当サービスのクッキーポリシーに記載されたクッキーの使用に同意することとみなされます。確認ボタンでクッキーポリシーを確認できます。",

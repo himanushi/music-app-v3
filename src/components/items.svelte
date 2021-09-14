@@ -63,7 +63,7 @@ $: if (
 ) {
 
   openToast({
-    color: "blue",
+    color: "light-blue",
     duration: 5000,
     message: "一致する検索結果はありませんでした"
   });

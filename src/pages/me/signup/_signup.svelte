@@ -47,7 +47,7 @@ const signup = async () => {
     });
 
     openToast({
-      color: "green",
+      color: "light-green",
       duration: 8000,
       message: "登録しました。音楽を楽しみましょう！"
     });

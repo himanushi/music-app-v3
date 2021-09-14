@@ -40,7 +40,7 @@ const remove = () => {
               await deleteRadio({ variables: { input: { radioId: id } } });
 
               openToast({
-                color: "green",
+                color: "light-green",
                 duration: 5000,
                 message: "ラジオを削除しました"
               });
@@ -50,7 +50,7 @@ const remove = () => {
             } catch (error) {
 
               openToast({
-                color: "red",
+                color: "light-red",
                 duration: 5000,
                 message: "エラーが発生しました"
               });

@@ -41,7 +41,7 @@ const remove = () => {
               await deletePlaylist({ variables: { input: { playlistId: id } } });
 
               openToast({
-                color: "green",
+                color: "light-green",
                 duration: 5000,
                 message: "プレイリストを削除しました"
               });
@@ -51,7 +51,7 @@ const remove = () => {
             } catch (error) {
 
               openToast({
-                color: "red",
+                color: "light-red",
                 duration: 5000,
                 message: "エラーが発生しました"
               });

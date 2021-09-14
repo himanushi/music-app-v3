@@ -36,7 +36,7 @@ const login = async () => {
     });
 
     openToast({
-      color: "green",
+      color: "light-green",
       duration: 3000,
       message: "ログインしました"
     });

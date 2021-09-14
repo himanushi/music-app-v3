@@ -37,7 +37,7 @@ const live = async () => {
     const radio = result?.data?.createRadio?.radio as Radio;
 
     openToast({
-      color: "green",
+      color: "light-green",
       duration: 3000,
       message: "ラジオの放送を開始しました"
     });

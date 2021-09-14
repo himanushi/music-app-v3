@@ -60,7 +60,7 @@ const addPlaylist = (playlist: Playlist) => async () => {
     });
 
     openToast({
-      color: "green",
+      color: "light-green",
       duration: 3000,
       message: `${playlist.name} に追加されました`
     });
@@ -68,7 +68,7 @@ const addPlaylist = (playlist: Playlist) => async () => {
   } catch (error) {
 
     openToast({
-      color: "red",
+      color: "light-red",
       duration: 5000,
       message: "エラーが発生しました"
     });
