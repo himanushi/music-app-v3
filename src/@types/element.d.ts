@@ -4,7 +4,7 @@ interface Element {
   getScrollElement(): Promise<HTMLElement>;
   present: () => void;
   dismiss: () => void;
-  setActive: () => void;
+  select: (tabName: string) => void;
   cssClass: string;
 }
 
