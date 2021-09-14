@@ -4,6 +4,7 @@ interface Element {
   getScrollElement(): Promise<HTMLElement>;
   present: () => void;
   dismiss: () => void;
+  setActive: () => void;
   cssClass: string;
 }
 

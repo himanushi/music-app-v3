@@ -1,10 +1,14 @@
 import { query } from "svelte-apollo";
 import { MeDocument } from "~/graphql/types";
+import type { ActionEnum } from "~/graphql/types";
 import type {
   CurrentUser, MeQuery
 } from "~/graphql/types";
 
-export const isAllowed = (me: CurrentUser, actionName: string | string[]) => {
+export const isAllowed = (
+  me: CurrentUser,
+  actionName: ActionEnum | ActionEnum[]
+) => {
 
   if (typeof actionName === "string") {
 
@@ -22,7 +26,8 @@ export const isFavorite = (me: CurrentUser, id: string) => {
     ...me.favorite.artistIds,
     ...me.favorite.albumIds,
     ...me.favorite.trackIds,
-    ...me.favorite.playlistIds
+    ...me.favorite.playlistIds,
+    ...me.favorite.radioIds
   ];
 
   return favoriteIds.includes(id);

@@ -1,6 +1,7 @@
 <script lang="ts">
 import { goto } from "@roxi/routify";
 import { openPlayer } from "~/components/player.svelte";
+import type { ActionEnum } from "~/graphql/types";
 import { closeSidebar } from "~/lib/ionic";
 import {
   isAllowed, meQuery
@@ -24,7 +25,7 @@ const go =
 
   };
 
-const myPlaylist = [
+const myPlaylist: ActionEnum[] = [
   "playlists",
   "upsertPlaylist",
   "addPlaylistItems"

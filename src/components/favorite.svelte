@@ -75,6 +75,10 @@ const onClick = async () => {
 
     input.playlistIds = [id];
 
+  } else if (type === "radio") {
+
+    input.radioIds = [id];
+
   }
 
   await changeFavorites({ variables: { input } });

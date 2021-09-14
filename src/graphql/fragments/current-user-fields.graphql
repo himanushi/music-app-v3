@@ -18,5 +18,6 @@ fragment CurrentUserFields on CurrentUser {
     artistIds
     trackIds
     playlistIds
+    radioIds
   }
 }

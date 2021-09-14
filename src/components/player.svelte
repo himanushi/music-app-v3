@@ -17,12 +17,21 @@ import { openModal } from "~/lib/ionic";
 import { playerService } from "~/machines/jukebox-machine";
 
 let component: HTMLElement;
+let radio: HTMLElement;
+let player: HTMLElement;
 
 $: if (component && $playerId) {
 
   openModal(component);
 
 }
+
+const setActive = (element: HTMLElement) => {
+
+  element?.setActive();
+  return "";
+
+};
 </script>
 
 <!-- Modal -->
@@ -30,14 +39,15 @@ $: if (component && $playerId) {
   <span bind:this={component}>
     <ion-tabs>
       {#if $playerService.context.isRadio}
-        <ion-tab tab="radio">
+        <ion-tab tab="radio" bind:this={radio}>
           <Radio />
         </ion-tab>
+        {setActive(radio)}
       {:else}
-        <ion-tab tab="player">
+        <ion-tab tab="player" bind:this={player}>
           <Player />
         </ion-tab>
-
+        {setActive(player)}
         <ion-tab tab="queue">
           <Queue />
         </ion-tab>
