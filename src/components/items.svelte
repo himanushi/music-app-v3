@@ -82,7 +82,11 @@ $: if (service && $service.matches("active") && infiniteScroll) {
 
   loaded = true;
   infiniteScroll.complete();
-  if (!$service.context.hasNext) {
+  if ($service.context.hasNext) {
+
+    infiniteScroll.disabled = false;
+
+  } else {
 
     infiniteScroll.disabled = true;
 
