@@ -3,9 +3,11 @@ import {
   popoverController,
   toastController,
   alertController,
-  AlertOptions
+  loadingController
 } from "@ionic/core";
-import type { ToastOptions } from "@ionic/core";
+import type {
+  AlertOptions, ToastOptions
+} from "@ionic/core";
 
 export const openMenu = (name: string) => async (event: any) => {
 
@@ -84,5 +86,23 @@ export const openConfirm = async (props: AlertOptions) => {
 
   const alert = await alertController.create(props);
   await alert.present();
+
+};
+
+export const openLoading = async () => {
+
+  const loading = await loadingController.create({ message: "Loading..." });
+  await loading.present();
+
+};
+
+export const closeLoading = async () => {
+
+  const loading = await loadingController.getTop();
+  if (loading) {
+
+    await loading.dismiss();
+
+  }
 
 };
