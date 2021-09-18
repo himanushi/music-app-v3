@@ -59,7 +59,7 @@ const change = () => {
               openToast({
                 color: "light-green",
                 duration: 5000,
-                message: "アルバムを削除しました"
+                message: "削除しました"
               });
 
             } catch (error) {

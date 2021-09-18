@@ -59,7 +59,7 @@ const update = () => {
               openToast({
                 color: "light-green",
                 duration: 5000,
-                message: "アルバムを更新しました"
+                message: "更新しました"
               });
 
             } catch (error) {

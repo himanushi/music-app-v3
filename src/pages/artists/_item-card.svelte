@@ -17,7 +17,7 @@ const path = `/artists/${item.id}`;
     <ion-icon
       color={item.status === "PENDING" ? "yellow" : "red"}
       slot="start"
-      name="alert-circle-outline"
+      name="hourglass-outline"
     />
   {/if}
   <ion-label>{item.name}</ion-label>

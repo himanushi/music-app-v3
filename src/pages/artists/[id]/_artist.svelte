@@ -17,6 +17,7 @@ import Albums from "~/pages/albums/_albums.svelte";
 
 export let id = "";
 export let me: CurrentUser | undefined;
+export let loaded: boolean;
 
 const artistQuery = query<ArtistQuery>(ArtistDocument, {
   fetchPolicy: "cache-first",
@@ -28,6 +29,8 @@ let variables: AlbumsQueryVariables | undefined;
 
 let first = true;
 $: if (me && $artistQuery.data && first) {
+
+  loaded = true;
 
   artist = $artistQuery.data.artist as Artist;
   let status: StatusEnum[] = ["ACTIVE"];

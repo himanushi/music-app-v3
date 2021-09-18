@@ -1,6 +1,5 @@
 <script lang="ts">
 import { ApolloError } from "@apollo/client";
-
 import { mutation } from "svelte-apollo";
 import type {
   ChangeStatusInput,
@@ -8,7 +7,7 @@ import type {
   ChangeStatusPayload
 } from "~/graphql/types";
 import {
-  AlbumDocument, ChangeStatusDocument
+  ArtistDocument, ChangeStatusDocument
 } from "~/graphql/types";
 import { errorMessages } from "~/lib/error";
 import {
@@ -50,12 +49,12 @@ const change = () => {
                 await changeStatus({
                   refetchQueries: [
                     {
-                      query: AlbumDocument,
+                      query: ArtistDocument,
                       variables: { id }
                     }
                   ],
                   variables: { input: {
-                    albumId: id,
+                    artistId: id,
                     ...values
                   } }
                 });
@@ -102,22 +101,16 @@ const change = () => {
         label: "有効",
         type: "radio",
         value: {
+          only: true,
           status: "ACTIVE",
           tweet: false
-        }
-      },
-      {
-        label: "有効 & ツイート",
-        type: "radio",
-        value: {
-          status: "ACTIVE",
-          tweet: true
         }
       },
       {
         label: "保留",
         type: "radio",
         value: {
+          only: true,
           status: "PENDING",
           tweet: false
         }
@@ -126,6 +119,7 @@ const change = () => {
         label: "除外",
         type: "radio",
         value: {
+          only: true,
           status: "IGNORE",
           tweet: false
         }
