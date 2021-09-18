@@ -107,6 +107,12 @@ $: me = $query?.data?.me;
         <ion-icon name="musical-notes-outline" slot="start" />
         <ion-label>ミュージックプレイヤー</ion-label>
       </ion-item>
+      {#if me && isAllowed(me, "console")}
+        <ion-item button on:click={go("/console")}>
+          <ion-icon name="terminal-outline" slot="start" color="red" />
+          <ion-label>コンソール</ion-label>
+        </ion-item>
+      {/if}
     </ion-item-group>
 
     <ion-item-group>
