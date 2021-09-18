@@ -28,6 +28,7 @@ import ItemCard from "~/pages/tracks/_item-card.svelte";
 
 export let id = "";
 export let me: CurrentUser | undefined;
+export let loaded: boolean;
 
 const albumQuery = query<AlbumQuery>(AlbumDocument, {
   fetchPolicy: "cache-first",
@@ -39,6 +40,8 @@ let variables: ArtistsQueryVariables | undefined;
 
 let first = true;
 $: if (me && $albumQuery.data && first) {
+
+  loaded = true;
 
   album = $albumQuery.data.album as Album;
   let status: StatusEnum[] = ["ACTIVE"];

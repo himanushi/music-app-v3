@@ -1,0 +1,8 @@
+mutation IgnoreAlbums($input: IgnoreAlbumsInput!) {
+  ignoreAlbums(input: $input) {
+    albums {
+      id
+      name
+    }
+  }
+}

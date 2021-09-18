@@ -1,0 +1,5 @@
+mutation ChangeStatus($input: ChangeStatusInput!) {
+  changeStatus(input: $input) {
+    result
+  }
+}
