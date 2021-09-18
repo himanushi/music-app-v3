@@ -2,6 +2,7 @@
 /* eslint-disable sort-keys */
 /* eslint-disable sort-keys-fix/sort-keys-fix */
 
+import { CapacitorAppleMusic } from "capacitor-plugin-applemusic";
 import { assign } from "xstate";
 import {
   interpret, Machine as machine, Sender
@@ -52,10 +53,9 @@ export const accountMachine = machine<
 
                 (async () => {
 
-                  await MusicKit.configure(config);
-                  MusicKit.getInstance().storefrontId = "jp";
+                  await CapacitorAppleMusic.configure(config);
 
-                  if (MusicKit.getInstance().isAuthorized) {
+                  if (await CapacitorAppleMusic.isAuthorized()) {
 
                     callback({ type: "LOGIN" });
 
@@ -158,9 +158,9 @@ export const accountMachine = machine<
     }
   },
   { actions: {
-    login: () => MusicKit.getInstance().authorize(),
+    login: () => CapacitorAppleMusic.authorize(),
 
-    logout: () => MusicKit.getInstance().unauthorize(),
+    logout: () => CapacitorAppleMusic.unauthorize(),
 
     setConfig: assign({ config: (_, event) => "config" in event ? event.config : undefined })
   } }
