@@ -1,4 +1,5 @@
 <script lang="ts">
+import { Capacitor } from "@capacitor/core";
 import {
   onDestroy, onMount
 } from "svelte";
@@ -57,9 +58,11 @@ onDestroy(() => {
   }
 
 });
+
+const useRecaptcha = Capacitor.getPlatform() === "web";
 </script>
 
-{#if recaptchaKey}
+{#if useRecaptcha && recaptchaKey}
   <ion-item>
     <div id="g-recaptcha" />
   </ion-item>

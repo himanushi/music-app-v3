@@ -2,8 +2,13 @@ import {
   ApolloClient,
   ApolloLink,
   HttpLink,
-  InMemoryCache
+  InMemoryCache,
+  RequestHandler
 } from "@apollo/client/core";
+import { setContext } from "@apollo/client/link/context";
+import { asyncMap } from "@apollo/client/utilities";
+import { Capacitor } from "@capacitor/core";
+import { Storage } from "@ionic/storage";
 import { graphqlUrl } from "~/lib/variable";
 
 const uri = graphqlUrl ? graphqlUrl : "http://localhost:3000/graphql";
@@ -13,12 +18,39 @@ const httpLink = new HttpLink({
   uri
 });
 
-const headersLink = new ApolloLink((operation, forward) => forward(operation));
+export const store = new Storage();
+store.create();
 
-const link = ApolloLink.from([
-  headersLink,
-  httpLink
-]);
+const setResponseTokenLink = new ApolloLink((operation, forward) => asyncMap(forward(operation), async (response) => {
+
+  if (response.extensions?.Authorization) {
+
+    await store.set("Authorization", response.extensions.Authorization);
+
+  }
+  return response;
+
+})
+);
+
+const setRequestTokenLink = setContext(async (_, { headers }) => {
+
+  const token = await store.get("Authorization");
+  return { headers: {
+    ...headers,
+    Authorization: token ? token : ""
+  } };
+
+});
+
+const links: (ApolloLink | RequestHandler)[] =
+  Capacitor.getPlatform() === "web" ? [httpLink] : [
+    setResponseTokenLink,
+    setRequestTokenLink,
+    httpLink
+  ];
+
+const link = ApolloLink.from(links);
 
 const offsetLimitPagination = {
   keyArgs: [
