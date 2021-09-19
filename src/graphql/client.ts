@@ -8,8 +8,8 @@ import {
 import { setContext } from "@apollo/client/link/context";
 import { asyncMap } from "@apollo/client/utilities";
 import { Capacitor } from "@capacitor/core";
-import { Storage } from "@ionic/storage";
 import { graphqlUrl } from "~/lib/variable";
+import { store } from "~/store/ionic";
 
 const uri = graphqlUrl ? graphqlUrl : "http://localhost:3000/graphql";
 
@@ -17,9 +17,6 @@ const httpLink = new HttpLink({
   credentials: "include",
   uri
 });
-
-export const store = new Storage();
-store.create();
 
 const setResponseTokenLink = new ApolloLink((operation, forward) => asyncMap(forward(operation), async (response) => {
 
