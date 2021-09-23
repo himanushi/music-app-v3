@@ -1,5 +1,6 @@
 <script lang="ts">
 import { goto } from "@roxi/routify";
+import SquareImage from "../square-image.svelte";
 import AddPlaylistButton from "~/components/add-playlist-button.svelte";
 import Favorite from "~/components/favorite.svelte";
 import { canPlay } from "~/components/play-button.svelte";
@@ -80,17 +81,20 @@ const link = () => {
         <ion-reorder slot="start">
           <ion-icon name="reorder-two" />
         </ion-reorder>
-        <ion-buttons slot="start">
+        <ion-thumbnail slot="start" on:click|preventDefault|stopPropagation>
+          <SquareImage src={track.artworkM.url} />
+        </ion-thumbnail>
+        <ion-buttons
+          slot="start"
+          class="playButton"
+          on:click|preventDefault|stopPropagation
+        >
           {#if playbackNo === index}
-            <ion-button size="large">
+            <ion-button>
               <ion-icon slot="icon-only" color="main" name="musical-note" />
             </ion-button>
           {:else}
-            <ion-button
-              size="large"
-              disabled={!$canPlay}
-              on:click={play(index)}
-            >
+            <ion-button disabled={!$canPlay} on:click={play(index)}>
               <ion-icon slot="icon-only" name="play" />
             </ion-button>
           {/if}
@@ -106,3 +110,10 @@ const link = () => {
     {/each}
   </ion-reorder-group>
 </ModalContent>
+
+<style lang="scss">
+.playButton {
+  position: absolute;
+  left: calc(var(--padding-start) + var(--ion-safe-area-left, 0px) + 45px);
+}
+</style>
