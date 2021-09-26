@@ -55,7 +55,7 @@ export const accountMachine = machine<
 
                   await CapacitorAppleMusic.configure(config);
 
-                  if (await CapacitorAppleMusic.isAuthorized()) {
+                  if ((await CapacitorAppleMusic.isAuthorized()).result) {
 
                     callback({ type: "LOGIN" });
 
