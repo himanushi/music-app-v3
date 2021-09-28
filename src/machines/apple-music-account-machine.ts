@@ -53,7 +53,7 @@ export const accountMachine = machine<
 
                 (async () => {
 
-                  await CapacitorAppleMusic.configure(config);
+                  await CapacitorAppleMusic.configure({ config });
 
                   if ((await CapacitorAppleMusic.isAuthorized()).result) {
 
