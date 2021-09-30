@@ -3,6 +3,13 @@
 /* eslint-disable sort-keys-fix/sort-keys-fix */
 
 import {
+  Capacitor, PluginListenerHandle
+} from "@capacitor/core";
+import {
+  CapacitorAppleMusic,
+  PlaybackStates
+} from "capacitor-plugin-applemusic";
+import {
   Machine as machine, assign, sendParent, State
 } from "xstate";
 
@@ -32,13 +39,11 @@ export type AppleMusicPlayerStateSchema = {
 const setEvents = (callback: any, events: string[][]) => {
 
   // eslint-disable-next-line no-unused-vars
-  const didChange: (state: { oldState: number; state: number }) => any = (
-    state
-  ) => {
+  const didChange: (state: { result: PlaybackStates }) => any = (state) => {
 
     events.forEach((event) => {
 
-      if (MusicKit.PlaybackStates[state.state] === event[0]) {
+      if (state.result === event[0]) {
 
         callback(event[1]);
 
@@ -48,14 +53,23 @@ const setEvents = (callback: any, events: string[][]) => {
 
   };
 
-  MusicKit.getInstance().addEventListener("playbackStateDidChange", didChange);
+  let cleaner: PluginListenerHandle;
+  (async () => {
 
-  return () => {
-
-    MusicKit.getInstance().removeEventListener(
+    cleaner = await CapacitorAppleMusic.addListener(
       "playbackStateDidChange",
       didChange
     );
+
+  })();
+
+  return () => {
+
+    if (cleaner) {
+
+      cleaner.remove();
+
+    }
 
   };
 
@@ -73,7 +87,8 @@ export type AppleMusicPlayerStateEvent =
   | { type: "STOP" }
   | { type: "STOPPED" }
   | { type: "FINISHED" }
-  | { type: "TICK" };
+  | { type: "TICK" }
+  | { type: "TACK"; seek: number };
 
 export const appleMusicPlayerId = "apple-music-player";
 
@@ -109,7 +124,6 @@ export const AppleMusicPlayerMachine = machine<
       },
 
       TICK: { actions: [
-        "tick",
         sendParent(({ seek }) => ({
           seek,
           type: "SET_SEEK"
@@ -127,16 +141,13 @@ export const AppleMusicPlayerMachine = machine<
           stopping: { invoke: {
             src: async () => {
 
-              if (
-                MusicKit.PlaybackStates.playing ===
-                  MusicKit.getInstance().playbackState
-              ) {
+              await CapacitorAppleMusic.stop();
 
-                await MusicKit.getInstance().stop();
+              if (Capacitor.getPlatform() === "web") {
+
+                MusicKit.getInstance().volume = 0.3;
 
               }
-
-              MusicKit.getInstance().volume = 0.3;
 
             },
 
@@ -150,7 +161,7 @@ export const AppleMusicPlayerMachine = machine<
 
               if (id) {
 
-                await MusicKit.getInstance().setQueue({ songs: [id] });
+                await CapacitorAppleMusic.setSong({ songId: id });
 
               }
 
@@ -193,6 +204,14 @@ export const AppleMusicPlayerMachine = machine<
             "FINISHED"
           ],
           [
+            "completed",
+            "FINISHED"
+          ],
+          [
+            "playing",
+            "PLAYING"
+          ],
+          [
             "loading",
             "WAITING"
           ]
@@ -205,23 +224,54 @@ export const AppleMusicPlayerMachine = machine<
       },
 
       playing: {
-        invoke: { src: () => (callback) => setEvents(callback, [
-          [
-            "paused",
-            "PAUSED"
-          ],
-          [
-            "waiting",
-            "WAITING"
-          ]
-        ]) },
+        invoke: [
+          {
+            id: "seekTimer",
+            src: () => (callback) => {
+
+              const interval = setInterval(async () => {
+
+                const seek = (await CapacitorAppleMusic.currentPlaybackTime()).
+                  result;
+                callback({
+                  type: "TACK",
+                  seek
+                });
+
+              }, 1000);
+
+              return () => {
+
+                clearInterval(interval);
+
+              };
+
+            }
+          },
+          { src: () => (callback) => setEvents(callback, [
+            [
+              "paused",
+              "PAUSED"
+            ],
+            [
+              "waiting",
+              "WAITING"
+            ],
+            [
+              "completed",
+              "FINISHED"
+            ]
+          ]) }
+        ],
 
         entry: [sendParent("PLAYING")],
 
         on: {
           PAUSE: { actions: ["pause"] },
           PAUSED: "paused",
-          WAITING: "waiting"
+          WAITING: "waiting",
+          FINISHED: "finished",
+          TACK: { actions: ["tack"] }
         }
       },
 
@@ -235,7 +285,7 @@ export const AppleMusicPlayerMachine = machine<
 
       if ("seek" in event) {
 
-        MusicKit.getInstance().seekToTime(event.seek / 1000);
+        CapacitorAppleMusic.seekToTime({ playbackTime: event.seek / 1000 });
 
       }
 
@@ -243,13 +293,13 @@ export const AppleMusicPlayerMachine = machine<
 
     pause: () => {
 
-      MusicKit.getInstance().pause();
+      CapacitorAppleMusic.pause();
 
     },
 
     play: () => {
 
-      MusicKit.getInstance().play();
+      CapacitorAppleMusic.play();
 
     },
 
@@ -257,21 +307,19 @@ export const AppleMusicPlayerMachine = machine<
 
     stop: () => {
 
-      if (
-        MusicKit.PlaybackStates[MusicKit.getInstance().playbackState] ===
-          "playing"
-      ) {
-
-        MusicKit.getInstance().stop();
-
-      }
+      CapacitorAppleMusic.stop();
 
     },
 
-    tick: assign({ seek: () => {
+    tack: assign({ seek: (_, event) => {
 
-      const seek = MusicKit.getInstance().currentPlaybackTime;
-      return Math.floor(seek * 1000);
+      if ("seek" in event) {
+
+        return Math.floor(event.seek * 1000);
+
+      }
+
+      return 0;
 
     } })
   } }

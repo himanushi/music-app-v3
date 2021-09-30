@@ -3,6 +3,7 @@
 /* eslint-disable sort-keys */
 /* eslint-disable sort-keys-fix/sort-keys-fix */
 
+import { CapacitorAppleMusic } from "capacitor-plugin-applemusic";
 import {
   Machine as machine,
   SpawnedActorRef,
@@ -108,17 +109,18 @@ export const MusicPlayerMachine = machine<
       playerSelecting: {
         invoke: { src: (context) => (callback) => {
 
-          const appleAuth = MusicKit.getInstance().isAuthorized;
-          const appleMusicTrack = context.track?.appleMusicTracks?.find(
-            (track) => track
-          );
-          const appleMusicId = appleMusicTrack?.appleMusicId;
-          const itunesTrack = context.track?.itunesTracks?.find(
-            (track) => track
-          );
-          const itunesId = itunesTrack?.appleMusicId;
-
           (async () => {
+
+            const appleAuth = (await CapacitorAppleMusic.isAuthorized()).
+              result;
+            const appleMusicTrack = context.track?.appleMusicTracks?.find(
+              (track) => track
+            );
+            const appleMusicId = appleMusicTrack?.appleMusicId;
+            const itunesTrack = context.track?.itunesTracks?.find(
+              (track) => track
+            );
+            const itunesId = itunesTrack?.appleMusicId;
 
             if (appleAuth && appleMusicId) {
 
@@ -133,45 +135,54 @@ export const MusicPlayerMachine = machine<
 
             } else if (appleAuth && itunesId && itunesTrack) {
 
-              const result = await MusicKit.getInstance().api.music(
-                "v1/me/library/search",
-                {
-                  term: itunesTrack.name.replaceAll(",", " "),
-                  types: ["library-songs"],
-                  limit: 25
-                }
-              );
-
-              const results =
-                  result.data.results["library-songs"]?.data || [];
-              let player = previewPlayerId as
-                  | typeof previewPlayerId
-                  | typeof appleMusicPlayerId;
-              let data = context.track?.previewUrl as string;
-
-              for (let index = 0; index < results.length; index += 1) {
-
-                if (
-                  results[index].attributes.playParams.purchasedId ===
-                    itunesId
-                ) {
-
-                  player = appleMusicPlayerId;
-                  data = results[index].id;
-                  break;
-
-                }
-
-              }
-
               callback({
                 type: "SET_CURRENT_PLAYER",
-                currentPlayer: player
+                currentPlayer: appleMusicPlayerId
               });
               callback({
                 type: "SET_DATA",
-                data
+                data: itunesId
               });
+
+              // const result = await MusicKit.getInstance().api.music(
+              //   "v1/me/library/search",
+              //   {
+              //     term: itunesTrack.name.replaceAll(",", " "),
+              //     types: ["library-songs"],
+              //     limit: 25
+              //   }
+              // );
+
+              // const results =
+              //     result.data.results["library-songs"]?.data || [];
+              // let player = previewPlayerId as
+              //     | typeof previewPlayerId
+              //     | typeof appleMusicPlayerId;
+              // let data = context.track?.previewUrl as string;
+
+              // for (let index = 0; index < results.length; index += 1) {
+
+              //   if (
+              //     results[index].attributes.playParams.purchasedId ===
+              //       itunesId
+              //   ) {
+
+              //     player = appleMusicPlayerId;
+              //     data = results[index].id;
+              //     break;
+
+              //   }
+
+              // }
+
+              // callback({
+              //   type: "SET_CURRENT_PLAYER",
+              //   currentPlayer: player
+              // });
+              // callback({
+              //   type: "SET_DATA",
+              //   data
+              // });
 
             } else if (context.track?.previewUrl) {
 
