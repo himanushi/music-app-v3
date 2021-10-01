@@ -45,6 +45,7 @@ export type MusicPlayerSchema = {
   states: {
     idle: {};
     playerSelecting: {};
+    durationSetting: {};
     loading: {};
     playing: {};
     paused: {};
@@ -68,6 +69,7 @@ export type MusicPlayerEvent =
   | { type: "CHANGE_SEEK"; seek: number }
   | { type: "LOAD" }
   | { type: "LOADING" }
+  | { type: "DURATION_SETTING" }
   | { type: "PLAY" }
   | { type: "PLAYING" }
   | { type: "PAUSE" }
@@ -209,7 +211,7 @@ export const MusicPlayerMachine = machine<
         },
         exit: [
           "stopToPlayers",
-          "setDuration",
+          // "setDuration",
           "setDataToPlayer",
           "loadToPlayer"
         ]
@@ -218,7 +220,31 @@ export const MusicPlayerMachine = machine<
       loading: {
         // 30秒間再生できない音楽はスキップ
         after: { 30000: { target: "finished" } },
-        on: { PLAYING: "playing" }
+        on: { PLAYING: "durationSetting" }
+      },
+
+      durationSetting: {
+        invoke: { src: () => (callback) => {
+
+          (async () => {
+
+            const duration =
+                (await CapacitorAppleMusic.currentPlaybackDuration()).result *
+                1000;
+            console.log({ duration });
+            callback({
+              type: "SET_DURATION",
+              duration
+            });
+            callback("PLAYING");
+
+          })();
+
+        } },
+        on: {
+          PLAYING: "playing",
+          SET_DURATION: { actions: ["setDuration"] }
+        }
       },
 
       paused: {
@@ -231,10 +257,7 @@ export const MusicPlayerMachine = machine<
       },
 
       playing: {
-        entry: [
-          sendParent("PLAYING"),
-          "setDuration"
-        ],
+        entry: [sendParent("PLAYING")],
         invoke: {
           id: "seekTimer",
           src: () => (callback) => {
@@ -329,26 +352,7 @@ export const MusicPlayerMachine = machine<
 
     resetSeek: assign({ seek: (_) => 0 }),
 
-    setDuration: assign({ duration: (context) => {
-
-      if (!context.track) {
-
-        return 0;
-
-      }
-
-      if (
-        selectPlayer(context) === previewPlayerId &&
-            context.track.durationMs > 30000
-      ) {
-
-        return 30000;
-
-      }
-
-      return context.track.durationMs;
-
-    } }),
+    setDuration: assign({ duration: (_, event) => "duration" in event ? event.duration : 0 }),
 
     setSeek: assign({ seek: (_, event) => "seek" in event ? event.seek : 0 }),
 
