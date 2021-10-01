@@ -53,9 +53,21 @@ onMount(() => {
 
   const loop = () => {
 
-    if ($scrollElement && $scrollElement.scrollTop !== scrollTop) {
+    if (
+      virtualElement &&
+      $scrollElement &&
+      $scrollElement.scrollTop !== scrollTop
+    ) {
 
-      scrollTop = $scrollElement.scrollTop || 1;
+      if ($scrollElement.scrollTop - virtualElement.offsetTop >= 0) {
+
+        scrollTop = $scrollElement.scrollTop - virtualElement.offsetTop || 1;
+
+      } else {
+
+        scrollTop = 1;
+
+      }
       visibleHeight = $scrollElement.clientHeight;
 
     }
@@ -80,7 +92,7 @@ onMount(() => {
 >
   {#each slice as item, index (`${item.id}_${index}`)}
     <div
-      class="items"
+      class="item"
       style="top: {globalOffset +
         (index < numOverlap ? blockHeight : 0)}px; height: {itemHeight}px;"
     >
@@ -98,7 +110,7 @@ onMount(() => {
   font-size: 0;
   line-height: 0;
 }
-.items {
+.item {
   width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
