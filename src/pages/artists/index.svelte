@@ -37,7 +37,7 @@ let component: HTMLElement;
     </ion-item-divider>
     <ion-list>
       {#key tggle}
-        <Artists params={$params} virtual={true} bind:loaded />
+        <Artists params={$params} bind:loaded />
       {/key}
     </ion-list>
   </ion-item-group>

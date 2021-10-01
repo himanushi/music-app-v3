@@ -27,13 +27,11 @@ $: playlistQuery = query<PlaylistQuery>(PlaylistDocument, {
 });
 
 let playlist: Playlist | undefined;
-let isMyPlaylist = false;
 
 let first = true;
 $: if ($playlistQuery.data && first) {
 
   playlist = $playlistQuery.data.playlist as Playlist;
-  isMyPlaylist = playlist?.isMine || false;
   first = false;
 
 }
@@ -43,7 +41,8 @@ const hashtags = [
   title || ""
 ];
 
-const itemHeight = 60;
+$: items = playlist ? playlist.items.map((it) => it) : [];
+$: tracks = playlist ? playlist.items.map((it) => it.track) : [];
 </script>
 
 <ion-item-group>
@@ -128,18 +127,8 @@ const itemHeight = 60;
     <ion-label>Tracks</ion-label>
   </ion-item-divider>
   {#if playlist}
-    <VirtualScroll
-      items={playlist.items.map((itm) => itm)}
-      {itemHeight}
-      let:item
-      let:index
-    >
-      <ItemCard
-        name={playlist.name}
-        item={item.track}
-        items={playlist.items.map((it) => it.track)}
-        {index}
-      />
+    <VirtualScroll {items} let:item let:index>
+      <ItemCard name={playlist.name} item={item.track} items={tracks} {index} />
     </VirtualScroll>
   {:else}
     <LoadingItems />

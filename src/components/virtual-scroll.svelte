@@ -5,9 +5,9 @@ import { onMount } from "svelte";
 import { scrollElement } from "~/store/scroll-element";
 
 export let items: any[];
-export let itemHeight: number;
 
 const dummySymbol = Symbol("dummy item");
+const itemHeight = 60;
 
 let scrollTop: number;
 let visibleHeight: number;
@@ -38,6 +38,20 @@ const shiftArray = (arr: any[], count: number) => {
 
 };
 
+$: if ($scrollElement) {
+
+  const maxHeight = items.length * itemHeight;
+  if ($scrollElement.clientHeight > maxHeight) {
+
+    visibleHeight = maxHeight;
+
+  } else {
+
+    visibleHeight = $scrollElement.clientHeight;
+
+  }
+
+}
 $: spacerHeight = Math.max(visibleHeight, items.length * itemHeight);
 $: numItems = Math.ceil(visibleHeight / itemHeight) + 3;
 $: startIndex = Math.floor(scrollTop / itemHeight);
@@ -68,7 +82,6 @@ onMount(() => {
         scrollTop = 1;
 
       }
-      visibleHeight = $scrollElement.clientHeight;
 
     }
     frame = requestAnimationFrame(loop);
