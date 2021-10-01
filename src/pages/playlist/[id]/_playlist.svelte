@@ -8,6 +8,7 @@ import Favorite from "~/components/favorite.svelte";
 import LoadingItems from "~/components/loading-items.svelte";
 import Image from "~/components/square-image.svelte";
 import TwitterButton from "~/components/twitter-button.svelte";
+import VirtualScroll from "~/components/virtual-scroll.svelte";
 import { PlaylistDocument } from "~/graphql/types";
 import type {
   Playlist, PlaylistQuery
@@ -41,6 +42,8 @@ const hashtags = [
   `${title}のプレイリスト`,
   title || ""
 ];
+
+const itemHeight = 60;
 </script>
 
 <ion-item-group>
@@ -125,14 +128,19 @@ const hashtags = [
     <ion-label>Tracks</ion-label>
   </ion-item-divider>
   {#if playlist}
-    {#each playlist.items as item, index (`${item.id}_${index}`)}
+    <VirtualScroll
+      items={playlist.items.map((itm) => itm)}
+      {itemHeight}
+      let:item
+      let:index
+    >
       <ItemCard
         name={playlist.name}
         item={item.track}
         items={playlist.items.map((it) => it.track)}
         {index}
       />
-    {/each}
+    </VirtualScroll>
   {:else}
     <LoadingItems />
   {/if}

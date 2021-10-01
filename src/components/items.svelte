@@ -4,6 +4,7 @@ import {
   onMount, onDestroy
 } from "svelte";
 import { interpret } from "xstate";
+import VirtualScroll from "./virtual-scroll.svelte";
 import type { ParameterPrefix } from "~/lib/build-parameters";
 import { openToast } from "~/lib/ionic";
 import { itemsMachine } from "~/machines/items-machine";
@@ -13,6 +14,7 @@ export let document: DocumentNode;
 export let params: { [key: string]: any } | undefined = undefined;
 export let variables: any | undefined = undefined;
 export let loaded: boolean = false;
+export let virtual: boolean = false;
 
 let service: any;
 
@@ -93,11 +95,19 @@ $: if (service && $service.matches("active") && infiniteScroll) {
   }
 
 }
+
+const itemHeight = 60;
 </script>
 
-{#each items as item, index (`${item.id}_${index}`)}
-  <slot {items} {item} {index} />
-{/each}
+{#if virtual}
+  <VirtualScroll {items} {itemHeight} let:item let:index>
+    <slot {items} {item} {index} />
+  </VirtualScroll>
+{:else}
+  {#each items as item, index (`${item.id}_${index}`)}
+    <slot {items} {item} {index} />
+  {/each}
+{/if}
 
 <ion-infinite-scroll
   on:ionInfinite={ionInfinite}

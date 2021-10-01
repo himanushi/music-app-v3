@@ -37,7 +37,7 @@ let modal: HTMLElement;
     </ion-item-divider>
     <ion-list>
       {#key tggle}
-        <Albums params={$params} bind:loaded />
+        <Albums params={$params} virtual={true} bind:loaded />
       {/key}
     </ion-list>
   </ion-item-group>
