@@ -13,7 +13,7 @@ export let items: Track[];
 export let name = "曲一覧";
 export let viewImage = true;
 
-const path = `/tracks/${item.id}`;
+$: path = `/tracks/${item.id}`;
 </script>
 
 <ion-item button detail={false} on:click={() => $goto(path)}>
