@@ -11,6 +11,7 @@ import LineMusic from "~/components/search-buttons/line-music.svelte";
 import Spotify from "~/components/search-buttons/spotify.svelte";
 import YoutubeMusic from "~/components/search-buttons/youtube-music.svelte";
 import Image from "~/components/square-image.svelte";
+import VirtualScroll from "~/components/virtual-scroll.svelte";
 import { AlbumDocument } from "~/graphql/types";
 import type {
   Album,
@@ -68,6 +69,8 @@ $: if (me && $albumQuery.data && first) {
   first = false;
 
 }
+
+$: tracks = album?.tracks.map((track) => track) || [];
 </script>
 
 <ion-item-group>
@@ -151,15 +154,15 @@ $: if (me && $albumQuery.data && first) {
   </ion-item-divider>
 
   {#if album}
-    {#each album.tracks as track, index (track.id)}
+    <VirtualScroll items={tracks} let:item let:index>
       <ItemCard
-        viewImage={false}
         name={album.name}
-        item={track}
-        items={album.tracks.map((trk) => trk)}
+        {item}
+        items={tracks}
         {index}
+        viewImage={false}
       />
-    {/each}
+    </VirtualScroll>
   {:else}
     <LoadingItems />
   {/if}
