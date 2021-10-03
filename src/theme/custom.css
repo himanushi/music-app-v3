@@ -2,6 +2,11 @@
 /* ref: https://tailwindcss.com/docs/customizing-colors */
 /* color theme ref: https://material.io/resources/color */
 
+.thumbnail-button {
+  position: absolute;
+  left: calc(var(--padding-start) + var(--ion-safe-area-left, 0px) + 47px);
+}
+
 .md .tabs-bottom {
   transform: translateY(-56px) !important;
 }

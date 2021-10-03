@@ -86,7 +86,7 @@ const link = () => {
         </ion-thumbnail>
         <ion-buttons
           slot="start"
-          class="playButton"
+          class="thumbnail-button"
           on:click|preventDefault|stopPropagation
         >
           {#if playbackNo === index}
@@ -110,10 +110,3 @@ const link = () => {
     {/each}
   </ion-reorder-group>
 </ModalContent>
-
-<style lang="scss">
-.playButton {
-  position: absolute;
-  left: calc(var(--padding-start) + var(--ion-safe-area-left, 0px) + 45px);
-}
-</style>

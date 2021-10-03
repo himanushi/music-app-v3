@@ -9,6 +9,7 @@ import InputSelection from "~/components/input-selection.svelte";
 import InputTextarea from "~/components/input-textarea.svelte";
 import Messages from "~/components/messages.svelte";
 import PlayButton from "~/components/play-button.svelte";
+import SquareImage from "~/components/square-image.svelte";
 import {
   PlaylistDocument, UpsertPlaylistDocument
 } from "~/graphql/types";
@@ -166,7 +167,13 @@ $: viewable =
               <ion-reorder slot="start">
                 <ion-icon name="reorder-two" />
               </ion-reorder>
-              <ion-buttons slot="start">
+              <ion-thumbnail
+                slot="start"
+                on:click|preventDefault|stopPropagation
+              >
+                <SquareImage src={track.artworkM.url} />
+              </ion-thumbnail>
+              <ion-buttons class="thumbnail-button" slot="start">
                 <PlayButton {name} {index} {tracks} />
               </ion-buttons>
               <ion-label>{track.name}</ion-label>
