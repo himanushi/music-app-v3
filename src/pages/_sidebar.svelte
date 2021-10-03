@@ -44,6 +44,11 @@ $: me = $query?.data?.me;
   <ion-header>
     <ion-toolbar color="main">
       <ion-title>Menu</ion-title>
+      <ion-buttons slot="end">
+        <ion-menu-button menu="sidebar" auto-hide={false}>
+          <ion-icon name="close" />
+        </ion-menu-button>
+      </ion-buttons>
     </ion-toolbar>
   </ion-header>
   <ion-content>
