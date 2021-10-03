@@ -108,7 +108,6 @@ const calcIndex = (index: number) => {
     result = numItems - numOverlap + index + startIndex;
 
   }
-  console.log({ result });
 
   return result;
 
