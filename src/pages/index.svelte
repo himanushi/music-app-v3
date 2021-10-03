@@ -1,5 +1,5 @@
 <script lang="ts">
-import { goto } from "@roxi/routify";
-
-$goto("/albums");
+import Albums from "~/pages/albums/index.svelte";
 </script>
+
+<Albums />
