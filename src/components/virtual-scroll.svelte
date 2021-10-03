@@ -52,6 +52,7 @@ $: if ($scrollElement) {
   }
 
 }
+
 $: spacerHeight = Math.max(visibleHeight, items.length * itemHeight);
 $: numItems = Math.ceil(visibleHeight / itemHeight) + 3;
 $: startIndex = Math.floor(scrollTop / itemHeight);
@@ -93,6 +94,25 @@ onMount(() => {
   return () => cancelAnimationFrame(frame);
 
 });
+
+const calcIndex = (index: number) => {
+
+  let result = 0;
+
+  if (index >= numOverlap) {
+
+    result = index - numOverlap + startIndex;
+
+  } else {
+
+    result = numItems - numOverlap + index + startIndex;
+
+  }
+  console.log({ result });
+
+  return result;
+
+};
 </script>
 
 <div
@@ -110,7 +130,7 @@ onMount(() => {
         (index < numOverlap ? blockHeight : 0)}px; height: {itemHeight}px;"
     >
       {#if item !== dummySymbol}
-        <slot {item} {index} />
+        <slot {item} index={calcIndex(index)} />
       {/if}
     </div>
   {/each}
