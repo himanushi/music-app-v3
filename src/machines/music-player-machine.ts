@@ -45,7 +45,6 @@ export type MusicPlayerSchema = {
   states: {
     idle: {};
     playerSelecting: {};
-    durationSetting: {};
     loading: {};
     playing: {};
     paused: {};
@@ -180,30 +179,52 @@ export const MusicPlayerMachine = machine<
       loading: {
         // 30秒間再生できない音楽はスキップ
         after: { 30000: { target: "finished" } },
-        on: { PLAYING: "durationSetting" }
+        on: { PLAYING: "playing" }
       },
 
-      durationSetting: {
-        invoke: { src: () => (callback) => {
+      playing: {
+        entry: [sendParent("PLAYING")],
+        invoke: [
+          {
+            id: "setDuration",
+            src: () => (callback) => {
 
-          (async () => {
+              (async () => {
 
-            const duration =
-                (await CapacitorAppleMusic.currentPlaybackDuration()).result *
-                1000;
-            console.log({ duration });
-            callback({
-              type: "SET_DURATION",
-              duration
-            });
-            callback("PLAYING");
+                const duration =
+                  (await CapacitorAppleMusic.currentPlaybackDuration()).result *
+                  1000;
+                console.log({ duration });
+                callback({
+                  type: "SET_DURATION",
+                  duration
+                });
 
-          })();
+              })();
 
-        } },
+            }
+          },
+          {
+            id: "seekTimer",
+            src: () => (callback) => {
+
+              const interval = setInterval(() => callback("TICK"), 1000);
+
+              return () => {
+
+                clearInterval(interval);
+
+              };
+
+            }
+          }
+        ],
         on: {
-          PLAYING: "playing",
-          SET_DURATION: { actions: ["setDuration"] }
+          FINISHED: "finished",
+          PAUSE: { actions: ["pauseToPlayers"] },
+          PAUSED: "paused",
+          SET_DURATION: { actions: ["setDuration"] },
+          TICK: { actions: ["tickToPlayer"] }
         }
       },
 
@@ -213,30 +234,6 @@ export const MusicPlayerMachine = machine<
           FINISHED: "finished",
           PLAY: { actions: ["playToPlayer"] },
           PLAYING: "playing"
-        }
-      },
-
-      playing: {
-        entry: [sendParent("PLAYING")],
-        invoke: {
-          id: "seekTimer",
-          src: () => (callback) => {
-
-            const interval = setInterval(() => callback("TICK"), 1000);
-
-            return () => {
-
-              clearInterval(interval);
-
-            };
-
-          }
-        },
-        on: {
-          FINISHED: "finished",
-          PAUSE: { actions: ["pauseToPlayers"] },
-          PAUSED: "paused",
-          TICK: { actions: ["tickToPlayer"] }
         }
       },
 

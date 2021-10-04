@@ -228,6 +228,7 @@ export const PreviewPlayerMachine = machine<
 
                 const seek = (await CapacitorAppleMusic.currentPlaybackTime()).
                   result;
+
                 callback({
                   type: "TACK",
                   seek
@@ -280,7 +281,7 @@ export const PreviewPlayerMachine = machine<
 
       if ("seek" in event) {
 
-        CapacitorAppleMusic.seekToTime({ playbackTime: event.seek });
+        CapacitorAppleMusic.seekToTime({ playbackTime: event.seek / 1000 });
 
       }
 

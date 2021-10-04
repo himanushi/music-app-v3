@@ -277,7 +277,7 @@ export const AppleMusicPlayerMachine = machine<
 
       if ("seek" in event) {
 
-        CapacitorAppleMusic.seekToTime({ playbackTime: event.seek });
+        CapacitorAppleMusic.seekToTime({ playbackTime: event.seek / 1000 });
 
       }
 
