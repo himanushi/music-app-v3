@@ -23,11 +23,13 @@ import { setupConfig } from "@ionic/core";
 import { defineCustomElements } from "@ionic/core/loader";
 import { Router } from "@roxi/routify";
 import { routes } from "routify/routes";
+import { store } from "~/store/ionic";
 
 let ready = false;
 
 const initialize = async () => {
 
+  await store.create();
   setupConfig({ mode: "ios" });
   await defineCustomElements(window);
   ready = true;

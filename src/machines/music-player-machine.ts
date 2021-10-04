@@ -194,7 +194,7 @@ export const MusicPlayerMachine = machine<
                 const duration =
                   (await CapacitorAppleMusic.currentPlaybackDuration()).result *
                   1000;
-                console.log({ duration });
+
                 callback({
                   type: "SET_DURATION",
                   duration
