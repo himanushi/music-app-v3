@@ -2,9 +2,7 @@
 /* eslint-disable sort-keys */
 /* eslint-disable sort-keys-fix/sort-keys-fix */
 
-import {
-  Capacitor, PluginListenerHandle
-} from "@capacitor/core";
+import { PluginListenerHandle } from "@capacitor/core";
 import {
   CapacitorAppleMusic,
   PlaybackStates
@@ -141,13 +139,7 @@ export const AppleMusicPlayerMachine = machine<
           stopping: { invoke: {
             src: async () => {
 
-              await CapacitorAppleMusic.stop();
-
-              if (Capacitor.getPlatform() === "web") {
-
-                MusicKit.getInstance().volume = 0.3;
-
-              }
+              await CapacitorAppleMusic.setVolume({ volume: 0.3 });
 
             },
 
@@ -285,7 +277,7 @@ export const AppleMusicPlayerMachine = machine<
 
       if ("seek" in event) {
 
-        CapacitorAppleMusic.seekToTime({ playbackTime: event.seek / 1000 });
+        CapacitorAppleMusic.seekToTime({ playbackTime: event.seek });
 
       }
 

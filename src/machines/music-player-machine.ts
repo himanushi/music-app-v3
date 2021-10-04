@@ -146,46 +146,6 @@ export const MusicPlayerMachine = machine<
                 data: itunesId
               });
 
-              // const result = await MusicKit.getInstance().api.music(
-              //   "v1/me/library/search",
-              //   {
-              //     term: itunesTrack.name.replaceAll(",", " "),
-              //     types: ["library-songs"],
-              //     limit: 25
-              //   }
-              // );
-
-              // const results =
-              //     result.data.results["library-songs"]?.data || [];
-              // let player = previewPlayerId as
-              //     | typeof previewPlayerId
-              //     | typeof appleMusicPlayerId;
-              // let data = context.track?.previewUrl as string;
-
-              // for (let index = 0; index < results.length; index += 1) {
-
-              //   if (
-              //     results[index].attributes.playParams.purchasedId ===
-              //       itunesId
-              //   ) {
-
-              //     player = appleMusicPlayerId;
-              //     data = results[index].id;
-              //     break;
-
-              //   }
-
-              // }
-
-              // callback({
-              //   type: "SET_CURRENT_PLAYER",
-              //   currentPlayer: player
-              // });
-              // callback({
-              //   type: "SET_DATA",
-              //   data
-              // });
-
             } else if (context.track?.previewUrl) {
 
               callback({

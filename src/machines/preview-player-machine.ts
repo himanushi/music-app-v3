@@ -1,43 +1,32 @@
 // xstate では順序を見やすくするため object key sort は無効にする
 /* eslint-disable sort-keys */
 /* eslint-disable sort-keys-fix/sort-keys-fix */
-/* eslint-disable max-lines-per-function */
 
-import { Howl } from "howler";
+import { PluginListenerHandle } from "@capacitor/core";
 import {
-  Machine as machine, assign, send, sendParent, State
+  CapacitorAppleMusic,
+  PlaybackStates
+} from "capacitor-plugin-applemusic";
+import {
+  Machine as machine, assign, sendParent, State
 } from "xstate";
 
-const setPlayer = (previewUrl?: string) => {
-
-  if (!previewUrl) {
-
-    return undefined;
-
-  }
-
-  const howl: Howl = new Howl({
-    autoplay: false,
-    html5: true,
-    preload: false,
-    src: previewUrl,
-    volume: 0
-  });
-
-  return howl;
-
-};
-
 export type PreviewPlayerContext = {
-  previewUrl?: string;
-  player?: Howl;
+  url?: string;
   seek: number;
 };
 
 export type PreviewPlayerStateSchema = {
   states: {
     idle: {};
-    loading: {};
+    loading: {
+      states: {
+        stopping: {};
+        queueing: {};
+        fetching: {};
+      };
+    };
+    waiting: {};
     playing: {};
     paused: {};
     stopped: {};
@@ -45,10 +34,50 @@ export type PreviewPlayerStateSchema = {
   };
 };
 
+const setEvents = (callback: any, events: string[][]) => {
+
+  // eslint-disable-next-line no-unused-vars
+  const didChange: (state: { result: PlaybackStates }) => any = (state) => {
+
+    events.forEach((event) => {
+
+      if (state.result === event[0]) {
+
+        callback(event[1]);
+
+      }
+
+    });
+
+  };
+
+  let cleaner: PluginListenerHandle;
+  (async () => {
+
+    cleaner = await CapacitorAppleMusic.addListener(
+      "playbackStateDidChange",
+      didChange
+    );
+
+  })();
+
+  return () => {
+
+    if (cleaner) {
+
+      cleaner.remove();
+
+    }
+
+  };
+
+};
+
 export type PreviewPlayerStateEvent =
   | { type: "SET_DATA"; data: string }
   | { type: "CHANGE_SEEK"; seek: number }
   | { type: "LOAD" }
+  | { type: "WAITING" }
   | { type: "PLAY" }
   | { type: "PLAYING" }
   | { type: "PAUSE" }
@@ -56,7 +85,10 @@ export type PreviewPlayerStateEvent =
   | { type: "STOP" }
   | { type: "STOPPED" }
   | { type: "FINISHED" }
-  | { type: "TICK" };
+  | { type: "TICK" }
+  | { type: "TACK"; seek: number };
+
+export const previewPlayerId = "preview-player";
 
 export const PreviewPlayerMachine = machine<
   PreviewPlayerContext,
@@ -65,131 +97,15 @@ export const PreviewPlayerMachine = machine<
 >(
   {
     context: { seek: 0 },
-    id: "preview",
+
+    id: previewPlayerId,
 
     initial: "idle",
-
-    states: {
-      finished: { entry: [sendParent("FINISHED")] },
-
-      idle: {},
-
-      loading: {
-        entry: [
-          sendParent("LOADING"),
-          "stop"
-        ],
-
-        after: { 0: { actions: [send("PLAYING")] } },
-
-        exit: [
-          "setPlayer",
-          "play"
-        ]
-      },
-
-      paused: { entry: [sendParent("PAUSED")] },
-
-      playing: {
-        entry: [sendParent("PLAYING")],
-        invoke: {
-          id: "playingListener",
-
-          src:
-            ({ player }: PreviewPlayerContext) => (callback) => {
-
-              if (player) {
-
-                player.on("pause", () => callback("PAUSED"));
-
-                player.on("end", () => callback("FINISHED"));
-
-                // ref: https://stackoverflow.com/questions/45802988/typescript-use-correct-version-of-settimeout-node-vs-window
-                let timeoutID: ReturnType<typeof setTimeout>;
-                const volume = 0.3;
-                const fadeouttime = 2000;
-
-                const fadeIn = () => {
-
-                  if (player.volume() === 0) {
-
-                    player.fade(0, volume, fadeouttime);
-
-                  } else {
-
-                    player.volume(volume);
-
-                  }
-
-                };
-
-                const setScheduleFadeOut = () => {
-
-                  const seek = player.seek() as number;
-
-                  const time = (player.duration() - seek) as number;
-
-                  const ms = time * 1000;
-
-                  const timeout = ms - fadeouttime;
-
-                  timeoutID = setTimeout(() => {
-
-                    player.fade(volume, 0, fadeouttime);
-
-                  }, timeout);
-
-                };
-
-                player.on("play", () => {
-
-                  fadeIn();
-                  setScheduleFadeOut();
-
-                });
-
-                player.on("seek", () => {
-
-                  clearTimeout(timeoutID);
-                  setScheduleFadeOut();
-
-                });
-
-                return () => {
-
-                  clearTimeout(timeoutID);
-                  player.off("play");
-                  player.off("pause");
-                  player.off("end");
-                  player.off("seek");
-
-                };
-
-              }
-
-              return () => {
-                // 何もしない
-              };
-
-            }
-        },
-        on: {
-          FINISHED: "finished",
-          PAUSE: { actions: ["pause"] },
-          PAUSED: "paused"
-        }
-      },
-
-      stopped: {
-        entry: [sendParent("STOPPED")],
-        exit: ["setPlayer"]
-      }
-    },
 
     on: {
       CHANGE_SEEK: { actions: ["changeSeek"] },
 
-      LOAD: "loading",
+      LOAD: { target: "loading" },
 
       PLAY: {
         actions: ["play"],
@@ -206,65 +122,195 @@ export const PreviewPlayerMachine = machine<
       },
 
       TICK: { actions: [
-        "tick",
         sendParent(({ seek }) => ({
           seek,
           type: "SET_SEEK"
         }))
       ] }
+    },
+
+    states: {
+      idle: {},
+
+      loading: {
+        initial: "stopping",
+
+        states: {
+          stopping: { invoke: {
+            src: async () => {
+
+              await CapacitorAppleMusic.setVolume({ volume: 0.3 });
+
+            },
+
+            onDone: "queueing"
+          } },
+
+          queueing: { invoke: {
+            src: async (context) => {
+
+              const { url } = context;
+
+              if (url) {
+
+                await CapacitorAppleMusic.setSong({
+                  songId: "",
+                  previewUrl: url
+                });
+
+              }
+
+            },
+
+            onDone: "fetching"
+          } },
+
+          fetching: {
+            entry: ["play"],
+            on: { PLAYING: `#${previewPlayerId}.playing` },
+            invoke: { src: () => (callback) => setEvents(callback, [
+              [
+                "playing",
+                "PLAYING"
+              ]
+            ]) }
+          }
+        }
+      },
+
+      waiting: {
+        entry: [sendParent("LOADING")],
+
+        invoke: { src: () => (callback) => setEvents(callback, [
+          [
+            "playing",
+            "PLAYING"
+          ]
+        ]) },
+
+        on: { PLAYING: "playing" }
+      },
+
+      paused: {
+        entry: [sendParent("PAUSED")],
+        invoke: { src: () => (callback) => setEvents(callback, [
+          [
+            "ended",
+            "FINISHED"
+          ],
+          [
+            "completed",
+            "FINISHED"
+          ],
+          [
+            "playing",
+            "PLAYING"
+          ],
+          [
+            "loading",
+            "WAITING"
+          ]
+        ]) },
+
+        on: {
+          FINISHED: "finished",
+          WAITING: "waiting"
+        }
+      },
+
+      playing: {
+        invoke: [
+          {
+            id: "seekTimer",
+            src: () => (callback) => {
+
+              const interval = setInterval(async () => {
+
+                const seek = (await CapacitorAppleMusic.currentPlaybackTime()).
+                  result;
+                callback({
+                  type: "TACK",
+                  seek
+                });
+
+              }, 1000);
+
+              return () => {
+
+                clearInterval(interval);
+
+              };
+
+            }
+          },
+          { src: () => (callback) => setEvents(callback, [
+            [
+              "paused",
+              "PAUSED"
+            ],
+            [
+              "waiting",
+              "WAITING"
+            ],
+            [
+              "completed",
+              "FINISHED"
+            ]
+          ]) }
+        ],
+
+        entry: [sendParent("PLAYING")],
+
+        on: {
+          PAUSE: { actions: ["pause"] },
+          PAUSED: "paused",
+          WAITING: "waiting",
+          FINISHED: "finished",
+          TACK: { actions: ["tack"] }
+        }
+      },
+
+      stopped: { entry: [sendParent("STOPPED")] },
+
+      finished: { entry: [sendParent("FINISHED")] }
     }
   },
   { actions: {
-    changeSeek: ({ player }, event) => {
+    changeSeek: (_, event) => {
 
-      if (player && "seek" in event) {
+      if ("seek" in event) {
 
-        player.seek(event.seek / 1000);
-
-      }
-
-    },
-
-    pause: ({ player }) => {
-
-      if (player && player.playing()) {
-
-        player.pause();
+        CapacitorAppleMusic.seekToTime({ playbackTime: event.seek });
 
       }
 
     },
 
-    play: ({ player }) => {
+    pause: () => {
 
-      if (player) {
-
-        player.play();
-
-      }
+      CapacitorAppleMusic.pause();
 
     },
 
-    setPlayer: assign({ player: ({ previewUrl }) => setPlayer(previewUrl) }),
+    play: () => {
 
-    setData: assign({ previewUrl: (_, event) => "data" in event ? event.data : undefined }),
-
-    stop: ({ player }) => {
-
-      if (player && player.playing()) {
-
-        player.stop();
-
-      }
+      CapacitorAppleMusic.play();
 
     },
 
-    tick: assign({ seek: ({ player }) => {
+    setData: assign({ url: (_, event) => "data" in event ? event.data : undefined }),
 
-      if (player) {
+    stop: () => {
 
-        const seek = player.seek() as number;
-        return Math.floor(seek * 1000);
+      CapacitorAppleMusic.stop();
+
+    },
+
+    tack: assign({ seek: (_, event) => {
+
+      if ("seek" in event) {
+
+        return Math.floor(event.seek * 1000);
 
       }
 
@@ -283,3 +329,4 @@ export type PreviewPlayerState = State<
     context: PreviewPlayerContext;
   }
 >;
+// result = await MusicKit.getInstance().api.music("v1/me/library/search", {term:"Where Angel Fear To Tread", types: ["library-songs"]})
