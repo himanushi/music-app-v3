@@ -54,7 +54,7 @@ $: if ($scrollElement) {
 }
 
 $: spacerHeight = Math.max(visibleHeight, items.length * itemHeight);
-$: numItems = Math.ceil(visibleHeight / itemHeight) + 3;
+$: numItems = Math.ceil(visibleHeight / itemHeight) + 15;
 $: startIndex = Math.floor(scrollTop / itemHeight);
 $: endIndex = startIndex + numItems;
 $: numOverlap = startIndex % numItems;
