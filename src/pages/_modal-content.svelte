@@ -1,10 +1,15 @@
 <script>
-import BackButton from "~/components/back-button.svelte";
+import { closeModal } from "~/lib/ionic";
+const close = () => closeModal();
 </script>
 
 <ion-content>
   <slot />
-  <BackButton iconName="close" />
+  <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+    <ion-fab-button on:click={close}>
+      <ion-icon name="close" />
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
 
 <style lang="scss">
