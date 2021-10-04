@@ -1,9 +1,5 @@
 <script lang="ts">
-import { goto } from "@roxi/routify";
-import AddPlaylistButton from "../add-playlist-button.svelte";
-import Favorite from "../favorite.svelte";
 import RepeatButton from "./repeat-button.svelte";
-import { closeModal } from "~/lib/ionic";
 import { playerService } from "~/machines/jukebox-machine";
 
 $: player = $playerService.context.musicPlayerRef;
@@ -29,35 +25,7 @@ const skip = () => {
   playerService.send("NEXT_PLAY");
 
 };
-
-const link = () => {
-
-  (async () => {
-
-    if (player && $player.context.track?.id) {
-
-      const { id } = $player.context.track;
-      await closeModal();
-      $goto("/tracks/:id", { id });
-
-    }
-
-  })();
-
-};
 </script>
-
-<ion-item>
-  <ion-buttons slot="end">
-    {#if player && $player.context.track}
-      <ion-button size="large" on:click={link}>
-        <ion-icon slot="icon-only" name="link" />
-      </ion-button>
-      <Favorite type="track" id={$player.context.track.id} />
-      <AddPlaylistButton tracks={[$player.context.track]} />
-    {/if}
-  </ion-buttons>
-</ion-item>
 
 <ion-grid>
   <ion-row>

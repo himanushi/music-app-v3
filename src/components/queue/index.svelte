@@ -64,12 +64,14 @@ const link = () => {
 {#if playerService}
   <ion-header translucent>
     <ion-toolbar>
+      <ion-buttons slot="start">
+        <AddPlaylistButton {tracks} />
+      </ion-buttons>
       <ion-title>{$playerService.context.name}</ion-title>
       <ion-buttons slot="end">
         <ion-button size="large" on:click={link}>
           <ion-icon slot="icon-only" name="link" />
         </ion-button>
-        <AddPlaylistButton {tracks} />
       </ion-buttons>
     </ion-toolbar>
   </ion-header>
