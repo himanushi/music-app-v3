@@ -49,6 +49,8 @@ const link = () => {
   <CenterItem>
     {#if player && $player.context.track}
       <SquareImage src={$player.context.track.artworkL?.url} />
+    {:else}
+      <SquareImage />
     {/if}
   </CenterItem>
 
