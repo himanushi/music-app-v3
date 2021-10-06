@@ -8,24 +8,20 @@ const tokenQuery = query<AppleMusicTokenQuery>(AppleMusicTokenDocument);
 
 let token: string | undefined;
 
-$: {
+$: if ($tokenQuery?.data?.appleMusicToken) {
 
-  token = $tokenQuery?.data?.appleMusicToken;
+  token = $tokenQuery.data.appleMusicToken;
 
-  if (token) {
-
-    accountService.send({
-      config: {
-        app: {
-          build: "2.0.1",
-          name: "video-game-music.net"
-        },
-        developerToken: token
+  accountService.send({
+    config: {
+      app: {
+        build: "2.0.1",
+        name: "video-game-music.net"
       },
-      type: "SET_TOKEN"
-    });
-
-  }
+      developerToken: token
+    },
+    type: "SET_TOKEN"
+  });
 
 }
 </script>

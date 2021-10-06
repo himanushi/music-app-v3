@@ -2,6 +2,8 @@
 /* eslint-disable sort-keys */
 /* eslint-disable sort-keys-fix/sort-keys-fix */
 
+import type { PluginListenerHandle } from "@capacitor/core";
+import type { AuthorizationStatusDidChangeListener } from "capacitor-plugin-applemusic";
 import { CapacitorAppleMusic } from "capacitor-plugin-applemusic";
 import { assign } from "xstate";
 import {
@@ -23,6 +25,7 @@ export type accountSchema = {
 
 export type accountEvent =
   | { type: "SET_TOKEN"; config: MusicKit.Config }
+  | { type: "CHECKING" }
   | { type: "LOGIN_OR_LOGOUT" }
   | { type: "LOGIN" }
   | { type: "LOGOUT" };
@@ -40,38 +43,40 @@ export const accountMachine = machine<
     context: { config: undefined },
 
     states: {
-      idle: { on: { SET_TOKEN: {
-        actions: "setConfig",
-        target: "checking"
-      } } },
+      idle: {
+        on: {
+          SET_TOKEN: {
+            actions: "setConfig",
+            target: "checking"
+          },
+          CHECKING: "checking"
+        },
+        meta: { label: "initializing" }
+      },
 
       checking: {
         invoke: { src:
             ({ config }) => (callback) => {
 
-              if (config) {
+              (async () => {
 
-                (async () => {
+                if (config) {
 
                   await CapacitorAppleMusic.configure({ config });
 
-                  if ((await CapacitorAppleMusic.isAuthorized()).result) {
+                }
 
-                    callback({ type: "LOGIN" });
+                if ((await CapacitorAppleMusic.isAuthorized()).result) {
 
-                  } else {
+                  callback({ type: "LOGIN" });
 
-                    callback({ type: "LOGOUT" });
+                } else {
 
-                  }
+                  callback({ type: "LOGOUT" });
 
-                })();
+                }
 
-              } else {
-
-                callback({ type: "LOGOUT" });
-
-              }
+              })();
 
             } },
         on: {
@@ -88,9 +93,11 @@ export const accountMachine = machine<
 
           src: () => (callback: Sender<accountEvent>) => {
 
-            const changeStatus = (result: { authorizationStatus: number }) => {
+            const changeStatus: AuthorizationStatusDidChangeListener = (
+              state
+            ) => {
 
-              if (result.authorizationStatus === 0) {
+              if (state.result !== "authorized") {
 
                 callback("LOGOUT");
 
@@ -98,15 +105,25 @@ export const accountMachine = machine<
 
             };
 
-            MusicKit.getInstance().addEventListener(
-              MusicKit.Events.authorizationStatusDidChange,
-              changeStatus
-            );
+            let cleaner: PluginListenerHandle;
+            (async () => {
 
-            return () => MusicKit.getInstance().removeEventListener(
-              MusicKit.Events.authorizationStatusDidChange,
-              changeStatus
-            );
+              cleaner = await CapacitorAppleMusic.addListener(
+                "authorizationStatusDidChange",
+                changeStatus
+              );
+
+            })();
+
+            return () => {
+
+              if (cleaner) {
+
+                cleaner.remove();
+
+              }
+
+            };
 
           }
         },
@@ -125,9 +142,11 @@ export const accountMachine = machine<
 
           src: () => (callback: Sender<accountEvent>) => {
 
-            const changeStatus = (result: { authorizationStatus: number }) => {
+            const changeStatus: AuthorizationStatusDidChangeListener = (
+              state
+            ) => {
 
-              if (result.authorizationStatus !== 0) {
+              if (state.result === "authorized") {
 
                 callback("LOGIN");
 
@@ -135,15 +154,25 @@ export const accountMachine = machine<
 
             };
 
-            MusicKit.getInstance().addEventListener(
-              MusicKit.Events.authorizationStatusDidChange,
-              changeStatus
-            );
+            let cleaner: PluginListenerHandle;
+            (async () => {
 
-            return () => MusicKit.getInstance().removeEventListener(
-              MusicKit.Events.authorizationStatusDidChange,
-              changeStatus
-            );
+              cleaner = await CapacitorAppleMusic.addListener(
+                "authorizationStatusDidChange",
+                changeStatus
+              );
+
+            })();
+
+            return () => {
+
+              if (cleaner) {
+
+                cleaner.remove();
+
+              }
+
+            };
 
           }
         },
