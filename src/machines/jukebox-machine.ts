@@ -220,14 +220,16 @@ export const JukeboxMachine = machine<
         on: {
           PAUSE: { actions: ["pause"] },
           PAUSED: "paused",
-          PLAY_OR_PAUSE: { actions: ["pause"] }
+          PLAY_OR_PAUSE: { actions: ["pause"] },
+          STOPPED: "stopped"
         }
       },
 
       paused: { on: {
         PLAY: { actions: ["play"] },
         PLAYING: "playing",
-        PLAY_OR_PAUSE: { actions: ["play"] }
+        PLAY_OR_PAUSE: { actions: ["play"] },
+        STOPPED: "stopped"
       } },
 
       stopped: { on: {
@@ -310,9 +312,7 @@ export const JukeboxMachine = machine<
 
       SET_LINK: { actions: ["setLink"] },
 
-      SET_IS_RADIO: { actions: ["setIsRadio"] },
-
-      STOPPED: "stopped"
+      SET_IS_RADIO: { actions: ["setIsRadio"] }
     }
   },
   {

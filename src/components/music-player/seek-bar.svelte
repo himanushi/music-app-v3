@@ -1,5 +1,6 @@
 <script lang="ts">
 import { tweened } from "svelte/motion";
+import { canPlay } from "~/components/play-button.svelte";
 import SeekBar from "~/components/seek-bar.svelte";
 import { playerService } from "~/machines/jukebox-machine";
 
@@ -21,6 +22,7 @@ const seek = tweened(0, { duration: (from, to) => {
 } });
 
 const player = $playerService.context.musicPlayerRef;
+$: disabled = $playerService.value === "loading" || !$canPlay;
 
 $: if (player) {
 
@@ -78,6 +80,7 @@ $: seekValue = seeking ? seekValue : $seek;
     min={0}
     max={$player.context.duration}
     formatter={toMMSS}
+    {disabled}
     on:start={onStart}
     on:stop={onStop}
   />

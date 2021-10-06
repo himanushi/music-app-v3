@@ -7,8 +7,7 @@ import { playerService } from "~/machines/jukebox-machine";
 import { radioService } from "~/machines/radio-machine";
 
 $: track = $playerService.context.currentTrack;
-$: player = $playerService.context.musicPlayerRef;
-$: disabled = player && ($player.value === "loading" || !$canPlay);
+$: disabled = $playerService.value === "loading" || !$canPlay;
 
 const play_or_pause = () => playerService.send("PLAY_OR_PAUSE");
 const skip = () => playerService.send("NEXT_PLAY");
@@ -39,7 +38,7 @@ const showPlayer = () => openPlayer();
   }}
 >
   <ion-toolbar color="main">
-    {#if track && player}
+    {#if track && playerService}
       {#key track.id}
         {#if $playerService.context.isRadio}
           <ion-thumbnail on:click={showPlayer} slot="start">
@@ -47,11 +46,11 @@ const showPlayer = () => openPlayer();
           </ion-thumbnail>
           <ion-title on:click={showPlayer}>{track.name}</ion-title>
           <ion-buttons slot="end">
-            {#if $player.value === "playing"}
+            {#if $playerService.value === "playing"}
               <ion-button {disabled} on:click={stop}>
                 <ion-icon name="stop" />
               </ion-button>
-            {:else if $player.value === "loading"}
+            {:else if $playerService.value === "loading"}
               <ion-button disabled={true}>
                 <ion-icon name="sync" />
               </ion-button>
@@ -68,9 +67,9 @@ const showPlayer = () => openPlayer();
           <ion-title on:click={showPlayer}>{track.name}</ion-title>
           <ion-buttons slot="end">
             <ion-button {disabled} on:click={play_or_pause}>
-              {#if $player.value === "playing"}
+              {#if $playerService.value === "playing"}
                 <ion-icon name="pause" />
-              {:else if $player.value === "loading" || $player.value === "playerSelecting"}
+              {:else if $playerService.value === "loading"}
                 <ion-icon name="sync" />
               {:else}
                 <ion-icon name="play" />

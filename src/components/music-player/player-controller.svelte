@@ -1,12 +1,9 @@
 <script lang="ts">
+import { canPlay } from "../play-button.svelte";
 import RepeatButton from "./repeat-button.svelte";
 import { playerService } from "~/machines/jukebox-machine";
 
-$: player = $playerService.context.musicPlayerRef;
-
-$: disabled =
-  player &&
-  ($player.value === "loading" || $player.value === "playerSelecting");
+$: disabled = $playerService.value === "loading" || !$canPlay;
 
 const playOrPause = () => {
 
@@ -35,7 +32,7 @@ const skip = () => {
       </ion-button>
     </ion-col>
 
-    {#if player}
+    {#if playerService}
       <ion-col class="ion-text-center">
         <ion-button
           shape="round"
@@ -44,9 +41,9 @@ const skip = () => {
           class="h-16 w-16"
           on:click={playOrPause}
         >
-          {#if $player.value === "playing"}
+          {#if $playerService.value === "playing"}
             <ion-icon slot="icon-only" name="pause" />
-          {:else if $player.value === "loading"}
+          {:else if $playerService.value === "loading"}
             <ion-icon slot="icon-only" name="sync" />
           {:else}
             <ion-icon slot="icon-only" name="play" />
