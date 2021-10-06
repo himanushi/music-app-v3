@@ -14,10 +14,20 @@ $: me = $query?.data?.me;
 </script>
 
 {#if me && isAllowed(me, "appleMusicToken")}
-  <ion-item button on:click={onClick}>
-    <ion-icon slot="start" src="/assets/logo-apple-music.svg" />
-    <ion-label>
-      Apple Music {meta.label}
-    </ion-label>
-  </ion-item>
+  <!-- 無駄に同じように書いてるがこれはアイコンが白くなるバグがあるため -->
+  {#if account && $account.matches("authorized")}
+    <ion-item button on:click={onClick}>
+      <ion-icon slot="start" src="/assets/logo-apple-music.svg" />
+      <ion-label>
+        Apple Music {meta.label}
+      </ion-label>
+    </ion-item>
+  {:else}
+    <ion-item button on:click={onClick}>
+      <ion-icon slot="start" src="/assets/logo-apple-music.svg" />
+      <ion-label>
+        Apple Music {meta.label}
+      </ion-label>
+    </ion-item>
+  {/if}
 {/if}
