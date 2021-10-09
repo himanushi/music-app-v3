@@ -2,6 +2,9 @@ export const title = document.querySelector("title")?.innerText;
 
 const getContent = (selector: string) => document.querySelector(selector)?.content;
 
+export const originUrl =
+  getContent("meta[property='ms:origin-url']") || window.location.origin;
+
 export const graphqlUrl = getContent("meta[property='ms:graphql-url']");
 
 export const recaptchaKey = getContent("meta[property='ms:recaptcha-key']");

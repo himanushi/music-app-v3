@@ -1,4 +1,5 @@
 <script lang="ts">
+import { Capacitor } from "@capacitor/core";
 import { goto } from "@roxi/routify";
 import { openPlayer } from "~/components/player.svelte";
 import type { ActionEnum } from "~/graphql/types";
@@ -133,9 +134,11 @@ $: me = $query?.data?.me;
       <ion-item button on:click={go("/privacy")}>
         <ion-label>プレイバシーポリシー</ion-label>
       </ion-item>
-      <ion-item button on:click={go("/cookie-policy")}>
-        <ion-label>クッキーポリシー</ion-label>
-      </ion-item>
+      {#if Capacitor.getPlatform() === "web"}
+        <ion-item button on:click={go("/cookie-policy")}>
+          <ion-label>クッキーポリシー</ion-label>
+        </ion-item>
+      {/if}
     </ion-item-group>
   </ion-content>
 </ion-menu>
