@@ -1,4 +1,5 @@
 <script lang="ts">
+import { Capacitor } from "@capacitor/core";
 import { query } from "svelte-apollo";
 import FabButton from "./_fab-button.svelte";
 import AddAppleMusicPlaylistButton from "~/components/add-apple-music-playlist-button.svelte";
@@ -110,17 +111,19 @@ $: tracks = playlist ? playlist.items.map((it) => it.track) : [];
     <LoadingItems count={8} />
   {/if}
 
-  <ion-item-divider sticky>
-    <ion-label>Music Services</ion-label>
-  </ion-item-divider>
-  {#if playlist}
-    <AddAppleMusicPlaylistButton
-      name={playlist.name}
-      description={`${location.origin}/playlist/${playlist.id}`}
-      tracks={playlist.items.map((it) => it.track)}
-    />
-  {:else}
-    <LoadingItems />
+  {#if Capacitor.getPlatform() === "web"}
+    <ion-item-divider sticky>
+      <ion-label>Music Services</ion-label>
+    </ion-item-divider>
+    {#if playlist}
+      <AddAppleMusicPlaylistButton
+        name={playlist.name}
+        description={`${location.origin}/playlist/${playlist.id}`}
+        tracks={playlist.items.map((it) => it.track)}
+      />
+    {:else}
+      <LoadingItems />
+    {/if}
   {/if}
 
   <ion-item-divider sticky>

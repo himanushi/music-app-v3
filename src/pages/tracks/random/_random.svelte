@@ -1,4 +1,5 @@
 <script lang="ts">
+import { Capacitor } from "@capacitor/core";
 import ItemCard from "./../_item-card.svelte";
 import AddAppleMusicPlaylistButton from "~/components/add-apple-music-playlist-button.svelte";
 import Items from "~/components/items.svelte";
@@ -36,19 +37,18 @@ const setTracks = (ts: Track[]) => {
     <ion-label>Random Playlist</ion-label>
   </ion-item-divider>
 
-  {#if tracks.length > 0}
-    <AddAppleMusicPlaylistButton
-      name="Random"
-      description={`${location.origin}/tracks/random`}
-      {tracks}
-    />
-  {:else}
-    <LoadingItems />
+  {#if Capacitor.getPlatform() === "web"}
+    {#if tracks.length > 0}
+      <AddAppleMusicPlaylistButton
+        name="Random"
+        description={`${location.origin}/tracks/random`}
+        {tracks}
+      />
+    {:else}
+      <LoadingItems />
+    {/if}
   {/if}
 
-  <ion-item-divider sticky>
-    <ion-label>Tracks</ion-label>
-  </ion-item-divider>
   <Items
     {variables}
     type="track"
