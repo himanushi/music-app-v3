@@ -1,4 +1,4 @@
-query Playlist($id: TTID!) {
+query Playlist($id: String!) {
   playlist(id: $id) {
     ...PlaylistFields
   }

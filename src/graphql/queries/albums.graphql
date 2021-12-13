@@ -12,11 +12,7 @@ query Albums(
       width
       height
     }
-    appleMusicAlbum {
-      id
-    }
-    itunesAlbum {
-      id
-    }
+    appleMusicId
+    appleMusicPlayable
   }
 }

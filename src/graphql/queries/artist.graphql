@@ -1,4 +1,4 @@
-query Artist($id: TTID!) {
+query Artist($id: String!) {
   artist(id: $id) {
     id
     name

@@ -1,8 +1,5 @@
 mutation IgnoreArtists($input: IgnoreArtistsInput!) {
   ignoreArtists(input: $input) {
-    artists {
-      id
-      name
-    }
+    result
   }
 }

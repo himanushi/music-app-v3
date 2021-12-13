@@ -1,4 +1,4 @@
-query Album($id: TTID!) {
+query Album($id: String!) {
   album(id: $id) {
     id
     totalTracks
@@ -17,14 +17,7 @@ query Album($id: TTID!) {
       width
       height
     }
-    appleMusicAlbum {
-      id
-      appleMusicId
-    }
-    itunesAlbum {
-      id
-      appleMusicId
-    }
+    appleMusicId
     tracks {
       ...TrackFields
     }

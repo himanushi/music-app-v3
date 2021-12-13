@@ -1,7 +1,8 @@
-fragment TrackFields on Track {
+fragment TrackFields on TrackObject {
   id
   isrc
   name
+  status
   discNumber
   trackNumber
   durationMs
@@ -17,14 +18,6 @@ fragment TrackFields on Track {
     width
     height
   }
-  appleMusicTracks {
-    id
-    name
-    appleMusicId
-  }
-  itunesTracks {
-    id
-    name
-    appleMusicId
-  }
+  appleMusicId
+  appleMusicPlayable
 }

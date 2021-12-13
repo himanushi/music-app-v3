@@ -1,5 +1,0 @@
-query Radio($id: TTID!) {
-  radio(id: $id) {
-    ...RadioFields
-  }
-}

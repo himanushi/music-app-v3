@@ -13,7 +13,6 @@ generates:
       immutableTypes: true
       addUnderscoreToArgsType: true
       scalars:
-        TTID: string
         PositiveNumber: number
         ISO8601DateTime: string
       skipTypename: true

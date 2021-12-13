@@ -1,8 +1,0 @@
-mutation UpsertAlbum($input: UpsertAlbumInput!) {
-  upsertAlbum(input: $input) {
-    albums {
-      id
-      name
-    }
-  }
-}

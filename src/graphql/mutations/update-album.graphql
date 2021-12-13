@@ -1,0 +1,8 @@
+mutation UpdateAlbum($input: UpdateAlbumInput!) {
+  updateAlbum(input: $input) {
+    albums {
+      id
+      name
+    }
+  }
+}

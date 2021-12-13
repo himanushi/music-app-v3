@@ -1,4 +1,4 @@
-fragment PlaylistFields on Playlist {
+fragment PlaylistFields on PlaylistObject {
   id
   name
   description
@@ -6,13 +6,13 @@ fragment PlaylistFields on Playlist {
   isMine
   createdAt
   updatedAt
-  track {
-    ...TrackFields
-  }
   author {
     id
     name
     username
+  }
+  track {
+    ...TrackFields
   }
   items {
     trackNumber

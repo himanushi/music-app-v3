@@ -1,4 +1,4 @@
-query Track($id: TTID!) {
+query Track($id: String!) {
   track(id: $id) {
     ...TrackFields
   }

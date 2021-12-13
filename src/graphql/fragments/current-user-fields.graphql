@@ -1,12 +1,8 @@
-fragment CurrentUserFields on CurrentUser {
+fragment CurrentUserFields on CurrentUserObject {
   id
   name
   username
   registered
-  publicInformations {
-    id
-    publicType
-  }
   role {
     id
     name
@@ -18,6 +14,5 @@ fragment CurrentUserFields on CurrentUser {
     artistIds
     trackIds
     playlistIds
-    radioIds
   }
 }
