@@ -1,4 +1,5 @@
 <script lang="ts">
+import "./seek-bar.scss";
 import RangeSlider from "svelte-range-slider-pips/src/RangeSlider.svelte";
 export let value: number;
 export let min: number;
@@ -25,24 +26,3 @@ const range = "min" as unknown as boolean;
   {range}
   {disabled}
 />
-
-<style lang="scss">
-:global(.rangeSlider.range.min) {
-  background-color: rgba(209, 213, 219);
-  :global(.rangeNub) {
-    background-color: rgba(20, 184, 166);
-  }
-  :global(.rangeFloat) {
-    background-color: rgba(20, 184, 166);
-  }
-  :global(.rangeBar) {
-    background-color: rgba(20, 184, 166);
-  }
-}
-
-:global(.rangeSlider.range.min.focus) {
-  :global(.rangeNub) {
-    background-color: rgba(20, 184, 166);
-  }
-}
-</style>

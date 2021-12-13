@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 import { playerService } from "~/machines/jukebox-machine";
 
 $: color = $playerService.context.repeat ? "main" : "gray";

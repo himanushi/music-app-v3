@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 // ref: https://github.com/Prinzhorn/better-svelte-virtual-list
 
 import { onMount } from "svelte";

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 import { closeModal } from "~/lib/ionic";
 const close = () => closeModal();
 </script>

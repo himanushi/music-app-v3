@@ -3,7 +3,7 @@
 import { writable } from "svelte/store";
 
 const createCanPlay = () => {
-  const { subscribe, update } = writable<boolean>(true);
+  const { subscribe, update } = writable(true);
 
   return {
     play: () => {

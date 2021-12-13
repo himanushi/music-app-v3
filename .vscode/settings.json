@@ -31,8 +31,12 @@
     "isrc",
     "nexttrack",
     "previoustrack",
+    "routify",
+    "roxi",
     "stylelint",
+    "sveltejs",
     "upsert",
+    "vite",
     "xstate"
   ]
 }

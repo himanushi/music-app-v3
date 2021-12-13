@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 import Messages from "./messages.svelte";
 
 export let placeholder: string | undefined = undefined;

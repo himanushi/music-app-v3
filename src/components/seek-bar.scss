@@ -1,0 +1,17 @@
+:global(.rangeSlider.range.min) {
+  background-color: rgba(209, 213, 219);
+  :global(.rangeNub) {
+    background-color: rgba(20, 184, 166);
+  }
+  :global(.rangeFloat) {
+    background-color: rgba(20, 184, 166);
+  }
+  :global(.rangeBar) {
+    background-color: rgba(20, 184, 166);
+  }
+}
+:global(.rangeSlider.range.min.focus) {
+  :global(.rangeNub) {
+    background-color: rgba(20, 184, 166);
+  }
+}
