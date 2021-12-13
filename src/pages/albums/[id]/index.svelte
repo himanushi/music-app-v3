@@ -11,7 +11,7 @@ export let id = "";
 let tggle = true;
 let loaded = false;
 const refresh = () => {
-  client.cache.evict({ id: `Album:${id}` });
+  client.cache.evict({ id: `AlbumObject:${id}` });
   tggle = !tggle;
 };
 
