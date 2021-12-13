@@ -28,12 +28,10 @@ import { store } from "~/store/ionic";
 let ready = false;
 
 const initialize = async () => {
-
   await store.create();
   setupConfig({ mode: "ios" });
   await defineCustomElements(window);
   ready = true;
-
 };
 
 initialize();

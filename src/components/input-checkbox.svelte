@@ -6,13 +6,9 @@ export let errorMessages: string[] | undefined = undefined;
 export let checked: boolean;
 
 const onChange = (event: Event) => {
-
   if (event?.target) {
-
     checked = event?.target?.checked;
-
   }
-
 };
 </script>
 

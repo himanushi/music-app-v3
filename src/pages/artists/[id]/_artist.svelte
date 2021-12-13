@@ -6,56 +6,48 @@ import LoadingItems from "~/components/loading-items.svelte";
 import Image from "~/components/square-image.svelte";
 import { ArtistDocument } from "~/graphql/types";
 import type {
-  Artist,
+  ArtistObject,
   ArtistQuery,
   AlbumsQueryVariables,
-  StatusEnum
+  StatusEnum,
 } from "~/graphql/types";
-import type { CurrentUser } from "~/graphql/types";
+import type { CurrentUserObject } from "~/graphql/types";
 import { isAllowed } from "~/lib/me";
 import Albums from "~/pages/albums/_albums.svelte";
 
 export let id = "";
-export let me: CurrentUser | undefined;
+export let me: CurrentUserObject | undefined;
 export let loaded: boolean;
 
 const artistQuery = query<ArtistQuery>(ArtistDocument, {
   fetchPolicy: "cache-first",
-  variables: { id }
+  variables: { id },
 });
 
-let artist: Artist | undefined;
+let artist: ArtistObject | undefined;
 let variables: AlbumsQueryVariables | undefined;
 
 let first = true;
 $: if (me && $artistQuery.data && first) {
-
   loaded = true;
 
-  artist = $artistQuery.data.artist as Artist;
-  let status: StatusEnum[] = ["ACTIVE"];
-  if (isAllowed(me, "changeStatus")) {
-
-    status = [
-      "ACTIVE",
-      "IGNORE",
-      "PENDING"
-    ];
-
+  artist = $artistQuery.data.artist as ArtistObject;
+  let statuses: StatusEnum[] = ["ACTIVE"];
+  if (isAllowed(me, "changeArtistStatus")) {
+    statuses = ["ACTIVE", "IGNORE", "PENDING"];
   }
   variables = {
     conditions: {
-      artists: { id: [id] },
-      status
+      artistIds: [id],
+      statuses,
     },
     sort: {
+      direction: "DESC",
       order: "RELEASE",
-      type: "DESC"
-    }
+    },
   };
 
   first = false;
-
 }
 </script>
 

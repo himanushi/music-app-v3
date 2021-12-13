@@ -3,12 +3,8 @@ import { ApolloError } from "@apollo/client/core";
 import { goto } from "@roxi/routify";
 import { mutation } from "svelte-apollo";
 import Messages from "~/components/messages.svelte";
-import {
-  LogoutDocument, MeDocument
-} from "~/graphql/types";
-import type {
-  LogoutMutationVariables, LogoutMutation
-} from "~/graphql/types";
+import { LogoutDocument, MeDocument } from "~/graphql/types";
+import type { LogoutMutationVariables, LogoutMutation } from "~/graphql/types";
 import { errorMessages } from "~/lib/error";
 import { openToast } from "~/lib/ionic";
 
@@ -19,35 +15,27 @@ const mutate =
   mutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument);
 
 const logout = async () => {
-
   disabled = true;
   try {
-
     await mutate({
       refetchQueries: [{ query: MeDocument }],
-      variables: { input: {} }
+      variables: { input: {} },
     });
 
     openToast({
       color: "light-green",
       duration: 3000,
-      message: "ログアウトしました"
+      message: "ログアウトしました",
     });
 
     $goto("/me");
-
   } catch (error) {
-
     disabled = false;
 
     if (error instanceof ApolloError) {
-
       messages = errorMessages(error);
-
     }
-
   }
-
 };
 </script>
 

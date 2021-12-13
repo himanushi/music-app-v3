@@ -2,14 +2,10 @@
 import { goto } from "@roxi/routify";
 import LogoutButton from "./_logout-button.svelte";
 import Messages from "~/components/messages.svelte";
-import {
-  isAllowed, meQuery
-} from "~/lib/me";
+import { isAllowed, meQuery } from "~/lib/me";
 
 const go = (path: string) => () => {
-
   $goto(path);
-
 };
 
 $: query = meQuery();

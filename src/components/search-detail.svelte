@@ -6,10 +6,8 @@ export let title: string;
 export let onClick: () => void;
 
 const click = async () => {
-
   await closeModal();
   onClick();
-
 };
 </script>
 

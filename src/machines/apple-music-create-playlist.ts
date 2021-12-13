@@ -3,15 +3,13 @@
 /* eslint-disable sort-keys-fix/sort-keys-fix */
 
 import axios from "axios";
-import {
-  interpret, Machine as machine, assign
-} from "xstate";
-import type { Track } from "~/graphql/types";
+import { interpret, Machine as machine, assign } from "xstate";
+import type { TrackObject } from "~/graphql/types";
 
 export type Context = {
   name?: string;
   description?: string;
-  tracks?: Track[];
+  tracks?: TrackObject[];
 };
 
 export type Schema = {
@@ -28,7 +26,7 @@ export type Event =
       type: "CREATE";
       name: string;
       description: string;
-      tracks: Track[];
+      tracks: TrackObject[];
     }
   | { type: "ACTIVE" };
 
@@ -43,79 +41,75 @@ export const Machine = machine<Context, Schema, Event>(
     on: { ACTIVE: "active" },
 
     states: {
-      active: { on: { CREATE: {
-        target: "creating",
-        actions: ["setContext"]
-      } } },
-      creating: { invoke: {
-        // eslint-disable-next-line max-lines-per-function
-        src: ({
-          name, description, tracks
-        }) => {
+      active: {
+        on: {
+          CREATE: {
+            target: "creating",
+            actions: ["setContext"],
+          },
+        },
+      },
+      creating: {
+        invoke: {
+          // eslint-disable-next-line max-lines-per-function
+          src: ({ name, description, tracks }) => {
+            if (!name || !description || !tracks) {
+              return () => {
+                // nothing
+              };
+            }
 
-          if (!name || !description || !tracks) {
+            const url = "https://api.music.apple.com/v1/me/library/playlists";
 
-            return () => {
-              // nothing
+            const headers = {
+              Authorization: `Bearer ${MusicKit.getInstance().developerToken}`,
+              "Music-User-Token": MusicKit.getInstance().musicUserToken,
             };
 
-          }
+            const data = tracks.
+              map((track) => {
+                const id = track.appleMusicId;
 
-          const url = "https://api.music.apple.com/v1/me/library/playlists";
+                if (id) {
+                  return {
+                    id,
+                    type: "songs",
+                  };
+                }
 
-          const headers = {
-            Authorization: `Bearer ${MusicKit.getInstance().developerToken}`,
-            "Music-User-Token": MusicKit.getInstance().musicUserToken
-          };
+                return undefined;
+              }).
+              filter((track) => track);
 
-          const data = tracks.
-            map((track) => {
+            const body = {
+              attributes: {
+                name,
+                description,
+              },
+              relationships: { tracks: { data } },
+            };
 
-              const id = track.appleMusicTracks?.find(
-                (apple) => apple
-              )?.appleMusicId;
+            return axios.post(url, body, { headers });
+          },
 
-              if (id) {
+          onDone: "done",
 
-                return {
-                  id,
-                  type: "songs"
-                };
-
-              }
-
-              return undefined;
-
-            }).
-            filter((track) => track);
-
-          const body = {
-            attributes: {
-              name,
-              description
-            },
-            relationships: { tracks: { data } }
-          };
-
-          return axios.post(url, body, { headers });
-
+          onError: "error",
         },
-
-        onDone: "done",
-
-        onError: "error"
-      } },
+      },
       done: { after: { 0: [{ target: "active" }] } },
-      error: { after: { 0: [{ target: "active" }] } }
-    }
+      error: { after: { 0: [{ target: "active" }] } },
+    },
   },
   {
-    actions: { setContext: assign({
-      name: (_, event) => "name" in event ? event.name : undefined,
-      description: (_, event) => "description" in event ? event.description : undefined,
-      tracks: (_, event) => "tracks" in event ? event.tracks : undefined
-    }) },
-    services: {}
+    actions: {
+      setContext: assign({
+        name: (_, event) => "name" in event ? event.name : undefined,
+        description: (_, event) => "description" in event ? event.description : undefined,
+        tracks: (_, event) => "tracks" in event ? event.tracks : undefined,
+      }),
+    },
+    services: {},
   }
 );
 

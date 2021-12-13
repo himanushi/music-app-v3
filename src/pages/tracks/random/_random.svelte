@@ -4,31 +4,25 @@ import ItemCard from "./../_item-card.svelte";
 import AddAppleMusicPlaylistButton from "~/components/add-apple-music-playlist-button.svelte";
 import Items from "~/components/items.svelte";
 import LoadingItems from "~/components/loading-items.svelte";
-import type {
-  Track, TracksQueryVariables
-} from "~/graphql/types";
+import type { TrackObject, TracksQueryVariables } from "~/graphql/types";
 import { TracksDocument } from "~/graphql/types";
 
 export let loaded: boolean = false;
 
 const variables: TracksQueryVariables = {
   conditions: { random: true },
-  cursor: { limit: 45 }
+  cursor: { limit: 45 },
 };
 
-let tracks: Track[] = [];
+let tracks: TrackObject[] = [];
 
-const setTracks = (ts: Track[]) => {
-
+const setTracks = (ts: TrackObject[]) => {
   if (tracks.length > 0) {
-
     return "";
-
   }
 
   tracks = ts;
   return "";
-
 };
 </script>
 

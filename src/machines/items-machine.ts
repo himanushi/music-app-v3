@@ -3,17 +3,11 @@
 /* eslint-disable sort-keys-fix/sort-keys-fix */
 
 import { ObservableQuery } from "@apollo/client";
-import type {
-  DocumentNode, WatchQueryFetchPolicy
-} from "@apollo/client";
-import {
-  Machine as machine, assign
-} from "xstate";
+import type { DocumentNode, WatchQueryFetchPolicy } from "@apollo/client";
+import { Machine as machine, assign } from "xstate";
 import { Mutable } from "~/@types/extends";
 import client from "~/graphql/client";
-import type {
-  Maybe, CursorInputObject
-} from "~/graphql/types";
+import type { Maybe, CursorInputObject } from "~/graphql/types";
 import buildParameters from "~/lib/build-parameters";
 import type { ParameterPrefix } from "~/lib/build-parameters";
 
@@ -33,7 +27,6 @@ export const itemsMachine = <
     type: ParameterPrefix,
     itemsDocument: DocumentNode
   ) => {
-
   interface itemsContext extends Record<string, any> {
     items: ItemType[];
     variables?: ItemsQueryVariables;
@@ -92,218 +85,200 @@ export const itemsMachine = <
         variables: {
           cursor: {
             limit,
-            offset: 0
+            offset: 0,
           },
           conditions: {},
-          sort: {}
+          sort: {},
         },
         items: [],
-        fetchPolicy: "cache-first"
+        fetchPolicy: "cache-first",
       },
 
       states: {
-        active: { on: {
-          SET_PARAMETERS: { actions: [
-            "setParameters",
-            "setFetchPolicy"
-          ] },
+        active: {
+          on: {
+            SET_PARAMETERS: { actions: ["setParameters", "setFetchPolicy"] },
 
-          SET_VARIABLES: { actions: [
-            "setVariables",
-            "setFetchPolicy"
-          ] },
+            SET_VARIABLES: { actions: ["setVariables", "setFetchPolicy"] },
 
-          EXECUTE_QUERY: "loading",
+            EXECUTE_QUERY: "loading",
 
-          FETCH_MORE: "moreFetching"
-        } },
+            FETCH_MORE: "moreFetching",
+          },
+        },
 
         loading: {
-          invoke: { src:
-              ({
-                variables, fetchPolicy
-              }) => (callback) => {
-
+          invoke: {
+            src:
+              ({ variables, fetchPolicy }) => (callback) => {
                 callback({
                   type: "SET_HAS_NEXT",
-                  hasNext: true
+                  hasNext: true,
                 });
 
                 const watchQuery = client.watchQuery({
                   query: itemsDocument,
                   variables,
-                  fetchPolicy
+                  fetchPolicy,
                 });
 
                 callback({
                   type: "SET_ITEMS",
-                  items: []
+                  items: [],
                 });
 
                 callback({
                   type: "SET_WATCH_QUERY",
-                  watchQuery
+                  watchQuery,
                 });
 
                 const subscribe = watchQuery.subscribe((data) => {
-
                   const items = data.data.items as any[];
 
                   callback({
                     type: "SET_ITEMS",
-                    items
+                    items,
                   });
 
                   if (items.length < limit) {
-
                     callback({
                       type: "SET_HAS_NEXT",
-                      hasNext: false
+                      hasNext: false,
                     });
-
                   }
 
                   callback("ACTIVE");
-
                 });
 
                 return () => subscribe.unsubscribe();
-
-              } },
+              },
+          },
 
           on: {
             SET_HAS_NEXT: { actions: "setHasNext" },
             SET_WATCH_QUERY: { actions: "setWatchQuery" },
             SET_ITEMS: { actions: "setItems" },
-            ACTIVE: "active"
-          }
+            ACTIVE: "active",
+          },
         },
 
         moreFetching: {
-          invoke: { src:
-              ({
-                variables, watchQuery, items, hasNext
-              }) => (callback) => {
-
+          invoke: {
+            src:
+              ({ variables, watchQuery, items, hasNext }) => (callback) => {
                 (async () => {
-
                   if (watchQuery && hasNext) {
-
-                    const result = await watchQuery.fetchMore({ variables: { cursor: {
-                      limit: variables?.cursor?.limit || limit,
-                      offset: items.length
-                    } } });
+                    const result = await watchQuery.fetchMore({
+                      variables: {
+                        cursor: {
+                          limit: variables?.cursor?.limit || limit,
+                          offset: items.length,
+                        },
+                      },
+                    });
 
                     const resultItems = result.data.items as any[];
 
                     callback({
                       type: "ADD_ITEMS",
-                      items: resultItems
+                      items: resultItems,
                     });
 
                     if (resultItems.length < limit) {
-
                       callback({
                         type: "SET_HAS_NEXT",
-                        hasNext: false
+                        hasNext: false,
                       });
-
                     }
-
                   }
 
                   callback("ACTIVE");
-
                 })();
-
-              } },
+              },
+          },
 
           on: {
             SET_HAS_NEXT: { actions: "setHasNext" },
             ADD_ITEMS: { actions: "addItems" },
-            ACTIVE: "active"
-          }
-        }
-      }
+            ACTIVE: "active",
+          },
+        },
+      },
     },
-    { actions: {
-      next: assign({ variables: ({
-        variables, items
-      }) => {
-
-        if (variables) {
-
-          return {
-            ...variables,
-            cursor: {
-              limit,
-              offset: items.length
+    {
+      actions: {
+        next: assign({
+          variables: ({ variables, items }) => {
+            if (variables) {
+              return {
+                ...variables,
+                cursor: {
+                  limit,
+                  offset: items.length,
+                },
+              };
             }
-          };
 
-        }
+            return variables;
+          },
+        }),
 
-        return variables;
+        setItems: assign({
+          items: ({ items }, event) => "items" in event ? event.items : items,
+        }),
 
-      } }),
+        addItems: assign({
+          items: ({ items }, event) => "items" in event ? [...items, ...event.items] : items,
+        }),
 
-      setItems: assign({ items: ({ items }, event) => "items" in event ? event.items : items }),
+        setWatchQuery: assign({
+          watchQuery: (_, event) => "watchQuery" in event ? event.watchQuery : undefined,
+        }),
 
-      addItems: assign({ items: ({ items }, event) => "items" in event ? [
-        ...items,
-        ...event.items
-      ] : items }),
+        setHasNext: assign({
+          hasNext: (_, event) => "hasNext" in event ? event.hasNext : true,
+        }),
 
-      setWatchQuery: assign({ watchQuery: (_, event) => "watchQuery" in event ? event.watchQuery : undefined }),
-
-      setHasNext: assign({ hasNext: (_, event) => "hasNext" in event ? event.hasNext : true }),
-
-      setFetchPolicy: assign({ fetchPolicy: ({ variables }) => {
-
-        if (
-          variables?.conditions?.favorite ||
+        setFetchPolicy: assign({
+          fetchPolicy: ({ variables }) => {
+            if (
+              variables?.conditions?.favorite ||
               variables?.conditions?.isMine
-        ) {
+            ) {
+              return "no-cache";
+            }
 
-          return "no-cache";
+            return "cache-first";
+          },
+        }),
 
-        }
+        setParameters: assign({
+          variables: ({ variables }, event) => {
+            if ("params" in event) {
+              return buildParameters<Mutable<ItemsQueryVariables>>(
+                type,
+                event.params,
+                variables
+              );
+            }
 
-        return "cache-first";
+            return variables;
+          },
+        }),
 
-      } }),
+        setVariables: assign({
+          variables: ({ variables }, event) => {
+            if ("variables" in event) {
+              return {
+                ...variables,
+                ...event.variables,
+              };
+            }
 
-      setParameters: assign({ variables: ({ variables }, event) => {
-
-        if ("params" in event) {
-
-          return buildParameters<Mutable<ItemsQueryVariables>>(
-            type,
-            event.params,
-            variables
-          );
-
-        }
-
-        return variables;
-
-      } }),
-
-      setVariables: assign({ variables: ({ variables }, event) => {
-
-        if ("variables" in event) {
-
-          return {
-            ...variables,
-            ...event.variables
-          };
-
-        }
-
-        return variables;
-
-      } })
-    } }
+            return variables;
+          },
+        }),
+      },
+    }
   );
-
 };

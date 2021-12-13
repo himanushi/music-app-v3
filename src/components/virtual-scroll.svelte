@@ -14,43 +14,29 @@ let visibleHeight: number;
 let virtualElement: HTMLElement;
 
 const sliceArray = (arr: any[], start: number, end: number) => {
-
   const sliceArr = arr.slice(start, end);
   const expectedLength = end - start;
   while (sliceArr.length < expectedLength) {
-
     sliceArr.push(dummySymbol);
-
   }
 
   return sliceArr;
-
 };
 
 const shiftArray = (arr: any[], count: number) => {
-
   for (let index = 0; index < count; index += 1) {
-
     arr.unshift(arr.pop());
-
   }
   return arr;
-
 };
 
 $: if ($scrollElement) {
-
   const maxHeight = items.length * itemHeight;
   if ($scrollElement.clientHeight > maxHeight) {
-
     visibleHeight = maxHeight;
-
   } else {
-
     visibleHeight = $scrollElement.clientHeight;
-
   }
-
 }
 
 $: spacerHeight = Math.max(visibleHeight, items.length * itemHeight);
@@ -63,54 +49,38 @@ $: globalOffset = blockHeight * Math.floor(scrollTop / blockHeight);
 $: slice = shiftArray(sliceArray(items, startIndex, endIndex), numOverlap);
 
 onMount(() => {
-
   let frame: number;
 
   const loop = () => {
-
     if (
       virtualElement &&
       $scrollElement &&
       $scrollElement.scrollTop !== scrollTop
     ) {
-
       if ($scrollElement.scrollTop - virtualElement.offsetTop >= 0) {
-
         scrollTop = $scrollElement.scrollTop - virtualElement.offsetTop || 1;
-
       } else {
-
         scrollTop = 1;
-
       }
-
     }
     frame = requestAnimationFrame(loop);
-
   };
 
   frame = requestAnimationFrame(loop);
 
   return () => cancelAnimationFrame(frame);
-
 });
 
 const calcIndex = (index: number) => {
-
   let result = 0;
 
   if (index >= numOverlap) {
-
     result = index - numOverlap + startIndex;
-
   } else {
-
     result = numItems - numOverlap + index + startIndex;
-
   }
 
   return result;
-
 };
 </script>
 

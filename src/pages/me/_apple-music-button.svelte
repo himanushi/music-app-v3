@@ -1,7 +1,5 @@
 <script lang="ts">
-import {
-  isAllowed, meQuery
-} from "~/lib/me";
+import { isAllowed, meQuery } from "~/lib/me";
 import { mergeMeta } from "~/lib/merge-meta";
 import { accountService as account } from "~/machines/apple-music-account-machine";
 

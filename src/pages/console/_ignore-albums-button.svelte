@@ -1,17 +1,16 @@
 <script lang="ts">
+import { ApolloError } from "@apollo/client";
+
 import { mutation } from "svelte-apollo";
 import Messages from "~/components/messages.svelte";
 import type {
   IgnoreAlbumsMutationVariables,
-  IgnoreAlbumsPayload
+  IgnoreAlbumsPayload,
 } from "~/graphql/types";
 import { IgnoreAlbumsDocument } from "~/graphql/types";
-import {
-  openConfirm, openToast
-} from "~/lib/ionic";
-import {
-  isAllowed, meQuery
-} from "~/lib/me";
+import { errorMessages } from "~/lib/error";
+import { openConfirm, openToast } from "~/lib/ionic";
+import { isAllowed, meQuery } from "~/lib/me";
 
 const ignore =
   mutation<IgnoreAlbumsPayload, IgnoreAlbumsMutationVariables>(
@@ -19,52 +18,42 @@ const ignore =
   );
 
 const confirm = () => {
-
   openConfirm({
     buttons: [
       {
         cssClass: "secondary",
         handler: () => true,
         role: "cancel",
-        text: "キャンセル"
+        text: "キャンセル",
       },
       {
         handler: () => {
-
           (async () => {
-
             try {
-
-              const ignored = await ignore({ variables: { input: {} } });
-              const names =
-                ignored.data?.albums?.map((album) => album.name).join(", ") ||
-                "";
+              await ignore({ variables: { input: {} } });
 
               openToast({
                 color: "light-green",
                 duration: 5000,
-                message: `除外しました。${names}`
+                message: "除外しました。",
               });
-
             } catch (error) {
+              if (error instanceof ApolloError) {
+                const messages = errorMessages(error);
 
-              openToast({
-                color: "light-red",
-                duration: 5000,
-                message: `エラーが発生しました: ${error}`
-              });
-
+                openToast({
+                  color: "light-red",
+                  message: `エラーが発生しました。[${messages._?.join(", ")}]`,
+                });
+              }
             }
-
           })();
-
         },
-        text: "除外"
-      }
+        text: "除外",
+      },
     ],
-    header: "保留アルバムを全て除外しますか？"
+    header: "保留アルバムを全て除外しますか？",
   });
-
 };
 
 const query = meQuery();

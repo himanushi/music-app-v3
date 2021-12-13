@@ -5,9 +5,7 @@ export let component: HTMLElement;
 export let props: Record<string, any> = {};
 let fab: HTMLElement;
 $: if (fab) {
-
   fab.setAttribute("slot", "fixed");
-
 }
 </script>
 

@@ -5,14 +5,12 @@ import type { Mutable } from "~/@types/extends";
 import { ChangeFavoritesDocument } from "~/graphql/types";
 import type {
   ChangeFavoritesMutationVariables,
-  ChangeFavoritesInput
+  ChangeFavoritesInput,
 } from "~/graphql/types";
-import {
-  isAllowed, isFavorite, meQuery
-} from "~/lib/me";
+import { isAllowed, isFavorite, meQuery } from "~/lib/me";
 
 export let id: string;
-export let type: "album" | "artist" | "track" | "playlist" | "radio";
+export let type: "album" | "artist" | "track" | "playlist";
 
 const query = meQuery();
 $: me = $query?.data?.me;
@@ -21,9 +19,7 @@ let favorite = false;
 let icon: any;
 
 $: if (me) {
-
   favorite = isFavorite(me, id);
-
 }
 
 const changeFavorites = mutation<unknown, ChangeFavoritesMutationVariables>(
@@ -31,9 +27,7 @@ const changeFavorites = mutation<unknown, ChangeFavoritesMutationVariables>(
 );
 
 const onClick = async () => {
-
   if (icon && !favorite) {
-
     createAnimation().
       addElement(icon).
       duration(300).
@@ -42,47 +36,33 @@ const onClick = async () => {
       keyframes([
         {
           offset: 0,
-          transform: "scale(0.9)"
+          transform: "scale(0.9)",
         },
         {
           offset: 0.7,
-          transform: "scale(1.5)"
+          transform: "scale(1.5)",
         },
         {
           offset: 1,
-          transform: "scale(0.9)"
-        }
+          transform: "scale(0.9)",
+        },
       ]).
       play();
-
   }
 
   const input: Mutable<ChangeFavoritesInput> = { favorite: !favorite };
 
   if (type === "album") {
-
     input.albumIds = [id];
-
   } else if (type === "artist") {
-
     input.artistIds = [id];
-
   } else if (type === "track") {
-
     input.trackIds = [id];
-
   } else if (type === "playlist") {
-
     input.playlistIds = [id];
-
-  } else if (type === "radio") {
-
-    input.radioIds = [id];
-
   }
 
   await changeFavorites({ variables: { input } });
-
 };
 </script>
 

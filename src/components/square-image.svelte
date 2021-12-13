@@ -3,9 +3,7 @@ export let src: string | null | undefined = null;
 export let alt: string | null | undefined = null;
 
 $: if (!src) {
-
   src = "/no-image.png";
-
 }
 </script>
 

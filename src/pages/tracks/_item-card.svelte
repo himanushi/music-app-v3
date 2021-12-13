@@ -4,11 +4,11 @@ import AddPlaylistButton from "~/components/add-playlist-button.svelte";
 import Favorite from "~/components/favorite.svelte";
 import PlayButton from "~/components/play-button.svelte";
 import SquareImage from "~/components/square-image.svelte";
-import type { Track } from "~/graphql/types";
+import type { TrackObject } from "~/graphql/types";
 
 export let index: number;
-export let item: Track;
-export let items: Track[];
+export let item: TrackObject;
+export let items: TrackObject[];
 // eslint-disable-next-line prefer-destructuring
 export let name = "曲一覧";
 export let viewImage = true;

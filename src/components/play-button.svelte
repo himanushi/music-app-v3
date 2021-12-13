@@ -3,59 +3,47 @@
 import { writable } from "svelte/store";
 
 const createCanPlay = () => {
-
-  const {
-    subscribe, update
-  } = writable<boolean>(true);
+  const { subscribe, update } = writable<boolean>(true);
 
   return {
     play: () => {
-
       update(() => false);
       setTimeout(() => update(() => true), 1000);
-
     },
     subscribe,
-    update
+    update,
   };
-
 };
 
 export const canPlay = createCanPlay();
 </script>
 
 <script lang="ts">
-import type { Track } from "~/graphql/types";
+import type { TrackObject } from "~/graphql/types";
 import { playerService } from "~/machines/jukebox-machine";
 
 export let name: string;
 export let index: number;
-export let tracks: readonly Track[];
+export let tracks: readonly TrackObject[];
 
 const onClick = () => {
-
   canPlay.play();
 
   playerService.send([
     {
       name,
-      type: "SET_NAME"
+      type: "SET_NAME",
     },
     {
       link: location.pathname + location.search,
-      type: "SET_LINK"
-    },
-    {
-      isRadio: false,
-      type: "SET_IS_RADIO"
+      type: "SET_LINK",
     },
     {
       currentPlaybackNo: index,
       tracks: tracks.map((track) => track),
-      type: "REPLACE_AND_PLAY"
-    }
+      type: "REPLACE_AND_PLAY",
+    },
   ]);
-
 };
 </script>
 

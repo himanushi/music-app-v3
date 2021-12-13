@@ -4,22 +4,16 @@ export let loaded: boolean;
 
 let refresher: HTMLElement;
 $: if (refresher && !refresher.slot) {
-
   refresher.setAttribute("slot", "fixed");
-
 }
 
 const ionRefresh = () => {
-
   loaded = false;
   refresh();
-
 };
 
 $: if (loaded) {
-
   refresher.complete();
-
 }
 </script>
 

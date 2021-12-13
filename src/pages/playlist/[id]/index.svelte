@@ -1,8 +1,6 @@
 <script lang="ts">
 import Playlist from "./_playlist.svelte";
-import {
-  isAllowed, meQuery
-} from "~/lib/me";
+import { isAllowed, meQuery } from "~/lib/me";
 
 export let id = "";
 

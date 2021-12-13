@@ -1,8 +1,6 @@
 <script lang="ts">
 import { goto } from "@roxi/routify";
-import {
-  isAllowed, meQuery
-} from "~/lib/me";
+import { isAllowed, meQuery } from "~/lib/me";
 
 const create = () => $goto("/playlist/new");
 
@@ -11,9 +9,7 @@ $: me = $query?.data?.me;
 
 let fab: HTMLElement;
 $: if (fab) {
-
   fab.setAttribute("slot", "fixed");
-
 }
 </script>
 

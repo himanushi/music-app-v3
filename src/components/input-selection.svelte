@@ -4,13 +4,9 @@ export let value: string;
 export let items: { value: string; label: string }[];
 
 const onChange = (event: Event) => {
-
   if (event?.target?.value) {
-
     value = event?.target?.value;
-
   }
-
 };
 </script>
 

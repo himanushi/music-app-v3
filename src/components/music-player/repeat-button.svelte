@@ -4,9 +4,7 @@ import { playerService } from "~/machines/jukebox-machine";
 $: color = $playerService.context.repeat ? "main" : "gray";
 
 const repeat = () => {
-
   playerService.send("REPEAT");
-
 };
 </script>
 

@@ -6,21 +6,17 @@ import SearchDetail from "./_search-detail.svelte";
 import Refresher from "~/components/refresher.svelte";
 import SearchDetailButton from "~/components/search-detail-button.svelte";
 import client from "~/graphql/client";
-import {
-  isAllowed, meQuery
-} from "~/lib/me";
+import { isAllowed, meQuery } from "~/lib/me";
 
 let tggle = true;
 let loaded = false;
 const refresh = () => {
-
   client.cache.evict({
     fieldName: "playlists",
-    id: "ROOT_QUERY"
+    id: "ROOT_QUERY",
   });
 
   tggle = !tggle;
-
 };
 
 const query = meQuery();

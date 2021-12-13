@@ -1,9 +1,7 @@
 <script lang="ts">
 import { markdown } from "~/lib/markdown";
 import { twitterAccount } from "~/lib/variable";
-import {
-  currentVersion, reset
-} from "~/lib/version";
+import { currentVersion, reset } from "~/lib/version";
 
 const version = currentVersion() || "";
 

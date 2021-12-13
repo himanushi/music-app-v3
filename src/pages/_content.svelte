@@ -5,13 +5,9 @@ import { scrollElement } from "~/store/scroll-element";
 
 let content: HTMLElement;
 $: if (content && !$scrollElement) {
-
   content.getScrollElement().then((element) => {
-
     scrollElement.set(element);
-
   });
-
 }
 </script>
 

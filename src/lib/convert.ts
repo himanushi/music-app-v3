@@ -1,13 +1,12 @@
-import type { Track } from "~/graphql/types";
+import type { TrackObject } from "~/graphql/types";
 
 export const convertDate = (date: string) => new Date(date).toLocaleDateString("jp", {
   day: "numeric",
   month: "long",
-  year: "numeric"
+  year: "numeric",
 });
 
 export const convertTime = (ms: number) => {
-
   const seconds = Math.floor(ms / 1000) % 60;
   const minutes = Math.floor(ms / (1000 * 60)) % 60;
   const hours = Math.floor(ms / (1000 * 60 * 60)) % 24;
@@ -16,38 +15,25 @@ export const convertTime = (ms: number) => {
   let time = "";
 
   if (days !== 0) {
-
     time += `${days}日`;
-
   }
   if (hours) {
-
     time += `${hours}時間`;
-
   }
   if (minutes) {
-
     time += `${minutes}分`;
-
   }
   if (seconds) {
-
     time += `${seconds}秒`;
-
   }
 
   return time;
-
 };
 
-export const toMs = (tracks: readonly Track[]) => {
-
+export const toMs = (tracks: readonly TrackObject[]) => {
   if (tracks.length > 0) {
-
     const reducer = (accumulator: number, currentValue: number) => accumulator + currentValue;
     return tracks.map((track) => track.durationMs).reduce(reducer);
-
   }
   return 0;
-
 };

@@ -2,21 +2,17 @@
 import Random from "./_random.svelte";
 import Refresher from "~/components/refresher.svelte";
 import client from "~/graphql/client";
-import {
-  isAllowed, meQuery
-} from "~/lib/me";
+import { isAllowed, meQuery } from "~/lib/me";
 
 let tggle = true;
 let loaded = false;
 const refresh = () => {
-
   client.cache.evict({
     fieldName: "tracks",
-    id: "ROOT_QUERY"
+    id: "ROOT_QUERY",
   });
 
   tggle = !tggle;
-
 };
 
 const query = meQuery();

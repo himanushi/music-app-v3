@@ -16,48 +16,38 @@ const decide = (
     detail: { from: number; to: number; complete: Function };
   }
 ) => {
-
   playerService.send({
     from: event.detail.from,
     to: event.detail.to,
-    type: "MOVE"
+    type: "MOVE",
   });
 
   tracks = event.detail.complete(tracks);
-
 };
 
 const play = (currentPlaybackNo: number) => () => {
-
   canPlay.play();
 
   playerService.send({
     currentPlaybackNo,
-    type: "CHANGE_PLAYBACK_NO"
+    type: "CHANGE_PLAYBACK_NO",
   });
-
 };
 
 const remove = (index: number) => () => {
-
   playerService.send({
     removeIndex: index,
-    type: "REMOVE"
+    type: "REMOVE",
   });
 
   tracks = tracks.filter((_, idx) => idx !== index);
-
 };
 
 const link = () => {
-
   (async () => {
-
     await closeModal();
     $goto($playerService.context.link);
-
   })();
-
 };
 </script>
 

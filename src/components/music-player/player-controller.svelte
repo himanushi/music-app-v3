@@ -6,21 +6,15 @@ import { playerService } from "~/machines/jukebox-machine";
 $: disabled = $playerService.value === "loading" || !$canPlay;
 
 const playOrPause = () => {
-
   playerService.send("PLAY_OR_PAUSE");
-
 };
 
 const rewind = () => {
-
   playerService.send("PREVIOUS_PLAY");
-
 };
 
 const skip = () => {
-
   playerService.send("NEXT_PLAY");
-
 };
 </script>
 

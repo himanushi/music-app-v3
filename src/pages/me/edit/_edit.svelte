@@ -4,12 +4,10 @@ import { goto } from "@roxi/routify";
 import { mutation } from "svelte-apollo";
 import InputText from "~/components/input-item.svelte";
 import Messages from "~/components/messages.svelte";
-import {
-  UpdateMeDocument, MeDocument
-} from "~/graphql/types";
+import { UpdateMeDocument, MeDocument } from "~/graphql/types";
 import type {
   UpdateMeMutationVariables,
-  UpdateMeMutation
+  UpdateMeMutation,
 } from "~/graphql/types";
 import { errorMessages } from "~/lib/error";
 import { openToast } from "~/lib/ionic";
@@ -25,40 +23,31 @@ const mutate =
   mutation<UpdateMeMutation, UpdateMeMutationVariables>(UpdateMeDocument);
 
 const signup = async () => {
-
   disabled = true;
   try {
-
     await mutate({
       refetchQueries: [{ query: MeDocument }],
-      variables: { input: {
-        currentPassword,
-        name,
-        newPassword,
-        newPasswordConfirmation
-      } }
+      variables: {
+        input: {
+          name,
+        },
+      },
     });
 
     openToast({
       color: "light-green",
       duration: 3000,
-      message: "更新しました"
+      message: "更新しました",
     });
 
     $goto("/me");
-
   } catch (error) {
-
     disabled = false;
 
     if (error instanceof ApolloError) {
-
       messages = errorMessages(error);
-
     }
-
   }
-
 };
 </script>
 

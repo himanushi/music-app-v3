@@ -1,23 +1,21 @@
 <script lang="ts">
-import {
-  mutation, query
-} from "svelte-apollo";
+import { mutation, query } from "svelte-apollo";
 import SquareImage from "./square-image.svelte";
 import {
   AddPlaylistItemsDocument,
   PlaylistDocument,
-  PlaylistsDocument
+  PlaylistsDocument,
 } from "~/graphql/types";
 import type {
   AddPlaylistItemsMutationVariables,
-  Track,
-  Playlist,
-  PlaylistsQuery
+  TrackObject,
+  PlaylistObject,
+  PlaylistsQuery,
 } from "~/graphql/types";
 import { openToast } from "~/lib/ionic";
 import ModalContent from "~/pages/_modal-content.svelte";
 
-export let tracks: Track[];
+export let tracks: TrackObject[];
 $: firstTrack = tracks[0];
 
 const playlistsQuery = query<PlaylistsQuery>(PlaylistsDocument, {
@@ -26,55 +24,51 @@ const playlistsQuery = query<PlaylistsQuery>(PlaylistsDocument, {
     conditions: { isMine: true },
     cursor: {
       limit: 1000,
-      offset: 0
+      offset: 0,
     },
     sort: {
       order: "UPDATE",
-      type: "DESC"
-    }
-  }
+      type: "DESC",
+    },
+  },
 });
 
-let playlists: Playlist[];
-$: playlists = $playlistsQuery?.data?.items as Playlist[];
+let playlists: PlaylistObject[];
+$: playlists = $playlistsQuery?.data?.items as PlaylistObject[];
 
 const addPlaylistItems = mutation<unknown, AddPlaylistItemsMutationVariables>(
   AddPlaylistItemsDocument
 );
 
-const addPlaylist = (playlist: Playlist) => async () => {
-
+const addPlaylist = (playlist: PlaylistObject) => async () => {
   try {
-
     await addPlaylistItems({
       refetchQueries: [
         {
           query: PlaylistDocument,
-          variables: { id: playlist.id }
-        }
+          variables: { id: playlist.id },
+        },
       ],
-      variables: { input: {
-        playlistId: playlist.id,
-        trackIds: tracks.map((track) => track.id)
-      } }
+      variables: {
+        input: {
+          playlistId: playlist.id,
+          trackIds: tracks.map((track) => track.id),
+        },
+      },
     });
 
     openToast({
       color: "light-green",
       duration: 3000,
-      message: `${playlist.name} に追加されました`
+      message: `${playlist.name} に追加されました`,
     });
-
   } catch (error) {
-
     openToast({
       color: "light-red",
       duration: 5000,
-      message: "エラーが発生しました"
+      message: "エラーが発生しました",
     });
-
   }
-
 };
 </script>
 

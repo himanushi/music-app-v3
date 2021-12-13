@@ -6,16 +6,10 @@ import InputCheckbox from "~/components/input-checkbox.svelte";
 import InputText from "~/components/input-item.svelte";
 import Messages from "~/components/messages.svelte";
 import RecaptchaV2 from "~/components/recaptcha-v2.svelte";
-import {
-  SignupDocument, MeDocument
-} from "~/graphql/types";
-import type {
-  SignupMutationVariables, SignupMutation
-} from "~/graphql/types";
+import { SignupDocument, MeDocument } from "~/graphql/types";
+import type { SignupMutationVariables, SignupMutation } from "~/graphql/types";
 import { errorMessages } from "~/lib/error";
-import {
-  closeModal, openModal, openToast
-} from "~/lib/ionic";
+import { closeModal, openModal, openToast } from "~/lib/ionic";
 import ModalContent from "~/pages/_modal-content.svelte";
 import Terms from "~/pages/terms.svelte";
 
@@ -32,49 +26,41 @@ const mutate =
   mutation<SignupMutation, SignupMutationVariables>(SignupDocument);
 
 const signup = async () => {
-
   disabled = true;
   try {
-
     await mutate({
       refetchQueries: [{ query: MeDocument }],
-      variables: { input: {
-        name,
-        newPassword,
-        newPasswordConfirmation,
-        username
-      } }
+      variables: {
+        input: {
+          name,
+          newPassword,
+          newPasswordConfirmation,
+          username,
+        },
+      },
     });
 
     openToast({
       color: "light-green",
       duration: 8000,
-      message: "登録しました。音楽を楽しみましょう！"
+      message: "登録しました。音楽を楽しみましょう！",
     });
 
     $goto("/");
-
   } catch (error) {
-
     disabled = false;
 
     if (error instanceof ApolloError) {
-
       recaptcha.reset();
       messages = errorMessages(error);
-
     }
-
   }
-
 };
 
 let terms: HTMLElement;
 const openTerms = async () => {
-
   await closeModal();
   await openModal(terms);
-
 };
 </script>
 

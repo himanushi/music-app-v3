@@ -8,7 +8,7 @@ export const SearchParams = {
     keyword: "bq",
     order: "bo",
     status: "bs",
-    username: "bu"
+    username: "bu",
   },
   artist: {
     direction: "ad",
@@ -17,7 +17,7 @@ export const SearchParams = {
     keyword: "aq",
     order: "ao",
     status: "as",
-    username: "au"
+    username: "au",
   },
   playlist: {
     direction: "pd",
@@ -27,14 +27,7 @@ export const SearchParams = {
     mine: "pm",
     order: "po",
     status: "ps",
-    username: "pu"
-  },
-  radio: {
-    direction: "rd",
-    favorite: "rf",
-    ids: "ri",
-    keyword: "rq",
-    order: "ro"
+    username: "pu",
   },
   track: {
     direction: "td",
@@ -44,6 +37,6 @@ export const SearchParams = {
     order: "to",
     random: "tr",
     status: "ts",
-    username: "tu"
-  }
+    username: "tu",
+  },
 };

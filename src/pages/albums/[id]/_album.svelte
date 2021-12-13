@@ -14,60 +14,51 @@ import Image from "~/components/square-image.svelte";
 import VirtualScroll from "~/components/virtual-scroll.svelte";
 import { AlbumDocument } from "~/graphql/types";
 import type {
-  Album,
+  AlbumObject,
   AlbumQuery,
   ArtistsQueryVariables,
-  StatusEnum
+  StatusEnum,
 } from "~/graphql/types";
-import type { CurrentUser } from "~/graphql/types";
-import {
-  convertDate, convertTime, toMs
-} from "~/lib/convert";
+import type { CurrentUserObject } from "~/graphql/types";
+import { convertDate, convertTime, toMs } from "~/lib/convert";
 import { isAllowed } from "~/lib/me";
 import Artists from "~/pages/artists/_artists.svelte";
 import ItemCard from "~/pages/tracks/_item-card.svelte";
 
 export let id = "";
-export let me: CurrentUser | undefined;
+export let me: CurrentUserObject | undefined;
 export let loaded: boolean;
 
 const albumQuery = query<AlbumQuery>(AlbumDocument, {
   fetchPolicy: "cache-first",
-  variables: { id }
+  variables: { id },
 });
 
-let album: Album | undefined;
+let album: AlbumObject | undefined;
 let variables: ArtistsQueryVariables | undefined;
 
 let first = true;
 $: if (me && $albumQuery.data && first) {
-
   loaded = true;
 
-  album = $albumQuery.data.album as Album;
-  let status: StatusEnum[] = ["ACTIVE"];
-  if (isAllowed(me, "changeStatus")) {
-
-    status = [
-      "ACTIVE",
-      "IGNORE",
-      "PENDING"
-    ];
-
+  album = $albumQuery.data.album as AlbumObject;
+  let statuses: StatusEnum[] = ["ACTIVE"];
+  if (isAllowed(me, "changeAlbumStatus")) {
+    statuses = ["ACTIVE", "IGNORE", "PENDING"];
   }
+
   variables = {
     conditions: {
-      albums: { id: [id] },
-      status
+      albumIds: [id],
+      statuses,
     },
     sort: {
+      direction: "DESC",
       order: "POPULARITY",
-      type: "DESC"
-    }
+    },
   };
 
   first = false;
-
 }
 
 $: tracks = album?.tracks.map((track) => track) || [];
@@ -135,11 +126,10 @@ $: tracks = album?.tracks.map((track) => track) || [];
     <ion-label>Music Services</ion-label>
   </ion-item-divider>
   {#if album}
-    {#if album.appleMusicAlbum}
-      <AppleMusic id={album.appleMusicAlbum.appleMusicId} />
-    {/if}
-    {#if album.itunesAlbum}
-      <Itunes id={album.itunesAlbum.appleMusicId} />
+    {#if album.appleMusicPlayable}
+      <AppleMusic id={album.appleMusicId} />
+    {:else}
+      <Itunes id={album.appleMusicId} />
     {/if}
     <Spotify name={album.name} />
     <AmazonMusic name={album.name} />

@@ -2,9 +2,9 @@
 import { goto } from "@roxi/routify";
 import Favorite from "~/components/favorite.svelte";
 import SquareImage from "~/components/square-image.svelte";
-import type { Playlist } from "~/graphql/types";
+import type { PlaylistObject } from "~/graphql/types";
 
-export let item: Playlist;
+export let item: PlaylistObject;
 
 const path = `/playlist/${item.id}`;
 </script>

@@ -3,115 +3,88 @@ import { ApolloError } from "@apollo/client";
 import { goto } from "@roxi/routify";
 import { mutation } from "svelte-apollo";
 import type {
-  UpsertAlbumInput,
-  UpsertAlbumMutation,
-  UpsertAlbumMutationVariables
+  AddAlbumInput,
+  AddAlbumMutation,
+  AddAlbumMutationVariables,
 } from "~/graphql/types";
-import { UpsertAlbumDocument } from "~/graphql/types";
+import { AddAlbumDocument } from "~/graphql/types";
 import { errorMessages } from "~/lib/error";
-import {
-  closeLoading, openConfirm, openLoading, openToast
-} from "~/lib/ionic";
-import {
-  isAllowed, meQuery
-} from "~/lib/me";
+import { closeLoading, openConfirm, openLoading, openToast } from "~/lib/ionic";
+import { isAllowed, meQuery } from "~/lib/me";
 
-const upsertAlbum =
-  mutation<UpsertAlbumMutation, UpsertAlbumMutationVariables>(
-    UpsertAlbumDocument
-  );
+const addAlbum =
+  mutation<AddAlbumMutation, AddAlbumMutationVariables>(AddAlbumDocument);
 
 const add = () => {
-
   openConfirm({
     buttons: [
       {
         cssClass: "secondary",
         handler: () => true,
         role: "cancel",
-        text: "キャンセル"
+        text: "キャンセル",
       },
       {
-        handler: (values: UpsertAlbumInput) => {
-
+        handler: (values: AddAlbumInput) => {
           (async () => {
-
             try {
-
               if (values.appleMusicId && values.appleMusicId !== "") {
-
                 await openLoading();
 
-                const result = await upsertAlbum({ variables: { input: values } });
+                const result = await addAlbum({
+                  variables: { input: values },
+                });
 
-                if (
-                  result.data?.upsertAlbum?.albums &&
-                  result.data?.upsertAlbum?.albums.length > 0
-                ) {
-
-                  const album = result.data?.upsertAlbum?.albums[0];
+                if (result.data?.addAlbum?.album) {
+                  const album = result.data.addAlbum.album;
                   $goto(`/albums/${album.id}`);
 
                   openToast({
                     color: "light-green",
                     duration: 5000,
-                    message: "追加しました"
+                    message: "追加しました",
                   });
-
                 } else {
-
                   openToast({
                     color: "light-blue",
                     duration: 5000,
-                    message: "一致するアルバムがありませんでした"
+                    message: "一致するアルバムがありませんでした",
                   });
-
                 }
-
               }
-
             } catch (error) {
-
               if (error instanceof ApolloError) {
-
                 const messages = errorMessages(error);
 
                 openToast({
                   color: "light-red",
-                  message: `エラーが発生しました。[${messages._?.join(", ")}]`
+                  message: `エラーが発生しました。[${messages._?.join(", ")}]`,
                 });
-
               }
-
             } finally {
-
               await closeLoading();
-
             }
-
           })();
-
         },
-        text: "追加"
-      }
+        text: "追加",
+      },
     ],
     header: "Apple Music ID でアルバムを追加します",
     inputs: [
       {
         name: "appleMusicId",
         placeholder: "Apple Music ID",
-        type: "text"
-      }
-    ]
+        type: "text",
+      },
+    ],
   });
-
 };
 
 const query = meQuery();
 $: me = $query?.data?.me;
 </script>
 
-{#if me && isAllowed(me, "upsertAlbum")}
+{#if me && isAllowed(me, "addAlbum")}
   <ion-item button on:click={add}>
     <ion-icon slot="start" src="/assets/logo-apple-music.svg" />
     <ion-label> Apple Music ID でアルバムを追加 </ion-label>

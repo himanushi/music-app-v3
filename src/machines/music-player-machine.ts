@@ -10,19 +10,19 @@ import {
   State,
   assign,
   send,
-  spawn
+  spawn,
 } from "xstate";
 import { sendParent } from "xstate/lib/actions";
-import { Track } from "~/graphql/types";
+import { TrackObject } from "~/graphql/types";
 import {
   AppleMusicPlayerMachine,
   AppleMusicPlayerState,
-  AppleMusicPlayerStateEvent
+  AppleMusicPlayerStateEvent,
 } from "~/machines/apple-music-player-machine";
 import {
   PreviewPlayerMachine,
   PreviewPlayerState,
-  PreviewPlayerStateEvent
+  PreviewPlayerStateEvent,
 } from "~/machines/preview-player-machine";
 
 export type MusicPlayerContext = {
@@ -34,7 +34,7 @@ export type MusicPlayerContext = {
     AppleMusicPlayerStateEvent,
     AppleMusicPlayerState
   >;
-  track?: Track;
+  track?: TrackObject;
   duration: number;
   seek: number;
   currentPlayer: string;
@@ -57,7 +57,7 @@ const previewPlayerId = "preview";
 const appleMusicPlayerId = "apple-music-player";
 
 export type MusicPlayerEvent =
-  | { type: "SET_TRACK"; track: Track }
+  | { type: "SET_TRACK"; track: TrackObject }
   | { type: "SET_DURATION"; duration: number }
   | { type: "SET_SEEK"; seek: number }
   | { type: "SET_DATA"; data: string }
@@ -92,7 +92,7 @@ export const MusicPlayerMachine = machine<
       duration: 0,
       seek: 0,
       currentPlayer: previewPlayerId,
-      data: ""
+      data: "",
     },
 
     id,
@@ -100,86 +100,54 @@ export const MusicPlayerMachine = machine<
     initial: "idle",
 
     states: {
-      finished: { entry: [
-        "resetSeek",
-        sendParent("NEXT_PLAY")
-      ] },
+      finished: { entry: ["resetSeek", sendParent("NEXT_PLAY")] },
 
       idle: { entry: ["initPlayers"] },
 
       playerSelecting: {
-        invoke: { src: (context) => (callback) => {
+        invoke: {
+          src: (context) => (callback) => {
+            (async () => {
+              const appleAuth = (await CapacitorAppleMusic.isAuthorized()).
+                result;
+              const appleMusicId = context.track?.appleMusicId;
 
-          (async () => {
+              if (appleAuth && appleMusicId) {
+                callback({
+                  type: "SET_CURRENT_PLAYER",
+                  currentPlayer: appleMusicPlayerId,
+                });
+                callback({
+                  type: "SET_DATA",
+                  data: appleMusicId,
+                });
+              } else if (context.track?.previewUrl) {
+                callback({
+                  type: "SET_CURRENT_PLAYER",
+                  currentPlayer: previewPlayerId,
+                });
+                callback({
+                  type: "SET_DATA",
+                  data: context.track?.previewUrl,
+                });
+              }
 
-            const appleAuth = (await CapacitorAppleMusic.isAuthorized()).
-              result;
-            const appleMusicTrack = context.track?.appleMusicTracks?.find(
-              (track) => track
-            );
-            const appleMusicId = appleMusicTrack?.appleMusicId;
-            const itunesTrack = context.track?.itunesTracks?.find(
-              (track) => track
-            );
-            const itunesId = itunesTrack?.appleMusicId;
-
-            if (appleAuth && appleMusicId) {
-
-              callback({
-                type: "SET_CURRENT_PLAYER",
-                currentPlayer: appleMusicPlayerId
-              });
-              callback({
-                type: "SET_DATA",
-                data: appleMusicId
-              });
-
-            } else if (appleAuth && itunesId && itunesTrack) {
-
-              callback({
-                type: "SET_CURRENT_PLAYER",
-                currentPlayer: appleMusicPlayerId
-              });
-              callback({
-                type: "SET_DATA",
-                data: itunesId
-              });
-
-            } else if (context.track?.previewUrl) {
-
-              callback({
-                type: "SET_CURRENT_PLAYER",
-                currentPlayer: previewPlayerId
-              });
-              callback({
-                type: "SET_DATA",
-                data: context.track?.previewUrl
-              });
-
-            }
-
-            callback("LOADING");
-
-          })();
-
-        } },
+              callback("LOADING");
+            })();
+          },
+        },
         on: {
           LOADING: "loading",
           SET_CURRENT_PLAYER: { actions: "setCurrentPlayer" },
-          SET_DATA: { actions: "setData" }
+          SET_DATA: { actions: "setData" },
         },
-        exit: [
-          "stopToPlayers",
-          // "setDuration",
-          "setDataToPlayer",
-          "loadToPlayer"
-        ]
+        exit: ["stopToPlayers", "setDataToPlayer", "loadToPlayer"],
       },
 
       loading: {
         // 30秒間再生できない音楽はスキップ
         after: { 30000: { target: "finished" } },
-        on: { PLAYING: "playing" }
+        on: { PLAYING: "playing" },
       },
 
       playing: {
@@ -188,44 +156,36 @@ export const MusicPlayerMachine = machine<
           {
             id: "setDuration",
             src: () => (callback) => {
-
               (async () => {
-
                 const duration =
                   (await CapacitorAppleMusic.currentPlaybackDuration()).result *
                   1000;
 
                 callback({
                   type: "SET_DURATION",
-                  duration
+                  duration,
                 });
-
               })();
-
-            }
+            },
           },
           {
             id: "seekTimer",
             src: () => (callback) => {
-
               const interval = setInterval(() => callback("TICK"), 1000);
 
               return () => {
-
                 clearInterval(interval);
-
               };
-
-            }
-          }
+            },
+          },
         ],
         on: {
           FINISHED: "finished",
           PAUSE: { actions: ["pauseToPlayers"] },
           PAUSED: "paused",
           SET_DURATION: { actions: ["setDuration"] },
-          TICK: { actions: ["tickToPlayer"] }
-        }
+          TICK: { actions: ["tickToPlayer"] },
+        },
       },
 
       paused: {
@@ -233,24 +193,21 @@ export const MusicPlayerMachine = machine<
         on: {
           FINISHED: "finished",
           PLAY: { actions: ["playToPlayer"] },
-          PLAYING: "playing"
-        }
+          PLAYING: "playing",
+        },
       },
 
       stopped: {
         entry: [sendParent("STOPPED")],
         on: {
           PLAY: { actions: ["playToPlayer"] },
-          PLAYING: "playing"
-        }
-      }
+          PLAYING: "playing",
+        },
+      },
     },
 
     on: {
-      CHANGE_SEEK: { actions: [
-        "changeSeek",
-        "changeSeekToPlayer"
-      ] },
+      CHANGE_SEEK: { actions: ["changeSeek", "changeSeekToPlayer"] },
 
       LOAD: "playerSelecting",
 
@@ -258,94 +215,90 @@ export const MusicPlayerMachine = machine<
 
       SET_SEEK: { actions: ["setSeek"] },
 
-      SET_TRACK: { actions: [
-        "resetSeek",
-        "setTrack"
-      ] },
+      SET_TRACK: { actions: ["resetSeek", "setTrack"] },
 
-      STOP: { actions: [
-        "stopToPlayers",
-        "resetSeek"
-      ] },
+      STOP: { actions: ["stopToPlayers", "resetSeek"] },
 
-      STOPPED: "stopped"
-    }
+      STOPPED: "stopped",
+    },
   },
-  { actions: {
-    changeSeek: assign({ seek: (_, event) => "seek" in event ? event.seek : 0 }),
+  {
+    actions: {
+      changeSeek: assign({
+        seek: (_, event) => "seek" in event ? event.seek : 0,
+      }),
 
-    changeSeekToPlayer: send(
-      (_, event) => {
+      changeSeekToPlayer: send(
+        (_, event) => {
+          if ("seek" in event) {
+            return {
+              seek: event.seek,
+              type: "CHANGE_SEEK",
+            };
+          }
+          return { type: "" };
+        },
+        { to: selectPlayer }
+      ),
 
-        if ("seek" in event) {
+      initPlayers: assign({
+        appleMusicPlayerRef: (_) => spawn(AppleMusicPlayerMachine, appleMusicPlayerId),
+        previewPlayerRef: (_) => spawn(PreviewPlayerMachine, previewPlayerId),
+      }),
 
-          return {
-            seek: event.seek,
-            type: "CHANGE_SEEK"
-          };
+      loadToPlayer: send("LOAD", { to: selectPlayer }),
 
-        }
-        return { type: "" };
-
+      pauseToPlayers: (context) => {
+        context.previewPlayerRef?.send({ type: "PAUSE" });
+        context.appleMusicPlayerRef?.send({ type: "PAUSE" });
       },
-      { to: selectPlayer }
-    ),
 
-    initPlayers: assign({
-      appleMusicPlayerRef: (_) => spawn(AppleMusicPlayerMachine, appleMusicPlayerId),
-      previewPlayerRef: (_) => spawn(PreviewPlayerMachine, previewPlayerId)
-    }),
+      playToPlayer: send("PLAY", { to: selectPlayer }),
 
-    loadToPlayer: send("LOAD", { to: selectPlayer }),
+      resetSeek: assign({ seek: (_) => 0 }),
 
-    pauseToPlayers: (context) => {
+      setDuration: assign({
+        duration: (_, event) => "duration" in event ? event.duration : 0,
+      }),
 
-      context.previewPlayerRef?.send({ type: "PAUSE" });
-      context.appleMusicPlayerRef?.send({ type: "PAUSE" });
+      setSeek: assign({
+        seek: (_, event) => "seek" in event ? event.seek : 0,
+      }),
 
-    },
+      setTrack: assign({
+        track: (_, event) => "track" in event ? event.track : undefined,
+      }),
 
-    playToPlayer: send("PLAY", { to: selectPlayer }),
+      setCurrentPlayer: assign({
+        currentPlayer: (_, event) => "currentPlayer" in event ? event.currentPlayer : previewPlayerId,
+      }),
 
-    resetSeek: assign({ seek: (_) => 0 }),
+      setData: assign({
+        data: (_, event) => "data" in event ? event.data : "",
+      }),
 
-    setDuration: assign({ duration: (_, event) => "duration" in event ? event.duration : 0 }),
+      setDataToPlayer: send(
+        (context) => {
+          if (context.data) {
+            return {
+              data: context.data,
+              type: "SET_DATA",
+            };
+          }
 
-    setSeek: assign({ seek: (_, event) => "seek" in event ? event.seek : 0 }),
+          return { type: "" };
+        },
+        { to: selectPlayer }
+      ),
 
-    setTrack: assign({ track: (_, event) => "track" in event ? event.track : undefined }),
-
-    setCurrentPlayer: assign({ currentPlayer: (_, event) => "currentPlayer" in event ? event.currentPlayer : previewPlayerId }),
-
-    setData: assign({ data: (_, event) => "data" in event ? event.data : "" }),
-
-    setDataToPlayer: send(
-      (context) => {
-
-        if (context.data) {
-
-          return {
-            data: context.data,
-            type: "SET_DATA"
-          };
-
-        }
-
-        return { type: "" };
-
+      stopToPlayers: (context) => {
+        context.previewPlayerRef?.send({ type: "STOP" });
+        context.appleMusicPlayerRef?.send({ type: "STOP" });
       },
-      { to: selectPlayer }
-    ),
 
-    stopToPlayers: (context) => {
-
-      context.previewPlayerRef?.send({ type: "STOP" });
-      context.appleMusicPlayerRef?.send({ type: "STOP" });
-
+      tickToPlayer: send("TICK", { to: selectPlayer }),
     },
-
-    tickToPlayer: send("TICK", { to: selectPlayer })
-  } }
+  }
 );
 
 export type MusicPlayerState = State<

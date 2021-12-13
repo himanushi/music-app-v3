@@ -1,8 +1,6 @@
 <script lang="ts">
 import type { DocumentNode } from "@apollo/client";
-import {
-  onMount, onDestroy
-} from "svelte";
+import { onMount, onDestroy } from "svelte";
 import { interpret } from "xstate";
 import VirtualScroll from "./virtual-scroll.svelte";
 import type { ParameterPrefix } from "~/lib/build-parameters";
@@ -18,37 +16,27 @@ export let loaded: boolean = false;
 let service: any;
 
 onMount(() => {
-
   service = interpret(itemsMachine(type, document)).start();
-
 });
 
 onDestroy(() => {
-
   service.stop();
-
 });
 
 $: if (service) {
-
   if (params) {
-
     service.send({
       params,
-      type: "SET_PARAMETERS"
+      type: "SET_PARAMETERS",
     });
-
   } else if (variables) {
-
     service.send({
       type: "SET_VARIABLES",
-      variables
+      variables,
     });
-
   }
 
   service.send({ type: "EXECUTE_QUERY" });
-
 }
 
 let items: any[];
@@ -62,37 +50,27 @@ $: if (
   items.length === 0 &&
   !reported
 ) {
-
   openToast({
     color: "light-blue",
     duration: 5000,
-    message: "一致する検索結果はありませんでした"
+    message: "一致する検索結果はありませんでした",
   });
 
   reported = true;
-
 }
 
 let infiniteScroll: HTMLElement;
 const ionInfinite = () => {
-
   service.send("FETCH_MORE");
-
 };
 $: if (service && $service.matches("active") && infiniteScroll) {
-
   loaded = true;
   infiniteScroll.complete();
   if ($service.context.hasNext) {
-
     infiniteScroll.disabled = false;
-
   } else {
-
     infiniteScroll.disabled = true;
-
   }
-
 }
 </script>
 

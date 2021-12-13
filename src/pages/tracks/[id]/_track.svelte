@@ -5,10 +5,10 @@ import LoadingItems from "~/components/loading-items.svelte";
 import Image from "~/components/square-image.svelte";
 import { TrackDocument } from "~/graphql/types";
 import type {
-  Track,
+  TrackObject,
   TrackQuery,
   ArtistsQueryVariables,
-  AlbumsQueryVariables
+  AlbumsQueryVariables,
 } from "~/graphql/types";
 import { convertTime } from "~/lib/convert";
 import Albums from "~/pages/albums/_albums.svelte";
@@ -19,34 +19,32 @@ export let id = "";
 
 const trackQuery = query<TrackQuery>(TrackDocument, {
   fetchPolicy: "cache-first",
-  variables: { id }
+  variables: { id },
 });
 
-let track: Track | undefined;
+let track: TrackObject | undefined;
 let artistsVariables: ArtistsQueryVariables;
 let albumsVariables: AlbumsQueryVariables;
 
 let first = true;
 $: if ($trackQuery.data && first) {
-
-  track = $trackQuery.data.track as Track;
+  track = $trackQuery.data.track as TrackObject;
   artistsVariables = {
-    conditions: { tracks: { id: [id] } },
+    conditions: { trackIds: [id] },
     sort: {
+      direction: "DESC",
       order: "POPULARITY",
-      type: "DESC"
-    }
+    },
   };
   albumsVariables = {
-    conditions: { tracks: { id: [id] } },
+    conditions: { trackIds: [id] },
     sort: {
+      direction: "DESC",
       order: "NEW",
-      type: "DESC"
-    }
+    },
   };
 
   first = false;
-
 }
 </script>
 

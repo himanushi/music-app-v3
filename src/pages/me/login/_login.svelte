@@ -5,12 +5,8 @@ import { mutation } from "svelte-apollo";
 import InputText from "~/components/input-item.svelte";
 import Messages from "~/components/messages.svelte";
 import RecaptchaV2 from "~/components/recaptcha-v2.svelte";
-import {
-  LoginDocument, MeDocument
-} from "~/graphql/types";
-import type {
-  LoginMutationVariables, LoginMutation
-} from "~/graphql/types";
+import { LoginDocument, MeDocument } from "~/graphql/types";
+import type { LoginMutationVariables, LoginMutation } from "~/graphql/types";
 import { errorMessages } from "~/lib/error";
 import { openToast } from "~/lib/ionic";
 
@@ -23,39 +19,33 @@ let disabled = false;
 const mutate = mutation<LoginMutation, LoginMutationVariables>(LoginDocument);
 
 const login = async () => {
-
   disabled = true;
   try {
-
     await mutate({
       refetchQueries: [{ query: MeDocument }],
-      variables: { input: {
-        currentPassword,
-        username
-      } }
+      variables: {
+        input: {
+          currentPassword,
+          username,
+        },
+      },
     });
 
     openToast({
       color: "light-green",
       duration: 3000,
-      message: "ログインしました"
+      message: "ログインしました",
     });
 
     $goto("/me");
-
   } catch (error) {
-
     disabled = false;
 
     if (error instanceof ApolloError) {
-
       messages = errorMessages(error);
       recaptcha.reset();
-
     }
-
   }
-
 };
 </script>
 

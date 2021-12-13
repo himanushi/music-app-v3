@@ -5,20 +5,14 @@ let color = "";
 let iconName = "";
 
 $: if (type === "info") {
-
   color = "blue";
   iconName = "information-circle-outline";
-
 } else if (type === "warn") {
-
   color = "yellow";
   iconName = "alert-circle-outline";
-
 } else if (type === "error") {
-
   color = "red";
   iconName = "alert-circle-outline";
-
 }
 </script>
 

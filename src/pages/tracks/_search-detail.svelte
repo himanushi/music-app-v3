@@ -1,14 +1,10 @@
 <script lang="ts">
-import {
-  goto, params
-} from "@roxi/routify";
+import { goto, params } from "@roxi/routify";
 import InputCheckbox from "~/components/input-checkbox.svelte";
 import InputText from "~/components/input-item.svelte";
 import InputSelection from "~/components/input-selection.svelte";
 import SearchDetail from "~/components/search-detail.svelte";
-import {
-  isAllowed, meQuery
-} from "~/lib/me";
+import { isAllowed, meQuery } from "~/lib/me";
 import { SearchParams } from "~/lib/params";
 import type { SearchParamsType } from "~/lib/params";
 
@@ -22,48 +18,35 @@ let orderValue = `${order}.${direction}`;
 const orderItems = [
   {
     label: "追加日新しい順",
-    value: "NEW.DESC"
+    value: "NEW.DESC",
   },
   {
     label: "追加日古い順",
-    value: "NEW.ASC"
+    value: "NEW.ASC",
   },
   {
     label: "人気順",
-    value: "POPULARITY.DESC"
-  }
+    value: "POPULARITY.DESC",
+  },
 ];
 
 const onClick = () => {
-
   const parameters: SearchParamsType = {};
   if (keyword) {
-
     parameters[SearchParams.track.keyword] = keyword;
-
   }
   if (favorite) {
-
     parameters[SearchParams.track.favorite] = "1";
-
   }
   if (username) {
-
     parameters[SearchParams.track.username] = username;
-
   }
   if (orderValue) {
-
-    const [
-      _order,
-      _direction
-    ] = orderValue.split(".");
+    const [_order, _direction] = orderValue.split(".");
     parameters[SearchParams.track.order] = _order;
     parameters[SearchParams.track.direction] = _direction;
-
   }
   $goto("/tracks", parameters);
-
 };
 
 const query = meQuery();

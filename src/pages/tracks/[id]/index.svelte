@@ -1,8 +1,6 @@
 <script lang="ts">
 import Track from "./_track.svelte";
-import {
-  isAllowed, meQuery
-} from "~/lib/me";
+import { isAllowed, meQuery } from "~/lib/me";
 
 export let id = "";
 

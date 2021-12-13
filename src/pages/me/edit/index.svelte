@@ -1,8 +1,6 @@
 <script lang="ts">
 import Edit from "./_edit.svelte";
-import {
-  isAllowed, meQuery
-} from "~/lib/me";
+import { isAllowed, meQuery } from "~/lib/me";
 
 const mq = meQuery();
 $: me = $mq?.data?.me;

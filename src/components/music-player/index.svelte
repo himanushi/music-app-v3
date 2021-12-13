@@ -13,19 +13,13 @@ import ModalContent from "~/pages/_modal-content.svelte";
 $: player = $playerService.context.musicPlayerRef;
 
 const link = () => {
-
   (async () => {
-
     if (player && $player.context.track?.id) {
-
       const { id } = $player.context.track;
       await closeModal();
       $goto("/tracks/:id", { id });
-
     }
-
   })();
-
 };
 </script>
 

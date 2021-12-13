@@ -1,58 +1,48 @@
 <script lang="ts">
 import { ApolloError } from "@apollo/client";
 import { goto } from "@roxi/routify";
-import {
-  mutation, query
-} from "svelte-apollo";
+import { mutation, query } from "svelte-apollo";
 import InputText from "~/components/input-item.svelte";
 import InputSelection from "~/components/input-selection.svelte";
 import InputTextarea from "~/components/input-textarea.svelte";
 import Messages from "~/components/messages.svelte";
 import PlayButton from "~/components/play-button.svelte";
 import SquareImage from "~/components/square-image.svelte";
-import {
-  PlaylistDocument, UpsertPlaylistDocument
-} from "~/graphql/types";
-import type { Track } from "~/graphql/types";
+import { PlaylistDocument, UpsertPlaylistDocument } from "~/graphql/types";
+import type { TrackObject } from "~/graphql/types";
 import type {
-  Playlist,
+  PlaylistObject,
   PlaylistQuery,
   PlaylistPublicTypeEnum,
-  UpsertPlaylistMutationVariables
+  UpsertPlaylistMutationVariables,
 } from "~/graphql/types";
 import { errorMessages } from "~/lib/error";
-import {
-  isAllowed, meQuery
-} from "~/lib/me";
+import { isAllowed, meQuery } from "~/lib/me";
 
 export let id = "";
 
 let name = "";
 let description = "";
 let publicType: PlaylistPublicTypeEnum = "NON_OPEN";
-let tracks: Track[] = [];
+let tracks: TrackObject[] = [];
 let messages: Record<string, string[]> = {};
 
 const playlistQuery = query<PlaylistQuery>(PlaylistDocument, {
   fetchPolicy: "no-cache",
-  variables: { id }
+  variables: { id },
 });
 
 // 初期化
-let playlist: Playlist;
+let playlist: PlaylistObject;
 let initialize = true;
 $: if ($playlistQuery.data?.playlist && initialize) {
+  playlist = $playlistQuery.data.playlist as PlaylistObject;
 
-  playlist = $playlistQuery.data.playlist as Playlist;
-
-  ({
-    name, description, publicType
-  } = playlist);
+  ({ name, description, publicType } = playlist);
 
   tracks = playlist.items.map((item) => item.track);
 
   initialize = false;
-
 }
 
 const upsertPlaylist = mutation<unknown, UpsertPlaylistMutationVariables>(
@@ -61,32 +51,28 @@ const upsertPlaylist = mutation<unknown, UpsertPlaylistMutationVariables>(
 
 let disabled = false;
 const update = async () => {
-
   disabled = true;
   try {
-
-    await upsertPlaylist({ variables: { input: {
-      description,
-      name,
-      playlistId: id,
-      publicType,
-      trackIds: tracks.map((track) => track.id)
-    } } });
+    await upsertPlaylist({
+      variables: {
+        input: {
+          description,
+          name,
+          playlistId: id,
+          publicType,
+          trackIds: tracks.map((track) => track.id),
+        },
+      },
+    });
 
     $goto("/playlist/:id", { id });
-
   } catch (error) {
-
     disabled = false;
 
     if (error instanceof ApolloError) {
-
       messages = errorMessages(error);
-
     }
-
   }
-
 };
 
 const changeItems = (
@@ -94,30 +80,26 @@ const changeItems = (
     detail: { from: number; to: number; complete: Function };
   }
 ) => {
-
   tracks = event.detail.complete(tracks);
-
 };
 
 const removeItem = (index: number) => () => {
-
   tracks = tracks.filter((_, idx) => idx !== index);
-
 };
 
 const publicTypes = [
   {
     label: "非公開",
-    value: "NON_OPEN"
+    value: "NON_OPEN",
   },
   {
     label: "公開",
-    value: "OPEN"
+    value: "OPEN",
   },
   {
     label: "匿名公開",
-    value: "ANONYMOUS_OPEN"
-  }
+    value: "ANONYMOUS_OPEN",
+  },
 ];
 
 const meq = meQuery();

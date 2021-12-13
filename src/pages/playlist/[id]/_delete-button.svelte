@@ -4,15 +4,11 @@ import { goto } from "@roxi/routify";
 import { mutation } from "svelte-apollo";
 import type {
   DeletePlaylistMutation,
-  DeletePlaylistMutationVariables
+  DeletePlaylistMutationVariables,
 } from "~/graphql/types";
 import { DeletePlaylistDocument } from "~/graphql/types";
-import {
-  openConfirm, openToast
-} from "~/lib/ionic";
-import {
-  isAllowed, meQuery
-} from "~/lib/me";
+import { openConfirm, openToast } from "~/lib/ionic";
+import { isAllowed, meQuery } from "~/lib/me";
 
 export let id: string;
 
@@ -22,51 +18,43 @@ const deletePlaylist = mutation<
 >(DeletePlaylistDocument);
 
 const remove = () => {
-
   openConfirm({
     buttons: [
       {
         cssClass: "secondary",
         handler: () => true,
         role: "cancel",
-        text: "キャンセル"
+        text: "キャンセル",
       },
       {
         handler: () => {
-
           (async () => {
-
             try {
-
-              await deletePlaylist({ variables: { input: { playlistId: id } } });
+              await deletePlaylist({
+                variables: { input: { playlistId: id } },
+              });
 
               openToast({
                 color: "light-green",
                 duration: 5000,
-                message: "プレイリストを削除しました"
+                message: "プレイリストを削除しました",
               });
 
               $goto("/playlist", { pm: 1 });
-
             } catch (error) {
-
               openToast({
                 color: "light-red",
                 duration: 5000,
-                message: "エラーが発生しました"
+                message: "エラーが発生しました",
               });
-
             }
-
           })();
-
         },
-        text: "削除"
-      }
+        text: "削除",
+      },
     ],
-    header: "削除しますか？"
+    header: "削除しますか？",
   });
-
 };
 
 const query = meQuery();

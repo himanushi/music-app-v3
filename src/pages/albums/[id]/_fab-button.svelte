@@ -8,9 +8,7 @@ export let refresh: () => void;
 
 let fab: HTMLElement;
 $: if (fab) {
-
   fab.setAttribute("slot", "fixed");
-
 }
 </script>
 

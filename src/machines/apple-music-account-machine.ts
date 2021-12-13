@@ -6,9 +6,7 @@ import type { PluginListenerHandle } from "@capacitor/core";
 import type { AuthorizationStatusDidChangeListener } from "capacitor-plugin-applemusic";
 import { CapacitorAppleMusic } from "capacitor-plugin-applemusic";
 import { assign } from "xstate";
-import {
-  interpret, Machine as machine, Sender
-} from "xstate";
+import { interpret, Machine as machine, Sender } from "xstate";
 
 export type accountContext = {
   config?: MusicKit.Config;
@@ -47,44 +45,36 @@ export const accountMachine = machine<
         on: {
           SET_TOKEN: {
             actions: "setConfig",
-            target: "checking"
+            target: "checking",
           },
-          CHECKING: "checking"
+          CHECKING: "checking",
         },
-        meta: { label: "initializing" }
+        meta: { label: "initializing" },
       },
 
       checking: {
-        invoke: { src:
+        invoke: {
+          src:
             ({ config }) => (callback) => {
-
               (async () => {
-
                 if (config) {
-
                   await CapacitorAppleMusic.configure({ config });
-
                 }
 
                 if ((await CapacitorAppleMusic.isAuthorized()).result) {
-
                   callback({ type: "LOGIN" });
-
                 } else {
-
                   callback({ type: "LOGOUT" });
-
                 }
-
               })();
-
-            } },
+            },
+        },
         on: {
           LOGIN: "authorized",
-          LOGOUT: "unauthorized"
+          LOGOUT: "unauthorized",
         },
 
-        meta: { label: "loading" }
+        meta: { label: "loading" },
       },
 
       authorized: {
@@ -92,48 +82,36 @@ export const accountMachine = machine<
           id: "unauthorize",
 
           src: () => (callback: Sender<accountEvent>) => {
-
             const changeStatus: AuthorizationStatusDidChangeListener = (
               state
             ) => {
-
               if (state.result !== "authorized") {
-
                 callback("LOGOUT");
-
               }
-
             };
 
             let cleaner: PluginListenerHandle;
             (async () => {
-
               cleaner = await CapacitorAppleMusic.addListener(
                 "authorizationStatusDidChange",
                 changeStatus
               );
-
             })();
 
             return () => {
-
               if (cleaner) {
-
                 cleaner.remove();
-
               }
-
             };
-
-          }
+          },
         },
 
         on: {
           LOGIN_OR_LOGOUT: { actions: "logout" },
-          LOGOUT: "unauthorized"
+          LOGOUT: "unauthorized",
         },
 
-        meta: { label: "ログアウト" }
+        meta: { label: "ログアウト" },
       },
 
       unauthorized: {
@@ -141,58 +119,50 @@ export const accountMachine = machine<
           id: "unauthorize",
 
           src: () => (callback: Sender<accountEvent>) => {
-
             const changeStatus: AuthorizationStatusDidChangeListener = (
               state
             ) => {
-
               if (state.result === "authorized") {
-
                 callback("LOGIN");
-
               }
-
             };
 
             let cleaner: PluginListenerHandle;
             (async () => {
-
               cleaner = await CapacitorAppleMusic.addListener(
                 "authorizationStatusDidChange",
                 changeStatus
               );
-
             })();
 
             return () => {
-
               if (cleaner) {
-
                 cleaner.remove();
-
               }
-
             };
-
-          }
+          },
         },
 
         on: {
           LOGIN_OR_LOGOUT: { actions: "login" },
-          LOGIN: "authorized"
+          LOGIN: "authorized",
         },
 
-        meta: { label: "ログイン" }
-      }
-    }
+        meta: { label: "ログイン" },
+      },
+    },
   },
-  { actions: {
-    login: () => CapacitorAppleMusic.authorize(),
+  {
+    actions: {
+      login: () => CapacitorAppleMusic.authorize(),
 
-    logout: () => CapacitorAppleMusic.unauthorize(),
+      logout: () => CapacitorAppleMusic.unauthorize(),
 
-    setConfig: assign({ config: (_, event) => "config" in event ? event.config : undefined })
-  } }
+      setConfig: assign({
+        config: (_, event) => "config" in event ? event.config : undefined,
+      }),
+    },
+  }
 );
 
 export const accountService = interpret(accountMachine).start();

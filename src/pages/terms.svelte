@@ -1,8 +1,6 @@
 <script lang="ts">
 import { markdown } from "~/lib/markdown";
-import {
-  title, originUrl
-} from "~/lib/variable";
+import { title, originUrl } from "~/lib/variable";
 
 const html = markdown(`
 # 利用規約

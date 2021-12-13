@@ -7,7 +7,7 @@ import Messages from "~/components/messages.svelte";
 import { UpsertPlaylistDocument } from "~/graphql/types";
 import type {
   UpsertPlaylistMutationVariables,
-  UpsertPlaylistMutation
+  UpsertPlaylistMutation,
 } from "~/graphql/types";
 import { errorMessages } from "~/lib/error";
 
@@ -22,32 +22,28 @@ let messages: Record<string, string[]> = {};
 let disabled = false;
 
 const create = async () => {
-
   disabled = true;
 
   try {
-
-    await upsertPlaylist({ variables: { input: {
-      description,
-      name,
-      publicType: "NON_OPEN",
-      trackIds: []
-    } } });
+    await upsertPlaylist({
+      variables: {
+        input: {
+          description,
+          name,
+          publicType: "NON_OPEN",
+          trackIds: [],
+        },
+      },
+    });
 
     $goto("/playlist", { pm: "1" });
-
   } catch (error) {
-
     disabled = false;
 
     if (error instanceof ApolloError) {
-
       messages = errorMessages(error);
-
     }
-
   }
-
 };
 </script>
 

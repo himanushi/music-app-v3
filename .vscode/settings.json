@@ -25,5 +25,13 @@
     "*.xml": "html",
     "*.svg": "html"
   },
-  "cSpell.words": ["isrc", "upsert"]
+  "cSpell.words": [
+    "applemusic",
+    "graphiql",
+    "isrc",
+    "nexttrack",
+    "previoustrack",
+    "upsert",
+    "xstate"
+  ]
 }

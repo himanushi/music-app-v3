@@ -4,32 +4,26 @@ import { goto } from "@roxi/routify";
 import { openPlayer } from "~/components/player.svelte";
 import type { ActionEnum } from "~/graphql/types";
 import { closeSidebar } from "~/lib/ionic";
-import {
-  isAllowed, meQuery
-} from "~/lib/me";
+import { isAllowed, meQuery } from "~/lib/me";
 import { playerService } from "~/machines/jukebox-machine";
 
 $: track = $playerService.context.currentTrack;
 
 const showPlayer = () => {
-
   closeSidebar();
   openPlayer();
-
 };
 
 const go =
   (path: string, params: Record<string, string> = {}) => () => {
-
     closeSidebar();
     $goto(path, params);
-
   };
 
 const myPlaylist: ActionEnum[] = [
   "playlists",
   "upsertPlaylist",
-  "addPlaylistItems"
+  "addPlaylistItems",
 ];
 
 const query = meQuery();
@@ -73,12 +67,6 @@ $: me = $query?.data?.me;
         <ion-item button on:click={go("/tracks")}>
           <ion-icon name="musical-note-outline" slot="start" />
           <ion-label>曲</ion-label>
-        </ion-item>
-      {/if}
-      {#if me && isAllowed(me, "radios")}
-        <ion-item button on:click={go("/radios")}>
-          <ion-icon name="radio-outline" slot="start" />
-          <ion-label>ラジオ</ion-label>
         </ion-item>
       {/if}
       {#if me && isAllowed(me, "tracks")}

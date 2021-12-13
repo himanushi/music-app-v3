@@ -1,14 +1,10 @@
 <script lang="ts">
-import {
-  goto, params
-} from "@roxi/routify";
+import { goto, params } from "@roxi/routify";
 import InputCheckbox from "~/components/input-checkbox.svelte";
 import InputText from "~/components/input-item.svelte";
 import InputSelection from "~/components/input-selection.svelte";
 import SearchDetail from "~/components/search-detail.svelte";
-import {
-  isAllowed, meQuery
-} from "~/lib/me";
+import { isAllowed, meQuery } from "~/lib/me";
 import { SearchParams } from "~/lib/params";
 import type { SearchParamsType } from "~/lib/params";
 
@@ -23,61 +19,46 @@ let orderValue = `${order}.${direction}`;
 const orderItems = [
   {
     label: "更新日新しい順",
-    value: "UPDATE.DESC"
+    value: "UPDATE.DESC",
   },
   {
     label: "更新日古い順",
-    value: "UPDATE.ASC"
+    value: "UPDATE.ASC",
   },
   {
     label: "追加日新しい順",
-    value: "NEW.DESC"
+    value: "NEW.DESC",
   },
   {
     label: "追加日古い順",
-    value: "NEW.ASC"
+    value: "NEW.ASC",
   },
   {
     label: "人気順",
-    value: "POPULARITY.DESC"
-  }
+    value: "POPULARITY.DESC",
+  },
 ];
 
 const onClick = () => {
-
   const parameters: SearchParamsType = {};
   if (keyword) {
-
     parameters[SearchParams.playlist.keyword] = keyword;
-
   }
   if (favorite) {
-
     parameters[SearchParams.playlist.favorite] = "1";
-
   }
   if (username) {
-
     parameters[SearchParams.playlist.username] = username;
-
   }
   if (isMine) {
-
     parameters[SearchParams.playlist.mine] = "1";
-
   }
   if (orderValue) {
-
-    const [
-      _order,
-      _direction
-    ] = orderValue.split(".");
+    const [_order, _direction] = orderValue.split(".");
     parameters[SearchParams.playlist.order] = _order;
     parameters[SearchParams.playlist.direction] = _direction;
-
   }
   $goto("/playlist", parameters);
-
 };
 
 const query = meQuery();

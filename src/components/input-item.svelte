@@ -75,13 +75,9 @@ export let autocomplete:
   | "photo" = "off";
 
 const onChange = (event: Event) => {
-
   if (event?.target) {
-
     value = event?.target?.value;
-
   }
-
 };
 </script>
 

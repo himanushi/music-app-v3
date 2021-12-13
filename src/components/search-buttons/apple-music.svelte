@@ -6,9 +6,7 @@ export let id: string;
 
 let token = "";
 if (appleAffiliateToken) {
-
   token = `&at=${appleAffiliateToken}`;
-
 }
 </script>
 

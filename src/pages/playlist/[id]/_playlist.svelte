@@ -11,12 +11,8 @@ import Image from "~/components/square-image.svelte";
 import TwitterButton from "~/components/twitter-button.svelte";
 import VirtualScroll from "~/components/virtual-scroll.svelte";
 import { PlaylistDocument } from "~/graphql/types";
-import type {
-  Playlist, PlaylistQuery
-} from "~/graphql/types";
-import {
-  convertDate, convertTime, toMs
-} from "~/lib/convert";
+import type { PlaylistObject, PlaylistQuery } from "~/graphql/types";
+import { convertDate, convertTime, toMs } from "~/lib/convert";
 import { title } from "~/lib/variable";
 import ItemCard from "~/pages/tracks/_item-card.svelte";
 
@@ -24,23 +20,18 @@ export let id = "";
 
 $: playlistQuery = query<PlaylistQuery>(PlaylistDocument, {
   fetchPolicy: "no-cache",
-  variables: { id }
+  variables: { id },
 });
 
-let playlist: Playlist | undefined;
+let playlist: PlaylistObject | undefined;
 
 let first = true;
 $: if ($playlistQuery.data && first) {
-
-  playlist = $playlistQuery.data.playlist as Playlist;
+  playlist = $playlistQuery.data.playlist as PlaylistObject;
   first = false;
-
 }
 
-const hashtags = [
-  `${title}のプレイリスト`,
-  title || ""
-];
+const hashtags = [`${title}のプレイリスト`, title || ""];
 
 $: items = playlist ? playlist.items.map((it) => it) : [];
 $: tracks = playlist ? playlist.items.map((it) => it.track) : [];

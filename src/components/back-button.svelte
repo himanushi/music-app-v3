@@ -2,16 +2,12 @@
 export let iconName = "chevron-back-outline";
 
 const back = () => {
-
   window.history.go(-1);
-
 };
 
 let component: HTMLElement;
 $: if (component) {
-
   component.setAttribute("slot", "fixed");
-
 }
 </script>
 
