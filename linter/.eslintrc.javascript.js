@@ -1,4 +1,1 @@
-module.exports = { plugins: [
-  "import",
-  "sort-keys-fix"
-] };
+module.exports = { plugins: ["import", "sort-keys-fix"] };

@@ -2,21 +2,17 @@ module.exports = {
   parser: "@typescript-eslint/parser",
   parserOptions: {
     project: "./tsconfig.json",
-    sourceType: "module"
+    sourceType: "module",
   },
-  plugins: [
-    "@typescript-eslint",
-    "import",
-    "sort-keys-fix"
-  ],
+  plugins: ["@typescript-eslint", "import", "sort-keys-fix"],
   rules: {
     "@typescript-eslint/no-unused-vars": [
       "error",
       {
         argsIgnorePattern: "^_",
-        varsIgnorePattern: "^key$"
-      }
+        varsIgnorePattern: "^key$",
+      },
     ],
-    "no-unused-vars": "off"
-  }
+    "no-unused-vars": "off",
+  },
 };

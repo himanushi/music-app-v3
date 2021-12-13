@@ -4,7 +4,7 @@ const config: CapacitorConfig = {
   appId: "io.ionic.starter",
   appName: "music-app",
   bundledWebRuntime: false,
-  webDir: "build"
+  webDir: "build",
 };
 
 export default config;

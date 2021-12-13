@@ -3,7 +3,7 @@
 module.exports = {
   alias: {
     routify: "./.routify",
-    "~": "./src"
+    "~": "./src",
   },
   devOptions: { tailwindConfig: "./tailwind.config.js" },
   exclude: ["**/*.graphql"],
@@ -11,30 +11,29 @@ module.exports = {
     ".routify": { url: "/" },
     public: {
       static: true,
-      url: "/"
+      url: "/",
     },
-    src: { url: "/" }
+    src: { url: "/" },
   },
   optimize: {
     bundle: true,
     minify: true,
-    sourcemap: false
+    sourcemap: false,
   },
-  packageOptions: { knownEntrypoints: [
-    "@roxi/routify",
-    "@roxi/routify/runtime/buildRoutes"
-  ] },
+  packageOptions: {
+    knownEntrypoints: ["@roxi/routify", "@roxi/routify/runtime/buildRoutes"],
+  },
   plugins: [
     "@snowpack/plugin-svelte",
     "@snowpack/plugin-dotenv",
     "@snowpack/plugin-typescript",
-    "@snowpack/plugin-postcss"
+    "@snowpack/plugin-postcss",
   ],
   routes: [
     {
       dest: "/index.html",
       match: "routes",
-      src: ".*"
-    }
-  ]
+      src: ".*",
+    },
+  ],
 };
