@@ -56,7 +56,6 @@ const update = () => {
 
                 openToast({
                   color: "light-red",
-                  duration: 5000,
                   message: `エラーが発生しました。[${messages._?.join(", ")}]`,
                 });
               }

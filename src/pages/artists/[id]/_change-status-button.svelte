@@ -64,7 +64,6 @@ const change = () => {
 
                 openToast({
                   color: "light-red",
-                  duration: 5000,
                   message: `エラーが発生しました。[${messages._?.join(", ")}]`,
                 });
               }
@@ -82,27 +81,21 @@ const change = () => {
         label: "有効",
         type: "radio",
         value: {
-          only: true,
           status: "ACTIVE",
-          tweet: false,
         },
       },
       {
         label: "保留",
         type: "radio",
         value: {
-          only: true,
           status: "PENDING",
-          tweet: false,
         },
       },
       {
         label: "除外",
         type: "radio",
         value: {
-          only: true,
           status: "IGNORE",
-          tweet: false,
         },
       },
     ],
