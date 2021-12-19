@@ -127,7 +127,7 @@ export default function buildParameters<T> (
 
   // 並び順
   getUniqueValues(prefixKey + ParameterKeys.direction).forEach((value) => {
-    parameters = merge(parameters, { sort: { type: value } });
+    parameters = merge(parameters, { sort: { direction: value } });
   });
 
   return parameters as T;

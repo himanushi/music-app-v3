@@ -206,7 +206,7 @@ export type ArtistsConditionsInputObject = {
   /** アーティスト名(あいまい検索) */
   readonly name?: Maybe<Scalars['String']>;
   /** 表示ステータス */
-  readonly statuses?: Maybe<ReadonlyArray<StatusEnum>>;
+  readonly status?: Maybe<ReadonlyArray<StatusEnum>>;
   /** お気に入り */
   readonly favorite?: Maybe<Scalars['Boolean']>;
 };
@@ -806,7 +806,7 @@ export type TracksConditionsInputObject = {
   /** トラック名(あいまい検索) */
   readonly name?: Maybe<Scalars['String']>;
   /** 表示ステータス */
-  readonly statuses?: Maybe<ReadonlyArray<StatusEnum>>;
+  readonly status?: Maybe<ReadonlyArray<StatusEnum>>;
   /** お気に入り */
   readonly favorite?: Maybe<Scalars['Boolean']>;
   /** ランダム取得 */
