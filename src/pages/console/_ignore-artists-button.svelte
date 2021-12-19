@@ -8,7 +8,7 @@ import type {
 } from "~/graphql/types";
 import { IgnoreArtistsDocument } from "~/graphql/types";
 import { errorMessages } from "~/lib/error";
-import { openConfirm, openToast } from "~/lib/ionic";
+import { closeLoading, openConfirm, openLoading, openToast } from "~/lib/ionic";
 import { isAllowed, meQuery } from "~/lib/me";
 
 const ignore = mutation<IgnoreArtistsPayload, IgnoreArtistsMutationVariables>(
@@ -28,6 +28,8 @@ const confirm = () => {
         handler: () => {
           (async () => {
             try {
+              await openLoading();
+
               await ignore({ variables: { input: {} } });
 
               openToast({
@@ -44,6 +46,8 @@ const confirm = () => {
                   message: `エラーが発生しました。[${messages._?.join(", ")}]`,
                 });
               }
+            } finally {
+              await closeLoading();
             }
           })();
         },

@@ -7,7 +7,7 @@ import type {
 } from "~/graphql/types";
 import { ClearCacheDocument } from "~/graphql/types";
 import { errorMessages } from "~/lib/error";
-import { openConfirm, openToast } from "~/lib/ionic";
+import { closeLoading, openConfirm, openLoading, openToast } from "~/lib/ionic";
 import { isAllowed, meQuery } from "~/lib/me";
 
 const clearCache =
@@ -26,6 +26,8 @@ const clear = () => {
         handler: () => {
           (async () => {
             try {
+              await openLoading();
+
               await clearCache({ variables: { input: {} } });
 
               openToast({
@@ -42,6 +44,8 @@ const clear = () => {
                   message: `エラーが発生しました。[${messages._?.join(", ")}]`,
                 });
               }
+            } finally {
+              await closeLoading();
             }
           })();
         },
