@@ -32,14 +32,14 @@ $: if (me && $artistQuery.data && first) {
   loaded = true;
 
   artist = $artistQuery.data.artist as ArtistObject;
-  let statuses: StatusEnum[] = ["ACTIVE"];
+  let status: StatusEnum[] = ["ACTIVE"];
   if (isAllowed(me, "changeArtistStatus")) {
-    statuses = ["ACTIVE", "IGNORE", "PENDING"];
+    status = ["ACTIVE", "IGNORE", "PENDING"];
   }
   variables = {
     conditions: {
       artistIds: [id],
-      statuses,
+      status,
     },
     sort: {
       direction: "DESC",

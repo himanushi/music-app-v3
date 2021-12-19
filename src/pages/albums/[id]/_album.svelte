@@ -42,15 +42,15 @@ $: if (me && $albumQuery.data && first) {
   loaded = true;
 
   album = $albumQuery.data.album as AlbumObject;
-  let statuses: StatusEnum[] = ["ACTIVE"];
+  let status: StatusEnum[] = ["ACTIVE"];
   if (isAllowed(me, "changeAlbumStatus")) {
-    statuses = ["ACTIVE", "IGNORE", "PENDING"];
+    status = ["ACTIVE", "IGNORE", "PENDING"];
   }
 
   variables = {
     conditions: {
       albumIds: [id],
-      statuses,
+      status,
     },
     sort: {
       direction: "DESC",
