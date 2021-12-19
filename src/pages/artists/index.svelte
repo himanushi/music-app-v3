@@ -11,7 +11,7 @@ let tggle = true;
 let loaded = false;
 const refresh = () => {
   client.cache.evict({
-    fieldName: "albums",
+    fieldName: "artists",
     id: "ROOT_QUERY",
   });
 
