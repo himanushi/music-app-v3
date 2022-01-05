@@ -22,7 +22,7 @@ const seek = tweened(0, {
 const player = $playerService.context.musicPlayerRef;
 $: disabled = $playerService.value === "loading" || !$canPlay;
 
-$: if (player) {
+$: if ($player) {
   seek.set($player.context.seek);
 }
 
@@ -58,7 +58,7 @@ const onStop = (event: { detail: { value: number } }) => {
 $: seekValue = seeking ? seekValue : $seek;
 </script>
 
-{#if player}
+{#if $player}
   <ion-item lines="none">
     <ion-note slot="start">{toMMSS($player.context.seek)}</ion-note>
     <ion-note slot="end">{toMMSS($player.context.duration)}</ion-note>

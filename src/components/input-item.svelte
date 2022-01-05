@@ -1,4 +1,5 @@
 <script>
+import { InputChangeEventDetail } from "@ionic/core";
 import Messages from "./messages.svelte";
 
 export let placeholder: string | undefined = undefined;
@@ -74,9 +75,9 @@ export let autocomplete:
   | "url"
   | "photo" = "off";
 
-const onChange = (event: Event) => {
-  if (event?.target) {
-    value = event?.target?.value;
+const onChange = (event: CustomEvent<InputChangeEventDetail>) => {
+  if (event.detail.value) {
+    value = event.detail.value;
   }
 };
 </script>

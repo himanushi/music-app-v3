@@ -1,4 +1,5 @@
 <script>
+import { TextareaChangeEventDetail } from "@ionic/core";
 import Messages from "./messages.svelte";
 
 export let label = "";
@@ -7,7 +8,11 @@ export let placeholder = "";
 export let rows = 10;
 export let errorMessages: string[] | undefined = undefined;
 
-const ionChange = (event: { detail: { value: string } }) => value = event.detail.value;
+const ionChange = (event: CustomEvent<TextareaChangeEventDetail>) => {
+  if (event.detail.value) {
+    value = event.detail.value;
+  }
+};
 </script>
 
 <ion-item>

@@ -14,7 +14,7 @@ $: player = $playerService.context.musicPlayerRef;
 
 const link = () => {
   (async () => {
-    if (player && $player.context.track?.id) {
+    if ($player && $player.context.track?.id) {
       const { id } = $player.context.track;
       await closeModal();
       $goto("/tracks/:id", { id });
@@ -25,7 +25,7 @@ const link = () => {
 
 <ion-header translucent>
   <ion-toolbar>
-    {#if player && $player.context.track}
+    {#if $player && $player.context.track}
       <ion-buttons slot="start">
         <AddPlaylistButton tracks={[$player.context.track]} />
       </ion-buttons>
@@ -41,7 +41,7 @@ const link = () => {
 </ion-header>
 <ModalContent>
   <CenterItem>
-    {#if player && $player.context.track}
+    {#if $player && $player.context.track}
       <SquareImage src={$player.context.track.artworkL?.url} />
     {:else}
       <SquareImage />

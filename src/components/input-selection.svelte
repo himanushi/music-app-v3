@@ -1,11 +1,13 @@
 <script lang="ts">
+import { SelectChangeEventDetail } from "@ionic/core";
+
 export let label: string;
 export let value: string;
 export let items: { value: string; label: string }[];
 
-const onChange = (event: Event) => {
-  if (event?.target?.value) {
-    value = event?.target?.value;
+const onChange = (event: CustomEvent<SelectChangeEventDetail<any>>) => {
+  if (event.detail.value) {
+    value = event.detail.value;
   }
 };
 </script>
