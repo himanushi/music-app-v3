@@ -29,6 +29,7 @@
     "applemusic",
     "camelcase",
     "codegen",
+    "datetime",
     "dompurify",
     "Entrypoints",
     "graphiql",
