@@ -169,7 +169,7 @@ declare global {
   declare namespace svelte.JSX {
     type SvelteIonic<T> = ConvertIonicEvents<T> &
       Omit<T, IonicAllEventNames> &
-      svelte.JSX.HTMLProps<HTMLElement>;
+      Omit<svelte.JSX.HTMLProps<HTMLElement>, keyof T>;
 
     interface IntrinsicElements {
       "ion-accordion": SvelteIonic<LocalJSX.IonAccordion>;
