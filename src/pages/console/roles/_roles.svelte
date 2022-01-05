@@ -10,8 +10,8 @@ const rolesQuery = query<RolesQuery>(RolesDocument, {
   variables: {},
 });
 
-let roles: RoleObject[];
-$: roles = $rolesQuery.data?.roles as RoleObject[];
+let roles: RoleObject[] | undefined;
+$: roles = $rolesQuery.data?.roles as RoleObject[] | undefined;
 </script>
 
 {#if roles}
