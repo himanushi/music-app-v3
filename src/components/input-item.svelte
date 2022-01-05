@@ -1,5 +1,5 @@
 <script>
-import { InputChangeEventDetail } from "@ionic/core";
+import type { InputChangeEventDetail } from "@ionic/core";
 import Messages from "./messages.svelte";
 
 export let placeholder: string | undefined = undefined;

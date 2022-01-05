@@ -1,5 +1,5 @@
 <script lang="ts">
-import { SelectChangeEventDetail } from "@ionic/core";
+import type { SelectChangeEventDetail } from "@ionic/core";
 
 export let label: string;
 export let value: string;

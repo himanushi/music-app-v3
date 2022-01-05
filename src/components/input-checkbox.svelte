@@ -1,5 +1,5 @@
 <script>
-import { CheckboxChangeEventDetail } from "@ionic/core";
+import type { CheckboxChangeEventDetail } from "@ionic/core";
 import Messages from "./messages.svelte";
 
 export let label = "";
