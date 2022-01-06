@@ -1,4 +1,5 @@
 <script lang="ts">
+import type { CheckboxChangeEventDetail } from "@ionic/core";
 import { query } from "svelte-apollo";
 import type {
   ActionEnum,
@@ -24,7 +25,21 @@ $: actions = $actionsQuery.data?.allActions as ActionEnum[] | undefined;
 let role: RoleObject | undefined;
 $: role = $rolesQuery.data?.roles?.filter((rol) => rol.id === id)[0];
 
-const onChecked = (event: any) => console.log(event);
+let checkedActions: ActionEnum[] = [];
+$: if (role && role.allowedActions.length > 0) {
+  checkedActions = [...role.allowedActions];
+}
+
+const onChecked =
+  (action: ActionEnum) => (event: CustomEvent<CheckboxChangeEventDetail<any>>) => {
+    if (event.detail.checked) {
+      checkedActions = [...checkedActions, action];
+    } else {
+      checkedActions = checkedActions.filter(
+        (checkedAction) => checkedAction !== action
+      );
+    }
+  };
 </script>
 
 {#if role && actions}
@@ -38,8 +53,8 @@ const onChecked = (event: any) => console.log(event);
       <ion-checkbox
         slot="start"
         color="green"
-        checked={Boolean(role.allowedActions.find((allow) => allow === action))}
-        on:ionChange={onChecked}
+        checked={role.allowedActions.indexOf(action) !== -1}
+        on:ionChange={onChecked(action)}
       />
       <ion-label>
         {action}
