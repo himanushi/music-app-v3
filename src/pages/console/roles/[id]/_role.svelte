@@ -1,13 +1,22 @@
 <script lang="ts">
+import { ApolloError } from "@apollo/client";
 import type { CheckboxChangeEventDetail } from "@ionic/core";
-import { query } from "svelte-apollo";
+import { mutation, query } from "svelte-apollo";
 import type {
   ActionEnum,
   AllActionsQuery,
   RoleObject,
   RolesQuery,
+  UpdateRoleMutationVariables,
+  UpdateRolePayload,
 } from "~/graphql/types";
-import { RolesDocument, AllActionsDocument } from "~/graphql/types";
+import {
+  RolesDocument,
+  AllActionsDocument,
+  UpdateRoleDocument,
+} from "~/graphql/types";
+import { errorMessages } from "~/lib/error";
+import { closeLoading, openLoading, openToast } from "~/lib/ionic";
 
 export let id = "";
 
@@ -18,6 +27,9 @@ const rolesQuery = query<RolesQuery>(RolesDocument, {
 const actionsQuery = query<AllActionsQuery>(AllActionsDocument, {
   fetchPolicy: "no-cache",
 });
+
+const updateRole =
+  mutation<UpdateRolePayload, UpdateRoleMutationVariables>(UpdateRoleDocument);
 
 let actions: ActionEnum[] | undefined;
 $: actions = $actionsQuery.data?.allActions as ActionEnum[] | undefined;
@@ -40,6 +52,36 @@ const onChecked =
       );
     }
   };
+
+const onSave = () => {
+  (async () => {
+    try {
+      await openLoading();
+
+      await updateRole({
+        variables: { input: { allowedActions: checkedActions,
+          roleId: id } },
+      });
+
+      openToast({
+        color: "light-green",
+        duration: 5000,
+        message: "更新しました",
+      });
+    } catch (error) {
+      if (error instanceof ApolloError) {
+        const messages = errorMessages(error);
+
+        openToast({
+          color: "light-red",
+          message: `エラーが発生しました。[${messages._?.join(", ")}]`,
+        });
+      }
+    } finally {
+      await closeLoading();
+    }
+  })();
+};
 </script>
 
 {#if role && actions}
@@ -63,6 +105,6 @@ const onChecked =
   {/each}
   <ion-item button>
     <ion-icon slot="start" color="blue" name="cloud-upload-outline" />
-    <ion-label>保存</ion-label>
+    <ion-label on:click={onSave}>保存</ion-label>
   </ion-item>
 {/if}
