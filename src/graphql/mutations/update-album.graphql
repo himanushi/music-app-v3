@@ -1,8 +1,7 @@
 mutation UpdateAlbum($input: UpdateAlbumInput!) {
   updateAlbum(input: $input) {
-    albums {
+    album {
       id
-      name
     }
   }
 }
