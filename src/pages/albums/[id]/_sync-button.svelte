@@ -1,5 +1,6 @@
 <script lang="ts">
 import { ApolloError } from "@apollo/client";
+import { goto } from "@roxi/routify";
 import { mutation } from "svelte-apollo";
 import type {
   UpdateAlbumMutationVariables,
@@ -33,7 +34,7 @@ const update = () => {
             try {
               await openLoading();
 
-              await updateAlbum({
+              const result = await updateAlbum({
                 refetchQueries: [
                   {
                     query: AlbumDocument,
@@ -42,6 +43,10 @@ const update = () => {
                 ],
                 variables: { input: { albumId: id } },
               });
+
+              if (result.data?.album) {
+                $goto(`/albums/${result.data.album.id}`);
+              }
 
               refresh();
 
