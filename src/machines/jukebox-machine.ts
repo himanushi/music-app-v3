@@ -190,7 +190,7 @@ export const JukeboxMachine = machine<
         on: {
           PLAY: { actions: ["play"] },
           PLAYING: "playing",
-          PLAY_OR_PAUSE: { actions: ["play"] },
+          PLAY_OR_PAUSE: { target: "loading" },
         },
       },
     },
@@ -422,5 +422,8 @@ export type JukeboxState = State<
 >;
 
 // inspect({ iframe: false });
+// export const playerService = interpret(JukeboxMachine, {
+//   devTools: true,
+// }).start();
 
 export const playerService = interpret(JukeboxMachine).start();

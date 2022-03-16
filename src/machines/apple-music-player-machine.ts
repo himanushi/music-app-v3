@@ -33,7 +33,6 @@ export type AppleMusicPlayerStateSchema = {
 };
 
 const setEvents = (callback: any, events: string[][]) => {
-  // eslint-disable-next-line no-unused-vars
   const didChange: (state: { result: PlaybackStates }) => any = (state) => {
     events.forEach((event) => {
       if (state.result === event[0]) {
