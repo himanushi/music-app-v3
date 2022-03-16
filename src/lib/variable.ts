@@ -1,6 +1,6 @@
 export const title = document.querySelector("title")?.innerText;
 
-const getContent = (selector: string) => document.querySelector(selector)?.content;
+const getContent = (selector: string): string => document.querySelector(selector)?.content;
 
 export const originUrl =
   getContent("meta[property='ms:origin-url']") || window.location.origin;
