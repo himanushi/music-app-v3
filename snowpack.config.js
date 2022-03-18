@@ -22,12 +22,7 @@ module.exports = {
   packageOptions: {
     knownEntrypoints: ["@roxi/routify", "@roxi/routify/runtime/buildRoutes"],
   },
-  plugins: [
-    "@snowpack/plugin-svelte",
-    "@snowpack/plugin-dotenv",
-    "@snowpack/plugin-typescript",
-    "@snowpack/plugin-postcss",
-  ],
+  plugins: ["@snowpack/plugin-svelte", "@snowpack/plugin-typescript"],
   routes: [
     {
       dest: "/index.html",
