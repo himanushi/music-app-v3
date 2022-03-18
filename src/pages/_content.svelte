@@ -1,9 +1,10 @@
 <script>
+import type { Components } from "@ionic/core";
 import ChangePage from "./_change-page.svelte";
 import BackButton from "~/components/back-button.svelte";
 import { scrollElement } from "~/store/scroll-element";
 
-let content: HTMLElement;
+let content: Components.IonContent;
 $: if (content && !$scrollElement) {
   content.getScrollElement().then((element) => {
     scrollElement.set(element);

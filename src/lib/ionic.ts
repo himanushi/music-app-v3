@@ -5,6 +5,7 @@ import {
   alertController,
   loadingController,
 } from "@ionic/core";
+import type { Components } from "@ionic/core";
 import type { AlertOptions, ToastOptions } from "@ionic/core";
 
 export const openMenu = (name: string) => async (event: any) => {
@@ -39,7 +40,8 @@ export const closeModal = async () => {
 };
 
 export const closeSidebar = () => {
-  const sidebar = document.querySelector("#sidebar");
+  const sidebar =
+    document.querySelector<Components.IonMenu & Element>("#sidebar");
   if (sidebar) {
     sidebar.close();
   }

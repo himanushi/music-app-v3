@@ -11,7 +11,7 @@ import { Capacitor } from "@capacitor/core";
 import { graphqlUrl } from "~/lib/variable";
 import { store } from "~/store/ionic";
 
-const uri = graphqlUrl ? graphqlUrl : "http://localhost:3000/graphql";
+const uri = graphqlUrl ?? "http://localhost:3000/graphql";
 
 const httpLink = new HttpLink({
   credentials: "include",
