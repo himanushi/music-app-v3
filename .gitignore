@@ -4,3 +4,4 @@ build
 .routify
 .env*
 public/version.txt
+.DS_Store
