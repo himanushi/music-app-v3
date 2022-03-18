@@ -5,7 +5,6 @@ module.exports = {
     routify: "./.routify",
     "~": "./src",
   },
-  devOptions: { tailwindConfig: "./tailwind.config.js" },
   exclude: ["**/*.graphql"],
   mount: {
     ".routify": { url: "/" },
