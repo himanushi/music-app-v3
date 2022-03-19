@@ -78,7 +78,7 @@ const addPlaylist = (playlist: PlaylistObject) => async () => {
     {#each playlists as playlist}
       <ion-item>
         <ion-thumbnail slot="start">
-          <SquareImage src={playlist.track?.artworkM?.url} />
+          <SquareImage src={playlist.track?.artworkM?.url ?? undefined} />
         </ion-thumbnail>
         <ion-label>
           {playlist.name}
@@ -96,7 +96,7 @@ const addPlaylist = (playlist: PlaylistObject) => async () => {
   <ion-toolbar color="main">
     {#if firstTrack}
       <ion-thumbnail>
-        <SquareImage src={firstTrack?.artworkM?.url} />
+        <SquareImage src={firstTrack?.artworkM?.url ?? undefined} />
       </ion-thumbnail>
       <ion-title>
         {tracks.length}曲追加: {firstTrack.name}

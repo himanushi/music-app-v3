@@ -74,7 +74,7 @@ const link = () => {
           <ion-icon name="reorder-two" />
         </ion-reorder>
         <ion-thumbnail slot="start" on:click|preventDefault|stopPropagation>
-          <SquareImage src={track.artworkM.url} />
+          <SquareImage src={track.artworkM.url ?? undefined} />
         </ion-thumbnail>
         <ion-buttons
           slot="start"

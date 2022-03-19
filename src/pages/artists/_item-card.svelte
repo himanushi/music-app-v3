@@ -11,7 +11,7 @@ const path = `/artists/${item.id}`;
 
 <ion-item detail={false} button on:click={() => $goto(path)}>
   <ion-thumbnail slot="start">
-    <SquareImage src={item.artworkM?.url} alt={item.name} />
+    <SquareImage src={item.artworkM?.url ?? undefined} alt={item.name} />
   </ion-thumbnail>
   {#if item.status !== "ACTIVE"}
     <ion-icon

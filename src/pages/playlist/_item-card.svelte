@@ -11,7 +11,7 @@ const path = `/playlist/${item.id}`;
 
 <ion-item detail={false} button on:click={() => $goto(path)}>
   <ion-thumbnail slot="start">
-    <SquareImage src={item.track?.artworkM?.url} alt={item.name} />
+    <SquareImage src={item.track?.artworkM?.url ?? undefined} alt={item.name} />
   </ion-thumbnail>
   <ion-label>{item.name}</ion-label>
   <ion-buttons slot="end">

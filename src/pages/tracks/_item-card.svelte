@@ -19,7 +19,7 @@ $: path = `/tracks/${item.id}`;
 <ion-item button detail={false} on:click={() => $goto(path)}>
   <ion-thumbnail slot="start" on:click|preventDefault|stopPropagation>
     {#if viewImage}
-      <SquareImage src={item.artworkM.url} />
+      <SquareImage src={item.artworkM.url ?? undefined} />
     {/if}
   </ion-thumbnail>
   <ion-buttons

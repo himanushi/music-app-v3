@@ -1,6 +1,6 @@
 <script lang="ts">
-export let src: string | null | undefined = null;
-export let alt: string | null | undefined = null;
+export let src: string | undefined = undefined;
+export let alt: string | undefined = undefined;
 
 $: if (!src) {
   src = "/no-image.png";

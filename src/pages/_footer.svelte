@@ -25,7 +25,7 @@ const showPlayer = () => openPlayer();
     {#if track && playerService}
       {#key track.id}
         <ion-thumbnail on:click={showPlayer} slot="start">
-          <SquareImage src={track.artworkM.url} />
+          <SquareImage src={track.artworkM.url ?? undefined} />
         </ion-thumbnail>
         <ion-title on:click={showPlayer}>{track.name}</ion-title>
         <ion-buttons slot="end">

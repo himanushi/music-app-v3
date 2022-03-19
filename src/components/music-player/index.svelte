@@ -42,7 +42,7 @@ const link = () => {
 <ModalContent>
   <CenterItem>
     {#if $player && $player.context.track}
-      <SquareImage src={$player.context.track.artworkL?.url} />
+      <SquareImage src={$player.context.track.artworkL?.url ?? undefined} />
     {:else}
       <SquareImage />
     {/if}

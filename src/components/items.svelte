@@ -1,5 +1,6 @@
 <script lang="ts">
 import type { DocumentNode } from "@apollo/client";
+import type { Components } from "@ionic/core";
 import { onMount, onDestroy } from "svelte";
 import { interpret } from "xstate";
 import VirtualScroll from "./virtual-scroll.svelte";
@@ -59,7 +60,7 @@ $: if (
   reported = true;
 }
 
-let infiniteScroll: HTMLElement;
+let infiniteScroll: HTMLElement & Components.IonInfiniteScroll;
 const ionInfinite = () => {
   service.send("FETCH_MORE");
 };

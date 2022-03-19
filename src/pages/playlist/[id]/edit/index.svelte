@@ -153,7 +153,7 @@ $: viewable =
                 slot="start"
                 on:click|preventDefault|stopPropagation
               >
-                <SquareImage src={track.artworkM.url} />
+                <SquareImage src={track.artworkM.url ?? undefined} />
               </ion-thumbnail>
               <ion-buttons class="thumbnail-button" slot="start">
                 <PlayButton {name} {index} {tracks} />
