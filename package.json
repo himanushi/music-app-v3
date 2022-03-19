@@ -29,7 +29,7 @@
     "@xstate/inspect": "^0.4.1",
     "@xstate/svelte": "^0.1.0",
     "axios": "^0.21.1",
-    "capacitor-plugin-applemusic": "^0.0.36",
+    "capacitor-plugin-applemusic": "^0.0.37",
     "dompurify": "^2.2.8",
     "graphql": "^15.5.0",
     "howler": "^2.2.1",

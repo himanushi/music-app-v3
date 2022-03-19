@@ -18,6 +18,7 @@ import {
   AppleMusicPlayerMachine,
   AppleMusicPlayerState,
   AppleMusicPlayerStateEvent,
+  separateString,
 } from "~/machines/apple-music-player-machine";
 import {
   PreviewPlayerMachine,
@@ -119,7 +120,7 @@ export const MusicPlayerMachine = machine<
                 });
                 callback({
                   type: "SET_DATA",
-                  data: appleMusicId,
+                  data: `${appleMusicId}${separateString}${context.track?.name}`,
                 });
               } else if (context.track?.previewUrl) {
                 callback({
