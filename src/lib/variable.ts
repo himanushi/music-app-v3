@@ -2,13 +2,9 @@ export const title = document.querySelector("title")?.innerText;
 
 const getContent = (selector: string) => document.querySelector<HTMLMetaElement>(selector)?.content;
 
-export const originUrl =
-  getContent("meta[property='ms:origin-url']") ||
-  "https://video-game-music.net";
+export const originUrl = getContent("meta[property='ms:origin-url']");
 
-export const graphqlUrl =
-  getContent("meta[property='ms:graphql-url']") ||
-  "https://video-game-music.net/graphql";
+export const graphqlUrl = getContent("meta[property='ms:graphql-url']");
 
 export const recaptchaKey = getContent("meta[property='ms:recaptcha-key']");
 
