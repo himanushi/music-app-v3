@@ -241,6 +241,8 @@ export type ArtworkObject = {
 export type ChangeAlbumStatusInput = {
   /** 変更したいステータス */
   readonly status: StatusEnum;
+  /** ツイートするか */
+  readonly tweet: Scalars['Boolean'];
   /** 変更したいID */
   readonly id: Scalars['String'];
   /** A unique identifier for the client performing the mutation. */
