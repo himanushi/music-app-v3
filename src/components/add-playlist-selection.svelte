@@ -26,10 +26,6 @@ const playlistsQuery = query<PlaylistsQuery>(PlaylistsDocument, {
       limit: 1000,
       offset: 0,
     },
-    sort: {
-      order: "UPDATE",
-      type: "DESC",
-    },
   },
 });
 
