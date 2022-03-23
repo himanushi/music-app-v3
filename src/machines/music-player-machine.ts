@@ -6,7 +6,7 @@
 import { CapacitorAppleMusic } from "capacitor-plugin-applemusic";
 import {
   Machine as machine,
-  SpawnedActorRef,
+  ActorRef,
   State,
   assign,
   send,
@@ -27,11 +27,8 @@ import {
 } from "~/machines/preview-player-machine";
 
 export type MusicPlayerContext = {
-  previewPlayerRef?: SpawnedActorRef<
-    PreviewPlayerStateEvent,
-    PreviewPlayerState
-  >;
-  appleMusicPlayerRef?: SpawnedActorRef<
+  previewPlayerRef?: ActorRef<PreviewPlayerStateEvent, PreviewPlayerState>;
+  appleMusicPlayerRef?: ActorRef<
     AppleMusicPlayerStateEvent,
     AppleMusicPlayerState
   >;

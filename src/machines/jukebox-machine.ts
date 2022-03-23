@@ -5,12 +5,12 @@
 // import { inspect } from "@xstate/inspect";
 import {
   Machine as machine,
-  SpawnedActorRef,
   State,
   assign,
   send,
   spawn,
   interpret,
+  ActorRef,
 } from "xstate";
 import { TrackObject } from "~/graphql/types";
 import {
@@ -26,7 +26,7 @@ export type JukeboxContext = {
   tracks: TrackObject[];
   currentTrack?: TrackObject;
   repeat: boolean;
-  musicPlayerRef?: SpawnedActorRef<MusicPlayerEvent, MusicPlayerState>;
+  musicPlayerRef?: ActorRef<MusicPlayerEvent, MusicPlayerState>;
 };
 
 export type JukeboxSchema = {
