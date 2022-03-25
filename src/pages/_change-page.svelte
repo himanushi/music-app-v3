@@ -29,8 +29,8 @@ $afterPageLoad(() => {
 
   // Google Analytics
   if (googleAnalyticsId) {
-    window.ga("set", "page", window.location.pathname);
-    window.ga("send", "pageview");
+    window.gtag("set", "page_path", window.location.pathname);
+    window.gtag("event", "page_view");
   }
 });
 </script>
