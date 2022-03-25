@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.3.11",
+    "@capacitor-community/firebase-analytics": "^1.0.1",
     "@capacitor/cli": "^3.2.0",
     "@capacitor/core": "^3.2.0",
     "@capacitor/ios": "^3.2.0",
