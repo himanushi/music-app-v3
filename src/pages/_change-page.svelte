@@ -1,8 +1,8 @@
 <script lang="ts">
 // ページ遷移による scrollTop: 0 対策
+import { FirebaseAnalytics } from "@capacitor-community/firebase-analytics";
 import { afterPageLoad, beforeUrlChange } from "@roxi/routify";
 import { closeModal, isOpenModal } from "~/lib/ionic";
-import { googleAnalyticsId } from "~/lib/variable";
 import { currentPath } from "~/store/history";
 import { scrollLock } from "~/store/scroll-lock";
 
@@ -28,9 +28,13 @@ $afterPageLoad(() => {
   }
 
   // Google Analytics
-  if (googleAnalyticsId) {
-    window.gtag("set", "page_path", window.location.pathname);
-    window.gtag("event", "page_view");
-  }
+  const page_view = {
+    name: "page_view",
+    params: {
+      page_path: window.location.pathname,
+    },
+  };
+  console.log({ ...page_view });
+  FirebaseAnalytics.logEvent(page_view);
 });
 </script>
