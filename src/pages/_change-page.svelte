@@ -31,7 +31,7 @@ $afterPageLoad(() => {
   const page_view = {
     name: "page_view",
     params: {
-      page_path: window.location.pathname,
+      page_location: window.location.pathname,
     },
   };
   console.log({ ...page_view });
