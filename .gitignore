@@ -5,3 +5,5 @@ build
 .env*
 public/version.txt
 .DS_Store
+# ref: https://stackoverflow.com/questions/44937175/firebase-should-i-add-googleservice-info-plist-to-gitignore
+GoogleService-Info.plist
