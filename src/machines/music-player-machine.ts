@@ -98,7 +98,9 @@ export const MusicPlayerMachine = machine<
     initial: "idle",
 
     states: {
-      finished: { entry: ["resetSeek", sendParent("NEXT_PLAY")] },
+      finished: {
+        entry: ["resetSeek", sendParent("NEXT_PLAY")],
+      },
 
       idle: { entry: ["initPlayers"] },
 
@@ -117,7 +119,7 @@ export const MusicPlayerMachine = machine<
                 });
                 callback({
                   type: "SET_DATA",
-                  data: `${appleMusicId}${separateString}${context.track?.name}`,
+                  data: `${appleMusicId}${separateString}${context.track?.name}${separateString}${context.track?.previewUrl}`,
                 });
               } else if (context.track?.previewUrl) {
                 callback({
@@ -198,6 +200,7 @@ export const MusicPlayerMachine = machine<
       stopped: {
         entry: [sendParent("STOPPED")],
         on: {
+          FINISHED: "finished",
           PLAY: { actions: ["playToPlayer"] },
           PLAYING: "playing",
         },

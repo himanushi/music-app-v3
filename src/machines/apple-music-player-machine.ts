@@ -10,7 +10,7 @@ import {
 import { Machine as machine, assign, sendParent, State } from "xstate";
 
 export type AppleMusicPlayerContext = {
-  id_and_title?: string;
+  idAndTitleAndPreviewUrl?: string;
   seek: number;
 };
 
@@ -136,19 +136,26 @@ export const AppleMusicPlayerMachine = machine<
           queueing: {
             invoke: {
               src: async (context) => {
-                const { id_and_title } = context;
+                const { idAndTitleAndPreviewUrl } = context;
 
-                if (id_and_title) {
+                if (idAndTitleAndPreviewUrl) {
                   // id だけで track を取得するとロケーションバグ(英語名になる)が起こることがあるため title も送信する
-                  const [id, title] = id_and_title.split(separateString);
-                  await CapacitorAppleMusic.setSong({
+                  const [id, title, previewUrl] =
+                    idAndTitleAndPreviewUrl.split(separateString);
+                  const result = await CapacitorAppleMusic.setSong({
                     songId: id,
                     songTitle: title,
+                    previewUrl,
                   });
+
+                  if (!result.result) {
+                    throw new Error("play error!!");
+                  }
                 }
               },
 
               onDone: "fetching",
+              onError: `#${appleMusicPlayerId}.finished`,
             },
           },
 
@@ -250,7 +257,7 @@ export const AppleMusicPlayerMachine = machine<
       },
 
       setData: assign({
-        id_and_title: (_, event) => "data" in event ? event.data : undefined,
+        idAndTitleAndPreviewUrl: (_, event) => "data" in event ? event.data : undefined,
       }),
 
       stop: () => {
