@@ -1,6 +1,7 @@
 <script lang="ts">
 import { query } from "svelte-apollo";
 import CenterItem from "~/components/center-item.svelte";
+import ClipboardItem from "~/components/clipboard-item.svelte";
 import Favorite from "~/components/favorite.svelte";
 import LoadingItems from "~/components/loading-items.svelte";
 import Image from "~/components/square-image.svelte";
@@ -69,11 +70,7 @@ $: if (me && $artistQuery.data && first) {
         </ion-label>
       </ion-item>
     {/if}
-    <ion-item>
-      <ion-label class="ion-text-wrap">
-        {artist.name}
-      </ion-label>
-    </ion-item>
+    <ClipboardItem name={artist.name} />
     <ion-item>
       <ion-buttons slot="end">
         <Favorite type="artist" id={artist.id} />

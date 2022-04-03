@@ -5,6 +5,7 @@ import FabButton from "./_fab-button.svelte";
 import AddAppleMusicPlaylistButton from "~/components/add-apple-music-playlist-button.svelte";
 import AddPlaylistButton from "~/components/add-playlist-button.svelte";
 import CenterItem from "~/components/center-item.svelte";
+import ClipboardItem from "~/components/clipboard-item.svelte";
 import Favorite from "~/components/favorite.svelte";
 import LoadingItems from "~/components/loading-items.svelte";
 import Image from "~/components/square-image.svelte";
@@ -45,11 +46,7 @@ $: tracks = playlist ? playlist.items.map((it) => it.track) : [];
     <Image src={playlist?.track?.artworkL?.url ?? undefined} />
   </CenterItem>
   {#if playlist}
-    <ion-item>
-      <ion-label class="ion-text-wrap">
-        {playlist.name}
-      </ion-label>
-    </ion-item>
+    <ClipboardItem name={playlist.name} />
     <ion-item>
       <ion-label class="ion-text-wrap">
         {playlist.description}

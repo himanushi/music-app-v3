@@ -2,6 +2,7 @@
 import { query } from "svelte-apollo";
 import AddPlaylistButton from "~/components/add-playlist-button.svelte";
 import CenterItem from "~/components/center-item.svelte";
+import ClipboardItem from "~/components/clipboard-item.svelte";
 import Favorite from "~/components/favorite.svelte";
 import LoadingItems from "~/components/loading-items.svelte";
 import AmazonMusic from "~/components/search-buttons/amazon-music.svelte";
@@ -84,16 +85,8 @@ $: tracks = album?.tracks.map((track) => track) || [];
         </ion-label>
       </ion-item>
     {/if}
-    <ion-item>
-      <ion-label class="ion-text-wrap">
-        {album.name}
-      </ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-label class="ion-text-wrap">
-        {album.copyright}
-      </ion-label>
-    </ion-item>
+    <ClipboardItem name={album.name} />
+    <ClipboardItem name={album.copyright} />
     <ion-item>
       <ion-label class="ion-text-wrap"> 発売日/配信日 </ion-label>
       <ion-note slot="end">

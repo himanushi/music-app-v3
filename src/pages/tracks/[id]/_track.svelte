@@ -1,6 +1,7 @@
 <script lang="ts">
 import { query } from "svelte-apollo";
 import CenterItem from "~/components/center-item.svelte";
+import ClipboardItem from "~/components/clipboard-item.svelte";
 import LoadingItems from "~/components/loading-items.svelte";
 import Image from "~/components/square-image.svelte";
 import { TrackDocument } from "~/graphql/types";
@@ -56,11 +57,7 @@ $: if ($trackQuery.data && first) {
     <Image src={track?.artworkL.url ?? undefined} />
   </CenterItem>
   {#if track}
-    <ion-item>
-      <ion-label class="ion-text-wrap">
-        {track.name}
-      </ion-label>
-    </ion-item>
+    <ClipboardItem name={track.name} />
     <ion-item>
       <ion-label class="ion-text-wrap"> 再生時間 </ion-label>
       <ion-note slot="end">
