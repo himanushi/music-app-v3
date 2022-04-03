@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 import type { Components } from "@ionic/core";
 import ChangePage from "./_change-page.svelte";
 import BackButton from "~/components/back-button.svelte";

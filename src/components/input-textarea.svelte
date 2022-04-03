@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 import type { TextareaChangeEventDetail } from "@ionic/core";
 import Messages from "./messages.svelte";
 

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 import { createAnimation } from "@ionic/core";
 import { mutation } from "svelte-apollo";
 import type { Mutable } from "~/@types/extends";

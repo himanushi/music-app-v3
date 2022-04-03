@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 import { goto } from "@roxi/routify";
 import AddPlaylistButton from "../add-playlist-button.svelte";
 import CenterItem from "../center-item.svelte";

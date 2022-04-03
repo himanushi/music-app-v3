@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 export let name: string;
 name = name.replaceAll(/\s/giu, "+");
 </script>

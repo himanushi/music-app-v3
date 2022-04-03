@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 import AddAlbumButton from "./_add-album-button.svelte";
 import ClearCacheButton from "./_clear-cache-button.svelte";
 import IgnoreAlbumsButton from "./_ignore-albums-button.svelte";

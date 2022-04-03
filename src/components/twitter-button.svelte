@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 import { title as pageTitle } from "~/lib/variable";
 
 export let path: string;

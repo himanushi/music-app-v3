@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 export let iconName = "chevron-back-outline";
 
 const back = () => {
