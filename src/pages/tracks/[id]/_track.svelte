@@ -53,7 +53,7 @@ $: if ($trackQuery.data && first) {
     <ion-label>Track</ion-label>
   </ion-item-divider>
   <CenterItem>
-    <Image src={track?.artworkL.url} />
+    <Image src={track?.artworkL.url ?? undefined} />
   </CenterItem>
   {#if track}
     <ion-item>

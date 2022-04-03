@@ -56,7 +56,7 @@ $: if (me && $artistQuery.data && first) {
     <ion-label>Artist</ion-label>
   </ion-item-divider>
   <CenterItem>
-    <Image src={artist?.artworkL?.url} />
+    <Image src={artist?.artworkL?.url ?? undefined} />
   </CenterItem>
   {#if artist}
     {#if artist.status !== "ACTIVE"}

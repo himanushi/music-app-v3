@@ -42,7 +42,7 @@ $: tracks = playlist ? playlist.items.map((it) => it.track) : [];
     <ion-label>Playlist</ion-label>
   </ion-item-divider>
   <CenterItem>
-    <Image src={playlist?.track?.artworkL?.url} />
+    <Image src={playlist?.track?.artworkL?.url ?? undefined} />
   </CenterItem>
   {#if playlist}
     <ion-item>

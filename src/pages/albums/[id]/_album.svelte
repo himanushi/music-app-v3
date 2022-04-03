@@ -70,7 +70,7 @@ $: tracks = album?.tracks.map((track) => track) || [];
   </ion-item-divider>
 
   <CenterItem>
-    <Image src={album?.artworkL?.url} />
+    <Image src={album?.artworkL?.url ?? undefined} />
   </CenterItem>
 
   {#if album}
