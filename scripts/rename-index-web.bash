@@ -1,1 +1,2 @@
-mv build/index-web.html build/index-dummy.html
+rm build/index-ios.html
+mv build/index.html build/index-dummy.html
