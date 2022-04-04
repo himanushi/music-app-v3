@@ -57,10 +57,10 @@ const signup = async () => {
   }
 };
 
-let terms: HTMLElement;
+let component: HTMLElement;
 const openTerms = async () => {
   await closeModal();
-  await openModal(terms);
+  await openModal({ component });
 };
 </script>
 
@@ -124,7 +124,7 @@ const openTerms = async () => {
 
 <!-- Modal -->
 <span style="display:none">
-  <span bind:this={terms}>
+  <span bind:this={component}>
     <ModalContent>
       <Terms />
     </ModalContent>

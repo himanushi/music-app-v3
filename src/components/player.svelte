@@ -15,7 +15,7 @@ import { openModal } from "~/lib/ionic";
 let component: HTMLElement;
 
 $: if (component && $playerId) {
-  openModal(component);
+  openModal({ component });
 }
 </script>
 

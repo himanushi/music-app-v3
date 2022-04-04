@@ -5,7 +5,7 @@ import {
   alertController,
   loadingController,
 } from "@ionic/core";
-import type { Components } from "@ionic/core";
+import type { Components, ModalOptions } from "@ionic/core";
 import type { AlertOptions, ToastOptions } from "@ionic/core";
 
 export const openMenu = (name: string) => async (event: any) => {
@@ -22,14 +22,8 @@ export const closeMenu = async () => {
 
 export const isOpenModal = () => Boolean(document.querySelector("ion-modal"));
 
-export const openModal = async (
-  component: HTMLElement,
-  componentProps?: Record<string, any>
-) => {
-  const modal = await modalController.create({
-    component,
-    componentProps,
-  });
+export const openModal = async (props: ModalOptions<any>) => {
+  const modal = await modalController.create(props);
   await modal.present();
 };
 

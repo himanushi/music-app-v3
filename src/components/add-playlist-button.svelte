@@ -10,7 +10,7 @@ let component: HTMLElement;
 let show = false;
 const showMyPlaylist = () => {
   show = true;
-  openModal(component);
+  openModal({ component });
 };
 
 const query = meQuery();

@@ -21,7 +21,7 @@ const refresh = () => {
 const query = meQuery();
 $: me = $query?.data?.me;
 
-let modal: HTMLElement;
+let component: HTMLElement;
 </script>
 
 {#if me && isAllowed(me, "albums")}
@@ -38,12 +38,12 @@ let modal: HTMLElement;
     </ion-list>
   </ion-item-group>
 
-  <SearchDetailButton component={modal} />
+  <SearchDetailButton {component} />
 {/if}
 
 <!-- Modal -->
 <span style="display:none">
-  <span bind:this={modal}>
+  <span bind:this={component}>
     <SearchDetail />
   </span>
 </span>
