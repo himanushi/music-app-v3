@@ -1,2 +1,2 @@
 rm -fr ../music-server/public
-mv build ../music-server/public
+cp build ../music-server/public
