@@ -1,29 +1,21 @@
 <script lang="ts">
 import { onMount } from "svelte";
-import { cookie } from "~/lib/cookie";
 import { closeModal, openModal, openToast } from "~/lib/ionic";
 import ModalContent from "~/pages/_modal-content.svelte";
 import CookiePolicy from "~/pages/cookie-policy.svelte";
 import { store } from "~/store/ionic";
 
-let cookiePolicy: HTMLElement;
+let component: HTMLElement;
 
 const notice = async () => {
-  // TODO: 2022/10/1 に消す
-  if (cookie.get("cookieNotice") === "true") {
-    cookie.remove("cookieNotice");
-    await store.set("cookieNotice", true);
-  }
-
   const cookieNotice = await store.get("cookieNotice");
-
   if (!cookieNotice) {
     openToast({
       buttons: [
         {
           handler: async () => {
             await closeModal();
-            await openModal(cookiePolicy);
+            await openModal({ component });
             return false;
           },
           text: "確認",
@@ -52,7 +44,7 @@ onMount(() => {
 
 <!-- Modal -->
 <span style="display:none">
-  <span bind:this={cookiePolicy}>
+  <span bind:this={component}>
     <ModalContent>
       <CookiePolicy />
     </ModalContent>
