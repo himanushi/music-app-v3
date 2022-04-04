@@ -1,11 +1,14 @@
 <script lang="ts">
+import { onMount } from "svelte";
 import { markdown } from "~/lib/markdown";
 import { twitterAccount } from "~/lib/variable";
 import { currentVersion, reset } from "~/lib/version";
 
-const version = currentVersion() || "";
+let html: string | HTMLElement | DocumentFragment = "";
+onMount(async () => {
+  const version = (await currentVersion()) || "";
 
-const html = markdown(`
+  html = markdown(`
 # このアプリについて
 ## 概要
 音楽サブスクリプションで配信中の音楽を検索できるサービスです。
@@ -27,6 +30,7 @@ ${version}
 #### リセット
 再生されないなどの不具合がある場合は下のボタンをクリックしてください。
 `);
+});
 </script>
 
 <div class="ion-padding">
