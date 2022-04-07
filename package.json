@@ -25,6 +25,7 @@
     "@capacitor/clipboard": "^1.0.8",
     "@capacitor/core": "^3.2.0",
     "@capacitor/ios": "^3.2.0",
+    "@capacitor/storage": "^1.2.5",
     "@ionic/core": "^6.0.12",
     "@ionic/storage": "^3.0.6",
     "@types/howler": "^2.2.2",
