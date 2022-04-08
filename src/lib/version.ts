@@ -9,7 +9,7 @@ export const reset = () => {
   window.location.reload();
 };
 
-export const currentVersion = () => store.get(key);
+export const currentVersion = () => store.get<string>(key);
 
 export const updateVersionForWeb = async () => {
   const result = await axios.get(

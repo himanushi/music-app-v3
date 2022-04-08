@@ -6,9 +6,10 @@ import CookiePolicy from "~/pages/cookie-policy.svelte";
 import { store } from "~/store/ionic";
 
 let component: HTMLElement;
+const key = "cookieNotice";
 
 const notice = async () => {
-  const cookieNotice = await store.get("cookieNotice");
+  const cookieNotice = await store.get<boolean>(key);
   if (!cookieNotice) {
     openToast({
       buttons: [
@@ -22,7 +23,7 @@ const notice = async () => {
         },
         {
           handler: async () => {
-            await store.set("cookieNotice", true);
+            await store.set(key, true);
             return true;
           },
           text: "OK",

@@ -27,7 +27,7 @@ const setResponseTokenLink = new ApolloLink((operation, forward) => asyncMap(for
 );
 
 const setRequestTokenLink = setContext(async (_, { headers }) => {
-  const token = await store.get("Authorization");
+  const token = await store.get<string>("Authorization");
   return {
     headers: {
       ...headers,
