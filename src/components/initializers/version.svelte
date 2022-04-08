@@ -6,7 +6,7 @@ import { updateVersionForWeb, needsUpdateForIos } from "~/lib/version";
 
 const openAppStore = () => {
   window.open(
-    "https://itunes.apple.com/jp/app/apple-store/id899247664",
+    "https://itunes.apple.com/jp/app/apple-store/id1589081888",
     "_blank"
   );
 };
