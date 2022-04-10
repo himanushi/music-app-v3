@@ -1,3 +1,4 @@
+import { Capacitor } from "@capacitor/core";
 import axios from "axios";
 import { originUrl } from "./variable";
 import { store } from "~/store/ionic";
@@ -9,7 +10,17 @@ export const reset = () => {
   window.location.reload();
 };
 
-export const currentVersion = () => store.get<string>(key);
+export const currentVersion = async () => {
+  if (Capacitor.getPlatform() === "web") {
+    await store.get<string>(key);
+  } else {
+    const localResult = await axios.get(
+      `/version.txt?time=${new Date().getTime()}`
+    );
+
+    return localResult.data ?? "";
+  }
+};
 
 export const updateVersionForWeb = async () => {
   const result = await axios.get(
