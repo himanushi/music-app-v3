@@ -15,7 +15,8 @@ const showPlayer = () => {
 };
 
 const go =
-  (path: string, params: Record<string, string> = {}) => () => {
+  (path: string, params: Record<string, string> = {}) =>
+  () => {
     closeSidebar();
     $goto(path, params);
   };
@@ -114,7 +115,7 @@ $: me = $query?.data?.me;
         <ion-label>About</ion-label>
       </ion-item-divider>
       <ion-item button on:click={go("/about")}>
-        <ion-label>このサイトについて</ion-label>
+        <ion-label>このアプリについて</ion-label>
       </ion-item>
       <ion-item button on:click={go("/terms")}>
         <ion-label>利用規約</ion-label>
