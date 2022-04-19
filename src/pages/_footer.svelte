@@ -3,6 +3,7 @@ import { fly } from "svelte/transition";
 import { canPlay } from "~/components/play-button.svelte";
 import { openPlayer } from "~/components/player.svelte";
 import SquareImage from "~/components/square-image.svelte";
+import { convertImageUrl } from "~/lib/image";
 import { playerService } from "~/machines/jukebox-machine";
 
 $: track = $playerService.context.currentTrack;
@@ -23,9 +24,13 @@ const showPlayer = () => openPlayer();
 >
   <ion-toolbar color="main">
     {#if track && playerService}
-      {#key track.id}
+      {#key track.name}
         <ion-thumbnail on:click={showPlayer} slot="start">
-          <SquareImage src={track.artworkM.url ?? undefined} />
+          <SquareImage
+            src={track.artworkUrl
+              ? convertImageUrl(track.artworkUrl, 300)
+              : undefined}
+          />
         </ion-thumbnail>
         <ion-title on:click={showPlayer}>{track.name}</ion-title>
         <ion-buttons slot="end">

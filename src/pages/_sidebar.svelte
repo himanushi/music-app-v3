@@ -52,6 +52,10 @@ $: me = $query?.data?.me;
       <ion-item-divider>
         <ion-label>Search</ion-label>
       </ion-item-divider>
+      <ion-item button on:click={go("/library-albums")}>
+        <ion-icon name="disc-outline" slot="start" />
+        <ion-label>ライブラリアルバム</ion-label>
+      </ion-item>
       {#if me && isAllowed(me, "artists")}
         <ion-item button on:click={go("/artists")}>
           <ion-icon name="person-outline" slot="start" />

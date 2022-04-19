@@ -13,7 +13,7 @@ import {
   spawn,
 } from "xstate";
 import { sendParent } from "xstate/lib/actions";
-import { TrackObject } from "~/graphql/types";
+import type { JukeboxTrack } from "./jukebox-machine";
 import {
   AppleMusicPlayerMachine,
   AppleMusicPlayerState,
@@ -32,7 +32,7 @@ export type MusicPlayerContext = {
     AppleMusicPlayerStateEvent,
     AppleMusicPlayerState
   >;
-  track?: TrackObject;
+  track?: JukeboxTrack;
   duration: number;
   seek: number;
   currentPlayer: string;
@@ -55,7 +55,7 @@ const previewPlayerId = "preview";
 const appleMusicPlayerId = "apple-music-player";
 
 export type MusicPlayerEvent =
-  | { type: "SET_TRACK"; track: TrackObject }
+  | { type: "SET_TRACK"; track: JukeboxTrack }
   | { type: "SET_DURATION"; duration: number }
   | { type: "SET_SEEK"; seek: number }
   | { type: "SET_DATA"; data: string }

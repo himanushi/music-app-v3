@@ -2,7 +2,7 @@
 export let refresh: () => void;
 export let loaded: boolean;
 
-let refresher: HTMLElement;
+let refresher: HTMLElement & HTMLIonRefresherElement;
 $: if (refresher && !refresher.slot) {
   refresher.setAttribute("slot", "fixed");
 }
