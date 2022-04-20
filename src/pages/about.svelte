@@ -6,7 +6,7 @@ import { currentVersion, reset } from "~/lib/version";
 
 let html: string | HTMLElement | DocumentFragment = "";
 onMount(async () => {
-  const version = (await currentVersion()) || "";
+  const version = await currentVersion() || "";
 
   html = markdown(`
 # このアプリについて
@@ -22,7 +22,8 @@ onMount(async () => {
 * [Github](https://github.com/users/himanushi/projects/2)
 
 ## 問い合わせ
-[Twitter にてダイレクトメッセージをお願いします](https://twitter.com/${twitterAccount})
+* [Q & A](https://note.com/himanushi/n/na2e56d4ee4d6)
+* [Twitter にてダイレクトメッセージをお願いします](https://twitter.com/${twitterAccount})
 
 #### ファイルバージョン
 ${version}
