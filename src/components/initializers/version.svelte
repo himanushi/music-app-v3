@@ -15,8 +15,11 @@ let component: HTMLElement;
 onMount(async () => {
   if (Capacitor.getPlatform() === "web") {
     updateVersionForWeb();
-  } else if (Capacitor.getPlatform() === "ios" && (await needsUpdateForIos())) {
-    openModal({ component, backdropDismiss: false });
+  } else if (Capacitor.getPlatform() === "ios" && await needsUpdateForIos()) {
+    openModal({
+      backdropDismiss: false,
+      component,
+    });
   }
 });
 </script>

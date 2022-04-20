@@ -51,7 +51,10 @@ export const needsUpdateForIos = async () => {
     return false;
   }
 
-  if (result.data.toString() !== localResult.data.toString()) {
+  if (
+    parseInt(result.data.toString(), 10) >
+    parseInt(localResult.data.toString(), 10)
+  ) {
     return true;
   }
 
