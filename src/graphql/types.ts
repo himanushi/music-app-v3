@@ -606,6 +606,8 @@ export type PlaylistObject = {
   readonly description: Scalars['String'];
   /** ID */
   readonly id: Scalars['String'];
+  /** 条件プレイリスト判定 */
+  readonly isCondition: Scalars['Boolean'];
   /** 自身のプレイリストか判定 */
   readonly isMine?: Maybe<Scalars['Boolean']>;
   /** 曲一覧 */
