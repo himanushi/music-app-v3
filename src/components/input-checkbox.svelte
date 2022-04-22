@@ -7,7 +7,7 @@ export let errorMessages: string[] | undefined = undefined;
 export let checked: boolean;
 
 const onChange = (event: CustomEvent<CheckboxChangeEventDetail<any>>) => {
-  checked = Boolean(event.detail.value);
+  checked = Boolean(event.detail.checked);
 };
 </script>
 
