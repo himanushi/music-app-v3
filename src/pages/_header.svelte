@@ -1,4 +1,5 @@
 <script lang="ts">
+import { goto } from "@roxi/routify";
 import { title } from "~/lib/variable";
 </script>
 
@@ -9,6 +10,6 @@ import { title } from "~/lib/variable";
         <ion-icon name="menu" />
       </ion-menu-button>
     </ion-buttons>
-    <ion-title>{title}</ion-title>
+    <ion-title on:click={() => $goto("/albums")}>{title}</ion-title>
   </ion-toolbar>
 </ion-header>
