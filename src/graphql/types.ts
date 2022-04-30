@@ -586,6 +586,19 @@ export type Mutation_UpsertPlaylistArgs = {
   input: UpsertPlaylistInput;
 };
 
+export type PlaylistConditionInputObject = {
+  /** order */
+  readonly order: Scalars['String'];
+  /** asc */
+  readonly asc: Scalars['Boolean'];
+  /** お気に入り */
+  readonly favorite: Scalars['Boolean'];
+  /** 人気度下限 */
+  readonly minPopularity: Scalars['Int'];
+  /** 人気度上限 */
+  readonly maxPopularity: Scalars['Int'];
+};
+
 /** プレイリストトラック */
 export type PlaylistItemObject = {
   /** ID */
@@ -899,6 +912,8 @@ export type UpsertPlaylistInput = {
   readonly publicType: PlaylistPublicTypeEnum;
   /** トラックID */
   readonly trackIds?: Maybe<ReadonlyArray<Scalars['String']>>;
+  /** 条件 */
+  readonly conditions?: Maybe<PlaylistConditionInputObject>;
   /** A unique identifier for the client performing the mutation. */
   readonly clientMutationId?: Maybe<Scalars['String']>;
 };
