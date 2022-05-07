@@ -6,6 +6,7 @@ export let placeholder: string | undefined = undefined;
 export let label = "";
 export let errorMessages: string[] | undefined = undefined;
 export let value = "";
+export let lines: "full" | "inset" | "none" | undefined = undefined;
 export let type:
   | "date"
   | "datetime-local"
@@ -82,7 +83,7 @@ const onChange = (event: CustomEvent<InputChangeEventDetail>) => {
 };
 </script>
 
-<ion-item>
+<ion-item {lines}>
   <ion-label position="stacked">{label}</ion-label>
   <ion-input
     {value}

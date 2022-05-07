@@ -46,7 +46,15 @@ $: tracks = playlist ? playlist.items.map((it) => it.track) : [];
     <Image src={playlist?.track?.artworkL?.url ?? undefined} />
   </CenterItem>
   {#if playlist}
-    <ClipboardItem name={playlist.name} />
+    {#if playlist.isCondition}
+      <ClipboardItem
+        name={playlist.name}
+        iconName="settings"
+        iconColor="gray"
+      />
+    {:else}
+      <ClipboardItem name={playlist.name} />
+    {/if}
     <ion-item>
       <ion-label class="ion-text-wrap">
         {playlist.description}
