@@ -588,16 +588,28 @@ export type Mutation_UpsertPlaylistArgs = {
 
 export type PlaylistConditionInputObject = {
   /** order */
-  readonly order: Scalars['String'];
+  readonly order: PlaylistConditionOrderEnum;
   /** asc */
   readonly asc: Scalars['Boolean'];
   /** お気に入り */
   readonly favorite: Scalars['Boolean'];
   /** 人気度下限 */
-  readonly minPopularity: Scalars['Int'];
+  readonly minPopularity?: Maybe<Scalars['Int']>;
   /** 人気度上限 */
-  readonly maxPopularity: Scalars['Int'];
+  readonly maxPopularity?: Maybe<Scalars['Int']>;
+  /** 配信検索開始日 */
+  readonly fromReleaseDate?: Maybe<Scalars['String']>;
+  /** 配信検索終了日 */
+  readonly toReleaseDate?: Maybe<Scalars['String']>;
 };
+
+export type PlaylistConditionOrderEnum =
+  /** 人気順 */
+  | 'POPULARITY'
+  /** 配信日順 */
+  | 'RELEASE_DATE'
+  /** 作成日順 */
+  | 'CREATED_AT';
 
 /** プレイリストトラック */
 export type PlaylistItemObject = {
