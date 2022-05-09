@@ -5,9 +5,14 @@ import { mutation } from "svelte-apollo";
 import InputCheckbox from "~/components/input-checkbox.svelte";
 import InputDate from "~/components/input-date.svelte";
 import InputText from "~/components/input-item.svelte";
+import InputSelection from "~/components/input-selection.svelte";
 import Messages from "~/components/messages.svelte";
 import { UpsertPlaylistDocument } from "~/graphql/types";
-import type { PlaylistConditionInputObject } from "~/graphql/types";
+import type {
+  PlaylistConditionOrderEnum,
+  SortEnum,
+  PlaylistConditionInputObject,
+} from "~/graphql/types";
 import type {
   UpsertPlaylistMutationVariables,
   UpsertPlaylistMutation,
@@ -27,24 +32,48 @@ let messages: Record<string, string[]> = {};
 let disabled = false;
 
 // conditions
-const order = "POPULARITY";
-const asc = true;
 let conditionFavorite = false;
 let minPopularity = "";
 let maxPopularity = "";
 let fromReleaseDate = "";
 let toReleaseDate = "";
 
+let orderDirection = "POPULARITY.DESC";
+const orderItems = [
+  {
+    label: "配信日新しい順",
+    value: "RELEASE_DATE.DESC",
+  },
+  {
+    label: "配信日古い順",
+    value: "RELEASE_DATE.ASC",
+  },
+  {
+    label: "追加日新しい順",
+    value: "CREATED_AT.DESC",
+  },
+  {
+    label: "追加日古い順",
+    value: "CREATED_AT.ASC",
+  },
+  {
+    label: "人気順",
+    value: "POPULARITY.DESC",
+  },
+];
+
 const create = async () => {
   disabled = true;
 
+  const [order, direction] = orderDirection.split(".");
+
   const conditions: PlaylistConditionInputObject = {
-    asc,
+    direction: direction as SortEnum,
     favorite: conditionFavorite,
     fromReleaseDate: fromReleaseDate === "" ? undefined : fromReleaseDate,
     maxPopularity: parseInt(maxPopularity, 10),
     minPopularity: parseInt(minPopularity, 10),
-    order,
+    order: order as PlaylistConditionOrderEnum,
     toReleaseDate: toReleaseDate === "" ? undefined : toReleaseDate,
   };
 
@@ -149,6 +178,11 @@ const create = async () => {
         <InputDate
           bind:value={toReleaseDate}
           errorMessages={messages.toReleaseDate}
+        />
+        <InputSelection
+          label="並び順"
+          bind:value={orderDirection}
+          items={orderItems}
         />
       {/if}
 
