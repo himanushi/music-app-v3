@@ -589,8 +589,8 @@ export type Mutation_UpsertPlaylistArgs = {
 export type PlaylistConditionInputObject = {
   /** order */
   readonly order: PlaylistConditionOrderEnum;
-  /** asc */
-  readonly asc: Scalars['Boolean'];
+  /** 並び順 */
+  readonly direction: SortEnum;
   /** お気に入り */
   readonly favorite: Scalars['Boolean'];
   /** 人気度下限 */
