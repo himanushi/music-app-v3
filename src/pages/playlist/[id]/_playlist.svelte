@@ -42,11 +42,13 @@ $: tracks = playlist ? playlist.items.map((it) => it.track) : [];
   <ion-item-divider sticky>
     <ion-label>Playlist</ion-label>
   </ion-item-divider>
-  {#if !playlist?.isCondition}
-    <CenterItem>
+  <CenterItem>
+    {#if !playlist?.isCondition}
       <Image src={playlist?.track?.artworkL?.url || undefined} />
-    </CenterItem>
-  {/if}
+    {:else if playlist?.items && playlist.items.length > 0}
+      <Image src={playlist.items[0].track.artworkL?.url || undefined} />
+    {/if}
+  </CenterItem>
   {#if playlist}
     {#if playlist.isCondition}
       <ClipboardItem
