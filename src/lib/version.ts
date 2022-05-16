@@ -12,14 +12,14 @@ export const reset = () => {
 
 export const currentVersion = async () => {
   if (Capacitor.getPlatform() === "web") {
-    await store.get<string>(key);
-  } else {
-    const localResult = await axios.get(
-      `/version.txt?time=${new Date().getTime()}`
-    );
-
-    return localResult.data ?? "";
+    return store.get<string>(key);
   }
+
+  const localResult = await axios.get(
+    `/version.txt?time=${new Date().getTime()}`
+  );
+
+  return localResult.data ?? "";
 };
 
 export const updateVersionForWeb = async () => {
