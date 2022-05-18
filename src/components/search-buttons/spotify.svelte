@@ -4,7 +4,7 @@ import { Capacitor } from "@capacitor/core";
 export let name: string;
 
 let href = `https://open.spotify.com/search/${name}`;
-if (!Capacitor.isNativePlatform()) {
+if (Capacitor.isNativePlatform()) {
   href = `https://open.spotify.com/search/results/${name}`;
 }
 </script>
