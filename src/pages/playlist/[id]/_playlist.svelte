@@ -43,10 +43,22 @@ $: tracks = playlist ? playlist.items.map((it) => it.track) : [];
     <ion-label>Playlist</ion-label>
   </ion-item-divider>
   <CenterItem>
-    <Image src={playlist?.track?.artworkL?.url ?? undefined} />
+    {#if !playlist?.isCondition}
+      <Image src={playlist?.track?.artworkL?.url || undefined} />
+    {:else if playlist?.items && playlist.items.length > 0}
+      <Image src={playlist.items[0].track.artworkL?.url || undefined} />
+    {/if}
   </CenterItem>
   {#if playlist}
-    <ClipboardItem name={playlist.name} />
+    {#if playlist.isCondition}
+      <ClipboardItem
+        name={playlist.name}
+        iconName="settings"
+        iconColor="gray"
+      />
+    {:else}
+      <ClipboardItem name={playlist.name} />
+    {/if}
     <ion-item>
       <ion-label class="ion-text-wrap">
         {playlist.description}

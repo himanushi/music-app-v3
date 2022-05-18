@@ -2,14 +2,23 @@
 import { ApolloError } from "@apollo/client/core";
 import { goto } from "@roxi/routify";
 import { mutation } from "svelte-apollo";
+import InputCheckbox from "~/components/input-checkbox.svelte";
+import InputDate from "~/components/input-date.svelte";
 import InputText from "~/components/input-item.svelte";
+import InputSelection from "~/components/input-selection.svelte";
 import Messages from "~/components/messages.svelte";
 import { UpsertPlaylistDocument } from "~/graphql/types";
+import type {
+  PlaylistConditionOrderEnum,
+  SortEnum,
+  PlaylistConditionInputObject,
+} from "~/graphql/types";
 import type {
   UpsertPlaylistMutationVariables,
   UpsertPlaylistMutation,
 } from "~/graphql/types";
 import { errorMessages } from "~/lib/error";
+import { closeLoading, openLoading } from "~/lib/ionic";
 
 const upsertPlaylist = mutation<
   UpsertPlaylistMutation,
@@ -18,17 +27,65 @@ const upsertPlaylist = mutation<
 
 let name = "";
 let description = "";
+let isCondition = false;
 let messages: Record<string, string[]> = {};
 let disabled = false;
+
+// conditions
+let conditionFavorite = false;
+let minPopularity = "";
+let maxPopularity = "";
+let fromReleaseDate = "";
+let toReleaseDate = "";
+
+let orderDirection = "POPULARITY.DESC";
+const orderItems = [
+  {
+    label: "配信日新しい順",
+    value: "RELEASE_DATE.DESC",
+  },
+  {
+    label: "配信日古い順",
+    value: "RELEASE_DATE.ASC",
+  },
+  {
+    label: "追加日新しい順",
+    value: "CREATED_AT.DESC",
+  },
+  {
+    label: "追加日古い順",
+    value: "CREATED_AT.ASC",
+  },
+  {
+    label: "人気順",
+    value: "POPULARITY.DESC",
+  },
+];
 
 const create = async () => {
   disabled = true;
 
+  const [order, direction] = orderDirection.split(".");
+
+  const conditions: PlaylistConditionInputObject = {
+    direction: direction as SortEnum,
+    favorite: conditionFavorite,
+    fromReleaseDate: fromReleaseDate === "" ? undefined : fromReleaseDate,
+    maxPopularity: parseInt(maxPopularity, 10),
+    minPopularity: parseInt(minPopularity, 10),
+    order: order as PlaylistConditionOrderEnum,
+    toReleaseDate: toReleaseDate === "" ? undefined : toReleaseDate,
+  };
+
   try {
+    await openLoading();
+
     await upsertPlaylist({
       variables: {
         input: {
+          conditions: isCondition ? conditions : undefined,
           description,
+          isCondition,
           name,
           publicType: "NON_OPEN",
           trackIds: [],
@@ -43,6 +100,8 @@ const create = async () => {
     if (error instanceof ApolloError) {
       messages = errorMessages(error);
     }
+  } finally {
+    await closeLoading();
   }
 };
 </script>
@@ -65,9 +124,71 @@ const create = async () => {
         errorMessages={messages.description}
       />
 
+      <InputCheckbox
+        label="条件プレイリストにする"
+        bind:checked={isCondition}
+        lines="none"
+      />
+
+      <ion-item>
+        <ion-icon name="information-circle-outline" slot="start" color="blue" />
+        <ion-label class="ion-text-wrap">
+          条件を設定して自動で選曲します
+        </ion-label>
+      </ion-item>
+
+      {#if isCondition}
+        <InputCheckbox
+          label="お気に入りした曲"
+          bind:checked={conditionFavorite}
+          lines="none"
+        />
+        <ion-item>
+          <ion-label class="ion-text-wrap">
+            プレイリスト作成者のお気に入りが選曲されます
+          </ion-label>
+        </ion-item>
+        <InputText
+          label="人気度"
+          bind:value={minPopularity}
+          type="number"
+          errorMessages={messages.minPopularity}
+          placeholder="0"
+          autocomplete="off"
+          lines="none"
+        />
+        <InputText
+          label="〜"
+          bind:value={maxPopularity}
+          type="number"
+          errorMessages={messages.maxPopularity}
+          placeholder="1000"
+          autocomplete="off"
+        />
+        <ion-item lines="none">
+          <ion-label class="ion-text-wrap"> 配信日 </ion-label>
+        </ion-item>
+        <InputDate
+          bind:value={fromReleaseDate}
+          errorMessages={messages.fromReleaseDate}
+        />
+        <ion-item lines="none">
+          <ion-label class="ion-text-wrap"> 〜 </ion-label>
+        </ion-item>
+        <InputDate
+          bind:value={toReleaseDate}
+          errorMessages={messages.toReleaseDate}
+        />
+        <InputSelection
+          label="並び順"
+          bind:value={orderDirection}
+          items={orderItems}
+        />
+      {/if}
+
       <Messages type="error" messages={messages.publicType} />
 
-      <ion-item {disabled} button on:click={create}>
+      <ion-item {disabled} button on:click={create} lines="full">
         <ion-icon name="add" slot="start" />
         保存
       </ion-item>

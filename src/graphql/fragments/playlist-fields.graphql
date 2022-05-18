@@ -4,6 +4,7 @@ fragment PlaylistFields on PlaylistObject {
   description
   publicType
   isMine
+  isCondition
   createdAt
   updatedAt
   author {

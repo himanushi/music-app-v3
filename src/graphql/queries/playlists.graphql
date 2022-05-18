@@ -6,6 +6,7 @@ query Playlists(
   items: playlists(cursor: $cursor, sort: $sort, conditions: $conditions) {
     id
     name
+    isCondition
     author {
       id
       name
