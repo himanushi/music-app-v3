@@ -89,7 +89,7 @@ declare namespace MusicKit {
   }
 
   interface API {
-    music(endpoint: string, params: Record<string, any>): APIResult;
+    music(endpoint: string, params?: Record<string, any>): Promise<APIResult>;
     developerToken: string;
     enablePlayEquivalencies: boolean;
     headers: any;
@@ -114,6 +114,9 @@ declare namespace MusicKit {
           data: APIResultData[];
         };
       };
+      data: APIResultData[];
+      meta: { total: number };
+      next: string;
     };
   }
 
@@ -123,9 +126,23 @@ declare namespace MusicKit {
     href: string;
     attributes: {
       name: string;
+      durationInMillis: number;
+      artwork?: { url: string };
       playParams: {
+        id: string;
         purchasedId?: string;
+        isLibrary: boolean;
+        kind: "album" | "song";
       };
+    };
+    relationships: {
+      tracks: {
+        data: APIResultData[];
+        meta: { total: number };
+        href: string;
+        next: string;
+      };
+      type: "library-albums";
     };
   }
 
