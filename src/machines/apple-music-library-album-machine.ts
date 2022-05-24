@@ -4,14 +4,19 @@
 import { assign, DoneInvokeEvent, interpret, send } from "xstate";
 import { createMachine } from "xstate";
 
-export type LibraryTrack = {
+type TrackIds = {
+  // AppleMusicId: LibraryId
+  [key in string]: string;
+};
+
+type LibraryTrack = {
   libraryId: string;
   name: string;
   artworkUrl?: string;
   purchasedId?: string;
 };
 
-export type LibraryAlbum = {
+type LibraryAlbum = {
   libraryId: string;
   name: string;
   artworkUrl?: string;
@@ -24,11 +29,12 @@ type Context = {
   searchAlbumLibraryIds: string[];
   albums: LibraryAlbum[];
   total: number;
+  trackIds: TrackIds;
 };
 
 const id = "apple-music-library-album";
 const endpoint = "/v1/me/library/albums";
-const limit = 10;
+const limit = 1;
 
 export const libraryAlbumsMachine = createMachine<Context>(
   {
@@ -38,10 +44,11 @@ export const libraryAlbumsMachine = createMachine<Context>(
 
     context: {
       hasNext: true,
-      albumFetchUrl: `${endpoint}?limit=${limit}&include=library-tracks`,
+      albumFetchUrl: `${endpoint}?limit=${limit}`,
       albums: [],
       total: 0,
       searchAlbumLibraryIds: [],
+      trackIds: {},
     },
 
     states: {
