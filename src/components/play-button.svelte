@@ -19,12 +19,12 @@ export const canPlay = createCanPlay();
 </script>
 
 <script lang="ts">
-import type { TrackObject } from "~/graphql/types";
 import { playerService } from "~/machines/jukebox-machine";
+import type { JukeboxTrack } from "~/machines/jukebox-machine";
 
 export let name: string;
 export let index: number;
-export let tracks: readonly TrackObject[];
+export let tracks: JukeboxTrack[];
 
 const onClick = () => {
   canPlay.play();

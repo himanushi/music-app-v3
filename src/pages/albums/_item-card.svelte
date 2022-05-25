@@ -10,7 +10,7 @@ const path = `/albums/${item.id}`;
 
 <ion-item detail={false} button on:click={() => $goto(path)}>
   <ion-thumbnail slot="start">
-    <ion-img src={item.artworkM?.url} alt={item.name} />
+    <ion-img src={item.artworkM?.url ?? undefined} alt={item.name} />
   </ion-thumbnail>
   {#if item.appleMusicPlayable}
     <ion-icon slot="start" src="/assets/logo-apple-music.svg" />

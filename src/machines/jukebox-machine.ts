@@ -12,19 +12,26 @@ import {
   interpret,
   ActorRef,
 } from "xstate";
-import { TrackObject } from "~/graphql/types";
+import { Maybe } from "~/graphql/types";
 import {
   MusicPlayerEvent,
   MusicPlayerMachine,
   MusicPlayerState,
 } from "~/machines/music-player-machine";
 
+export type JukeboxTrack = {
+  name: string;
+  artworkUrl?: Maybe<string>;
+  previewUrl?: Maybe<string>;
+  appleMusicId: string;
+};
+
 export type JukeboxContext = {
   name: string;
   link: string;
   currentPlaybackNo: number;
-  tracks: TrackObject[];
-  currentTrack?: TrackObject;
+  tracks: JukeboxTrack[];
+  currentTrack?: JukeboxTrack;
   repeat: boolean;
   musicPlayerRef?: ActorRef<MusicPlayerEvent, MusicPlayerState>;
 };
@@ -355,7 +362,7 @@ export const JukeboxMachine = machine<
               artwork: [
                 {
                   sizes: "300x300",
-                  src: currentTrack.artworkM.url || "",
+                  src: currentTrack.artworkUrl || "",
                   type: "image/png",
                 },
               ],

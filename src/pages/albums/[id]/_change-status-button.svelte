@@ -1,6 +1,5 @@
 <script lang="ts">
 import { ApolloError } from "@apollo/client";
-
 import { mutation } from "svelte-apollo";
 import type {
   ChangeAlbumStatusInput,

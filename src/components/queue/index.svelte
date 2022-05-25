@@ -7,6 +7,7 @@ import { canPlay } from "~/components/play-button.svelte";
 import { closeModal } from "~/lib/ionic";
 import { playerService } from "~/machines/jukebox-machine";
 import ModalContent from "~/pages/_modal-content.svelte";
+import { convertImageUrl } from "~/lib/image";
 
 $: tracks = $playerService.context.tracks.map((track) => track);
 $: playbackNo = $playerService.context.currentPlaybackNo;
@@ -74,7 +75,11 @@ const link = () => {
           <ion-icon name="reorder-two" />
         </ion-reorder>
         <ion-thumbnail slot="start" on:click|preventDefault|stopPropagation>
-          <SquareImage src={track.artworkM.url ?? undefined} />
+          <SquareImage
+            src={track.artworkUrl
+              ? convertImageUrl(track.artworkUrl, 300)
+              : undefined}
+          />
         </ion-thumbnail>
         <ion-buttons
           slot="start"
