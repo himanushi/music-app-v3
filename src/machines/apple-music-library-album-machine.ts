@@ -4,11 +4,6 @@
 import { assign, DoneInvokeEvent, interpret, send } from "xstate";
 import { createMachine } from "xstate";
 
-type TrackIds = {
-  // AppleMusicId: LibraryId
-  [key in string]: string;
-};
-
 type LibraryTrack = {
   libraryId: string;
   name: string;
@@ -25,16 +20,14 @@ type LibraryAlbum = {
 
 type Context = {
   hasNext: boolean;
-  albumFetchUrl?: string;
-  searchAlbumLibraryIds: string[];
-  albums: LibraryAlbum[];
+  fetchUrl: string;
+  offset: number;
+  albums: { [key in string]: LibraryAlbum };
   total: number;
-  trackIds: TrackIds;
 };
 
 const id = "apple-music-library-album";
 const endpoint = "/v1/me/library/albums";
-const limit = 1;
 
 export const libraryAlbumsMachine = createMachine<Context>(
   {
@@ -44,11 +37,10 @@ export const libraryAlbumsMachine = createMachine<Context>(
 
     context: {
       hasNext: true,
-      albumFetchUrl: `${endpoint}?limit=${limit}`,
-      albums: [],
+      fetchUrl: `${endpoint}?limit=1`,
+      offset: 0,
       total: 0,
-      searchAlbumLibraryIds: [],
-      trackIds: {},
+      albums: {},
     },
 
     states: {
@@ -65,11 +57,7 @@ export const libraryAlbumsMachine = createMachine<Context>(
         on: {
           LOAD: [
             {
-              target: "tracksLoading",
-              cond: (context) => context.searchAlbumLibraryIds.length > 0,
-            },
-            {
-              target: "albumLoading",
+              target: "loading",
               cond: (context) => context.hasNext,
             },
             { target: "done" },
@@ -77,48 +65,18 @@ export const libraryAlbumsMachine = createMachine<Context>(
         },
       },
 
-      albumLoading: {
+      loading: {
         invoke: {
-          src: (context) => {
-            if (!context.albumFetchUrl) {
-              throw new Error("fetchUrl が設定されていない！");
-            }
-            return MusicKit.getInstance().api.music(context.albumFetchUrl);
-          },
+          src: (context) => MusicKit.getInstance().api.music(context.fetchUrl),
 
           onDone: {
             target: "checking",
             actions: assign({
-              searchAlbumLibraryIds: (
-                _,
-                event: DoneInvokeEvent<MusicKit.APIResult>
-              ) => event.data.data.data.map((album) => album.id),
-              albumFetchUrl: (_, event) => `${event.data.data.next}&limit=${limit}`,
-              // hasNext: (context, event) => event.data.data.meta.total !==
-              //   context.albums.length + event.data.data.data.length,
-              hasNext: (_, _event) => false,
-              total: (_, event) => event.data.data.meta.total,
-            }),
-          },
-          // onError: "checking",
-        },
-        on: {},
-      },
+              albums: (context, event: DoneInvokeEvent<MusicKit.APIResult>) => {
+                const albums: Context["albums"] = {};
 
-      tracksLoading: {
-        invoke: {
-          src: (context) => MusicKit.getInstance().api.music(
-            `${endpoint}/${context.searchAlbumLibraryIds[0]}`
-          ),
-
-          onDone: {
-            target: "checking",
-            actions: assign({
-              albums: (context, event: DoneInvokeEvent<MusicKit.APIResult>) => [
-                ...context.albums,
-                ...event.data.data.data.map((album) => {
-                  console.log({ album });
-                  return {
+                event.data.data.data.forEach((album) => {
+                  albums[album.id] = {
                     libraryId: album.attributes.playParams.id,
                     name: album.attributes.name,
                     artworkUrl:
@@ -130,9 +88,19 @@ export const libraryAlbumsMachine = createMachine<Context>(
                       purchasedId: track.attributes.playParams?.purchasedId,
                     })),
                   };
-                }),
-              ],
-              searchAlbumLibraryIds: (context, _event) => context.searchAlbumLibraryIds.splice(1),
+                });
+
+                return {
+                  ...context.albums,
+                  ...albums,
+                };
+              },
+              fetchUrl: (context, event) => `${event.data.data.next}&limit=1&offset=${context.offset + 1}`,
+              // hasNext: (context, event) => event.data.data.meta.total !==
+              //   context.albums.length + event.data.data.data.length,
+              hasNext: (_, _event) => false,
+              total: (_, event) => event.data.data.meta.total,
+              offset: (context, _) => context.offset + 1,
             }),
           },
           // onError: "checking",
