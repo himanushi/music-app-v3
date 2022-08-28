@@ -8,6 +8,7 @@ import {
   PlaybackStates,
 } from "capacitor-plugin-applemusic";
 import { Machine as machine, assign, sendParent, State } from "xstate";
+import { store } from "~/store/track-info";
 
 export type AppleMusicPlayerContext = {
   idAndTitleAndPreviewUrl?: string;
@@ -142,11 +143,19 @@ export const AppleMusicPlayerMachine = machine<
                   // id だけで track を取得するとロケーションバグ(英語名になる)が起こることがあるため title も送信する
                   const [id, title, previewUrl] =
                     idAndTitleAndPreviewUrl.split(separateString);
+
+                  // すでにライブラリIDがわかっている場合は直接再生する
+                  const info = await store.get(id);
+
                   const result = await CapacitorAppleMusic.setSong({
                     songId: id,
                     songTitle: title,
                     previewUrl,
+                    librarySongId: info?.librarySongId ? info.librarySongId : undefined,
                   });
+
+                  // ライブラリID検索結果を保持する
+                  await store.set(id, { librarySongId: result.librarySongId });
 
                   if (!result.result) {
                     throw new Error("play error!!");
