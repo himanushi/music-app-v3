@@ -3,7 +3,9 @@ import { Storage } from "@capacitor/storage";
 const key = "trackInfo";
 
 type Info = {
-  librarySongId: string | null;
+  librarySongId?: string;
+  songTitle?: string;
+  albumTitle?: string;
 };
 
 type TrackInfo = {

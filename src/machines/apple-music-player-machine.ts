@@ -152,10 +152,15 @@ export const AppleMusicPlayerMachine = machine<
                     songTitle: title,
                     previewUrl,
                     librarySongId: info?.librarySongId ? info.librarySongId : undefined,
+                    albumTitle: info?.albumTitle ? info.albumTitle : undefined,
                   });
 
                   // ライブラリID検索結果を保持する
-                  await store.set(id, { librarySongId: result.librarySongId });
+                  await store.set(id, {
+                    librarySongId: result.librarySongId,
+                    albumTitle: result.albumTitle,
+                    songTitle: title,
+                  });
 
                   if (!result.result) {
                     throw new Error("play error!!");
