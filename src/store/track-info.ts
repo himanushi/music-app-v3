@@ -29,7 +29,11 @@ export const store = {
       json = JSON.parse(ret.value) as TrackInfo;
     }
 
-    json[id] = value;
+    json[id] = {
+      albumTitle: value.albumTitle || json[id]?.albumTitle,
+      librarySongId: value.librarySongId || json[id]?.librarySongId,
+      songTitle: value.songTitle || json[id]?.songTitle,
+    };
 
     await Storage.set({
       key,
