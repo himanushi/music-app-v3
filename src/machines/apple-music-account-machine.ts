@@ -79,7 +79,7 @@ export const accountMachine = machine<
 
       authorized: {
         invoke: {
-          id: "unauthorize",
+          id: "authorize",
 
           src: () => (callback: Sender<accountEvent>) => {
             const changeStatus: AuthorizationStatusDidChangeListener = (
