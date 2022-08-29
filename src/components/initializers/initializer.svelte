@@ -9,7 +9,7 @@ import PreloadLibraryAlbums from "~/components/initializers/preload-library-albu
 </script>
 
 <Version />
-<PreloadLibraryAlbums />
+<!-- <PreloadLibraryAlbums /> -->
 {#if Capacitor.getPlatform() === "web"}
   <AppleMusicWebAccount />
   <CookiePolicy />
