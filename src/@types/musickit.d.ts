@@ -2,7 +2,7 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-unused-vars */
 
-// version: "3.2130.7-prerelease"
+// ver: 3.2136.9-prerelease
 declare namespace MusicKit {
   interface Config {
     developerToken: string;
@@ -41,32 +41,35 @@ declare namespace MusicKit {
     volume: number;
     currentPlaybackTime: number;
     currentBufferedProgress: number;
+    currentPlaybackDuration: number;
     isPlaying: boolean;
+    queue: Queue;
 
     addEventListener(eventName: string, callback: (result: any) => any): void;
     removeEventListener(
       eventName: string,
       callback: (result: any) => any
     ): void;
-    addToLibrary(e, t?): Promise;
+    addToLibrary(e: any, t?: any): Promise<any>;
     authorize(): Promise<string>;
-    changeToMediaAtIndex(e): Promise;
-    cleanup(): Promise;
-    clearQueue(): Promise;
-    deferPlayback(): Promise;
-    me(): Promise;
-    pause(): Promise;
-    play(): Promise;
-    playLater(e): Promise;
-    playNext(e, t): Promise;
-    seekBackward(): Promise;
-    seekForward(): Promise;
-    seekToTime(e): Promise;
-    setQueue(e): Promise;
-    skipToNextItem(): Promise;
-    skipToPreviousItem(): Promise;
-    stop(): Promise;
+    changeToMediaAtIndex(e: any): Promise<any>;
+    cleanup(): Promise<any>;
+    clearQueue(): Promise<any>;
+    deferPlayback(): Promise<any>;
+    me(): Promise<any>;
+    pause(): Promise<any>;
+    play(): Promise<any>;
+    playLater(e: any): Promise<any>;
+    playNext(e: any, t: any): Promise<any>;
+    seekBackward(): Promise<any>;
+    seekForward(): Promise<any>;
+    seekToTime(e: any): Promise<any>;
+    setQueue(e: any): Promise<any>;
+    skipToNextItem(): Promise<any>;
+    skipToPreviousItem(): Promise<any>;
+    stop(): Promise<any>;
     unauthorize(): Promise<any>;
+    hasMusicSubscription(): Promise<any>;
   }
 
   interface StoreKit {
@@ -112,6 +115,13 @@ declare namespace MusicKit {
       results: {
         "library-songs"?: {
           data: APIResultData[];
+          href: string;
+          next: string;
+        };
+        "library-albums"?: {
+          data: APIResultData[];
+          href: string;
+          next: string;
         };
       };
       data: APIResultData[];
@@ -128,12 +138,14 @@ declare namespace MusicKit {
       name: string;
       durationInMillis: number;
       artwork?: { url: string };
+      albumName: string;
       playParams: {
         id: string;
         purchasedId?: string;
         isLibrary: boolean;
         kind: "album" | "song";
       };
+      previews: { url: string }[];
     };
     relationships: {
       tracks: {
@@ -204,10 +216,10 @@ declare namespace MusicKit {
     bitrate: number;
     canSupportDRM: boolean;
     continuous: boolean;
-    currentPlaybackDuration: NaN | number;
+    currentPlaybackDuration: number;
     currentPlaybackProgress: number;
     currentPlaybackTime: number;
-    currentPlaybackTimeRemaining: NaN | number;
+    currentPlaybackTimeRemaining: any | number;
     hasAuthorization: boolean;
     isPlaying: boolean;
     isPrimaryPlayer: boolean;
@@ -220,8 +232,8 @@ declare namespace MusicKit {
     repeatMode: 0 | 1 | 2;
     shuffleMode: number;
     formattedCurrentPlaybackDuration: {
-      hours: NaN | number;
-      minutes: NaN | number;
+      hours: any | number;
+      minutes: any | number;
     };
 
     addEventListener(
@@ -232,21 +244,21 @@ declare namespace MusicKit {
       eventName: string,
       callback: (state: { oldState: number; state: number }) => any
     ): void;
-    changeToMediaAtIndex(index: number): Promise;
-    changeToMediaItem(): Promise;
-    destroy(): Promise;
-    mute(): Promise;
-    pause(): Promise;
-    play(): Promise;
-    preload(): Promise;
-    prepareToPlay(e, t, r): Promise;
-    seekBackward(): Promise;
-    seekForward(): Promise;
-    seekToTime(e): Promise;
-    showPlaybackTargetPicker(): Promise;
-    skipToNextItem(): Promise;
-    skipToPreviousItem(): Promise;
-    stop(): Promise;
+    changeToMediaAtIndex(index: number): Promise<any>;
+    changeToMediaItem(): Promise<any>;
+    destroy(): Promise<any>;
+    mute(): Promise<any>;
+    pause(): Promise<any>;
+    play(): Promise<any>;
+    preload(): Promise<any>;
+    prepareToPlay(e: any, t: any, r: any): Promise<any>;
+    seekBackward(): Promise<any>;
+    seekForward(): Promise<any>;
+    seekToTime(e: any): Promise<any>;
+    showPlaybackTargetPicker(): Promise<any>;
+    skipToNextItem(): Promise<any>;
+    skipToPreviousItem(): Promise<any>;
+    stop(): Promise<any>;
   }
 
   interface Queue {
@@ -266,13 +278,14 @@ declare namespace MusicKit {
       callback: (result: any) => any
     ): void;
     append(song: Song): void;
-    indexForItem(e): Promise;
-    item(e): Promise;
-    prepend(e, t): Promise;
-    remove(index?: number): Promise;
-    requiresPlayActivity(): Promise;
-    shuffle(e): Promise;
-    unshuffle(e): Promise;
+    indexForItem(e: any): Promise<any>;
+    item(e: any): Promise<any>;
+    prepend(e: any, t: any): Promise<any>;
+    remove(index?: number): Promise<any>;
+    requiresPlayActivity(): Promise<any>;
+    shuffle(e: any): Promise<any>;
+    unshuffle(e: any): Promise<any>;
+    reset(): Promise<any>;
   }
 
   interface MediaItem {
