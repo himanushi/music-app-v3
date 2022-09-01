@@ -8,6 +8,7 @@ import LoadingItems from "~/components/loading-items.svelte";
 import AmazonMusic from "~/components/search-buttons/amazon-music.svelte";
 import AppleMusic from "~/components/search-buttons/apple-music.svelte";
 import Itunes from "~/components/search-buttons/itunes.svelte";
+import type { Status } from "~/components/search-buttons/itunes.svelte";
 import LineMusic from "~/components/search-buttons/line-music.svelte";
 import Spotify from "~/components/search-buttons/spotify.svelte";
 import YoutubeMusic from "~/components/search-buttons/youtube-music.svelte";
@@ -25,6 +26,11 @@ import { convertDate, convertTime, toMs } from "~/lib/convert";
 import { isAllowed } from "~/lib/me";
 import Artists from "~/pages/artists/_artists.svelte";
 import ItemCard from "~/pages/tracks/_item-card.svelte";
+import { accountService } from "~/machines/apple-music-account-machine";
+import { libraryAlbumMachine } from "~/machines/apple-music-library-album-machine";
+import { interpret } from "xstate";
+import { mergeMeta } from "~/lib/merge-meta";
+import { onDestroy } from "svelte";
 
 export let id = "";
 export let me: CurrentUserObject | undefined;
@@ -63,6 +69,33 @@ $: if (me && $albumQuery.data && first) {
 }
 
 $: tracks = album?.tracks.map((track) => track) || [];
+
+const libraryAlbumService = interpret(libraryAlbumMachine);
+libraryAlbumService.start();
+
+let status: Status = "loading";
+$: if (
+  album &&
+  tracks.length > 0 &&
+  !album.appleMusicPlayable &&
+  $accountService &&
+  $accountService.matches("authorized")
+) {
+  console.log(tracks);
+  libraryAlbumService.send({
+    type: "SET_TERM",
+    term: album.name,
+    tracks,
+  });
+}
+
+$: if ($libraryAlbumService) {
+  status = mergeMeta<{ label: Status }>($libraryAlbumService.meta).label;
+}
+
+onDestroy(() => {
+  libraryAlbumService.stop();
+});
 </script>
 
 <ion-item-group>
@@ -122,7 +155,7 @@ $: tracks = album?.tracks.map((track) => track) || [];
     {#if album.appleMusicPlayable}
       <AppleMusic id={album.appleMusicId} />
     {:else}
-      <Itunes id={album.appleMusicId} />
+      <Itunes id={album.appleMusicId} {status} />
     {/if}
     <Spotify name={album.name} />
     <AmazonMusic name={album.name} />

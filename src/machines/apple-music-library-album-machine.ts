@@ -1,119 +1,113 @@
 // xstate では順序を見やすくするため object key sort は無効にする
 /* eslint-disable sort-keys */
 /* eslint-disable sort-keys-fix/sort-keys-fix */
-import { assign, DoneInvokeEvent, interpret, send } from "xstate";
-import { createMachine } from "xstate";
+import { CapacitorAppleMusic } from "capacitor-plugin-applemusic";
+import { assign } from "xstate";
+import { Machine as machine } from "xstate";
+import { TrackObject } from "~/graphql/types";
+import { store } from "~/store/track-info";
 
-type LibraryTrack = {
-  libraryId: string;
-  name: string;
-  artworkUrl?: string;
-  purchasedId?: string;
+type Schema = {
+  states: {
+    idle: {};
+    load: {};
+    purchased: {};
+    notPurchased: {};
+  };
 };
 
-type LibraryAlbum = {
-  libraryId: string;
-  name: string;
-  artworkUrl?: string;
-  tracks: LibraryTrack[];
-};
+type Event =
+  | { type: "SET_TERM"; term: string; tracks: TrackObject[] }
+  | { type: "LOAD" }
+  | { type: "PURCHASED" }
+  | { type: "NOT_PURCHASED" };
 
 type Context = {
-  hasNext: boolean;
-  fetchUrl: string;
-  offset: number;
-  albums: { [key in string]: LibraryAlbum };
-  total: number;
+  purchased: boolean;
+  term: string;
+  tracks: TrackObject[];
 };
 
 const id = "apple-music-library-album";
-const endpoint = "/v1/me/library/albums";
 
-export const libraryAlbumsMachine = createMachine<Context>(
+export const libraryAlbumMachine = machine<Context, Schema, Event>(
   {
     id,
 
     initial: "idle",
 
     context: {
-      hasNext: true,
-      fetchUrl: `${endpoint}?limit=1`,
-      offset: 0,
-      total: 0,
-      albums: {},
+      purchased: false,
+      term: "",
+      tracks: [],
     },
 
     states: {
       // ログイン後に LOAD を実行すること
       idle: {
         on: {
-          LOAD: "checking",
-        },
-      },
-
-      // 完了するかアルバムロードするかトラックロードするかチェック
-      checking: {
-        entry: send({ type: "LOAD" }),
-        on: {
-          LOAD: [
-            {
-              target: "loading",
-              cond: (context) => context.hasNext,
-            },
-            { target: "done" },
-          ],
-        },
-      },
-
-      loading: {
-        invoke: {
-          src: (context) => MusicKit.getInstance().api.music(context.fetchUrl),
-
-          onDone: {
-            target: "checking",
-            actions: assign({
-              albums: (context, event: DoneInvokeEvent<MusicKit.APIResult>) => {
-                const albums: Context["albums"] = {};
-
-                event.data.data.data.forEach((album) => {
-                  albums[album.id] = {
-                    libraryId: album.attributes.playParams.id,
-                    name: album.attributes.name,
-                    artworkUrl:
-                      album.attributes.artwork?.url || "/no-image.png",
-                    tracks: album.relationships.tracks.data.map((track) => ({
-                      libraryId: track.id,
-                      name: track.attributes.name,
-                      artworkUrl: album.attributes.artwork?.url,
-                      purchasedId: track.attributes.playParams?.purchasedId,
-                    })),
-                  };
-                });
-
-                return {
-                  ...context.albums,
-                  ...albums,
-                };
-              },
-              fetchUrl: (context, event) => `${event.data.data.next}&limit=1&offset=${context.offset + 1}`,
-              // hasNext: (context, event) => event.data.data.meta.total !==
-              //   context.albums.length + event.data.data.data.length,
-              hasNext: (_, _event) => false,
-              total: (_, event) => event.data.data.meta.total,
-              offset: (context, _) => context.offset + 1,
-            }),
+          SET_TERM: {
+            target: "load",
+            actions: ["setTerm", "setTracks"],
           },
-          // onError: "checking",
         },
-        on: {},
+        meta: { label: "loading" },
       },
 
-      done: {},
+      load: {
+        meta: { label: "loading" },
+        invoke: {
+          src: (context) => (callback) => {
+            (async () => {
+              const result = await CapacitorAppleMusic.getLibraryAlbum({
+                albumTitle: context.term,
+              });
+
+              if (result.result && result.album) {
+                for (const track of result.album.tracks) {
+                  const foundTrack = context.tracks.find(
+                    (conTrack) => conTrack.trackNumber.toString() === track.trackNumber &&
+                      conTrack.discNumber.toString() === track.discNumber &&
+                      conTrack.name === track.title
+                  );
+                  if (foundTrack) {
+                    // eslint-disable-next-line no-await-in-loop
+                    await store.set(foundTrack.appleMusicId, {
+                      librarySongId: track.id,
+                      songTitle: track.title,
+                      albumTitle: context.term,
+                    });
+                  }
+                }
+                return callback("PURCHASED");
+              }
+              return callback("NOT_PURCHASED");
+            })();
+          },
+        },
+        on: {
+          PURCHASED: "purchased",
+          NOT_PURCHASED: "notPurchased",
+        },
+      },
+
+      purchased: {
+        meta: { label: "purchased" },
+      },
+
+      notPurchased: {
+        meta: { label: "not purchased" },
+      },
     },
   },
   {
-    actions: {},
+    actions: {
+      setTerm: assign({
+        term: (_, event) => "term" in event ? event.term : "",
+      }),
+      setTracks: assign({
+        tracks: (_, event) => "tracks" in event ? event.tracks : [],
+      }),
+    },
   }
 );
-
-export const libraryAlbumsService = interpret(libraryAlbumsMachine).start();
