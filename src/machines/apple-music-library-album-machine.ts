@@ -59,9 +59,13 @@ export const libraryAlbumMachine = machine<Context, Schema, Event>(
         invoke: {
           src: (context) => (callback) => {
             (async () => {
+              // iTunes のアルバムのみで実行される
+
               const result = await CapacitorAppleMusic.getLibraryAlbum({
                 albumTitle: context.term,
               });
+
+              let purchased = false;
 
               if (result.result && result.album) {
                 for (const track of result.album.tracks) {
@@ -71,15 +75,27 @@ export const libraryAlbumMachine = machine<Context, Schema, Event>(
                       conTrack.name === track.title
                   );
                   if (foundTrack) {
-                    // eslint-disable-next-line no-await-in-loop
+                    purchased = true;
                     await store.set(foundTrack.appleMusicId, {
                       librarySongId: track.id,
                       songTitle: track.title,
                       albumTitle: context.term,
+                      purchased,
                     });
                   }
                 }
+              }
+
+              if (purchased) {
                 return callback("PURCHASED");
+              }
+
+              for (const track of context.tracks) {
+                await store.set(track.appleMusicId, {
+                  songTitle: track.name,
+                  albumTitle: context.term,
+                  purchased: false,
+                });
               }
               return callback("NOT_PURCHASED");
             })();

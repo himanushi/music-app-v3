@@ -90,6 +90,9 @@ module.exports = {
     // 三項演算子は改行してもしなくても良い
     "multiline-ternary": ["error", "never"],
 
+    // loop の中で await 使っても良い
+    "no-await-in-loop": "off",
+
     // アロー関数を有効にする
     "no-confusing-arrow": "off",
 

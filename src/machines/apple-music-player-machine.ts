@@ -147,20 +147,36 @@ export const AppleMusicPlayerMachine = machine<
                   // すでにライブラリIDがわかっている場合は直接再生する
                   const info = await store.get(id);
 
-                  const result = await CapacitorAppleMusic.setSong({
-                    songId: id,
-                    songTitle: title,
-                    previewUrl,
-                    librarySongId: info?.librarySongId,
-                    albumTitle: info?.albumTitle,
-                  });
+                  let result: {
+                    result: boolean;
+                    librarySongId?: string | undefined;
+                    albumTitle?: string | undefined;
+                  };
 
-                  // ライブラリID検索結果を保持する
+                  if (info) {
+                    result = await CapacitorAppleMusic.setSong({
+                      songId: id,
+                      songTitle: title,
+                      previewUrl,
+                      librarySongId: info.librarySongId,
+                      albumTitle: info.albumTitle,
+                      forcePreview: !info.purchased,
+                    });
+                  } else {
+                    result = await CapacitorAppleMusic.setSong({
+                      songId: id,
+                      songTitle: title,
+                      previewUrl,
+                    });
+                  }
+
                   if (result.librarySongId) {
+                    // iTunes のライブラリID検索結果を保持する
                     await store.set(id, {
                       librarySongId: result.librarySongId,
                       albumTitle: result.albumTitle,
                       songTitle: title,
+                      purchased: true,
                     });
                   }
 

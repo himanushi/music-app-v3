@@ -6,6 +6,7 @@ type Info = {
   librarySongId?: string;
   songTitle?: string;
   albumTitle?: string;
+  purchased: boolean;
 };
 
 type TrackInfo = {
@@ -32,6 +33,7 @@ export const store = {
     json[id] = {
       albumTitle: value.albumTitle || json[id]?.albumTitle,
       librarySongId: value.librarySongId || json[id]?.librarySongId,
+      purchased: value.purchased,
       songTitle: value.songTitle || json[id]?.songTitle,
     };
 

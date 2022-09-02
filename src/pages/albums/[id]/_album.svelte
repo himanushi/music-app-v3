@@ -81,7 +81,6 @@ $: if (
   $accountService &&
   $accountService.matches("authorized")
 ) {
-  console.log(tracks);
   libraryAlbumService.send({
     type: "SET_TERM",
     term: album.name,
