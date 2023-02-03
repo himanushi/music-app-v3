@@ -18,12 +18,14 @@ onMount(async () => {
 
 ## SNS, 開発プロジェクトなど
 * [Twitter](https://twitter.com/${twitterAccount})
+* [Instagram](https://www.instagram.com/himanushi777)
 * [note](https://note.com/himanushi/n/nd598a3d92a15)
 * [Github](https://github.com/users/himanushi/projects/2)
 
 ## 問い合わせ
 * [Q & A](https://note.com/himanushi/n/na2e56d4ee4d6)
 * [Twitter にてダイレクトメッセージをお願いします](https://twitter.com/${twitterAccount})
+* [または、Instagram にてダイレクトメッセージをお願いします](https://www.instagram.com/himanushi777)
 
 #### ファイルバージョン
 ${version}
