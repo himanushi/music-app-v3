@@ -1,5 +1,7 @@
 <script lang="ts">
+import { onDestroy } from "svelte";
 import { query } from "svelte-apollo";
+import { interpret } from "xstate";
 import AddPlaylistButton from "~/components/add-playlist-button.svelte";
 import CenterItem from "~/components/center-item.svelte";
 import ClipboardItem from "~/components/clipboard-item.svelte";
@@ -24,13 +26,11 @@ import type {
 import type { CurrentUserObject } from "~/graphql/types";
 import { convertDate, convertTime, toMs } from "~/lib/convert";
 import { isAllowed } from "~/lib/me";
-import Artists from "~/pages/artists/_artists.svelte";
-import ItemCard from "~/pages/tracks/_item-card.svelte";
+import { mergeMeta } from "~/lib/merge-meta";
 import { accountService } from "~/machines/apple-music-account-machine";
 import { libraryAlbumMachine } from "~/machines/apple-music-library-album-machine";
-import { interpret } from "xstate";
-import { mergeMeta } from "~/lib/merge-meta";
-import { onDestroy } from "svelte";
+import Artists from "~/pages/artists/_artists.svelte";
+import ItemCard from "~/pages/tracks/_item-card.svelte";
 
 export let id = "";
 export let me: CurrentUserObject | undefined;
@@ -82,9 +82,9 @@ $: if (
   $accountService.matches("authorized")
 ) {
   libraryAlbumService.send({
-    type: "SET_TERM",
     term: album.name,
     tracks,
+    type: "SET_TERM",
   });
 }
 
