@@ -15,6 +15,7 @@ import LineMusic from "~/components/search-buttons/line-music.svelte";
 import Spotify from "~/components/search-buttons/spotify.svelte";
 import YoutubeMusic from "~/components/search-buttons/youtube-music.svelte";
 import Image from "~/components/square-image.svelte";
+import TwitterButton from "~/components/twitter-button.svelte";
 import VirtualScroll from "~/components/virtual-scroll.svelte";
 import { AlbumDocument } from "~/graphql/types";
 import type {
@@ -139,6 +140,14 @@ onDestroy(() => {
     </ion-item>
     <ion-item>
       <ion-buttons slot="end">
+        <TwitterButton
+          path={`/albums/${album.id}`}
+          text={`「${album.name}」`}
+          hashtags={[
+            "ゲーム音楽",
+            album.appleMusicPlayable ? "AppleMusic" : "iTunes",
+          ]}
+        />
         <Favorite type="album" id={album.id} />
         <AddPlaylistButton tracks={album.tracks.map((track) => track)} />
       </ion-buttons>

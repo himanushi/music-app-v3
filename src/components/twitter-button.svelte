@@ -1,15 +1,13 @@
 <script lang="ts">
-import { title as pageTitle } from "~/lib/variable";
-
 export let path: string;
-export let title: string;
+export let text: string;
 export let hashtags: string[];
 
 // ref: https://developer.twitter.com/en/docs/twitter-for-websites/tweet-button/overview
 const url = `https://video-game-music.net${path}`;
 let twitterUrl = "https://twitter.com/intent/tweet";
-twitterUrl += `?text=${title} - ${pageTitle}`;
-twitterUrl += `&url=${url}`;
+twitterUrl += `?text=${text}%0A`;
+twitterUrl += `&url=${url}%20%0A`;
 twitterUrl += `&hashtags=${hashtags.join(",")}`;
 </script>
 
