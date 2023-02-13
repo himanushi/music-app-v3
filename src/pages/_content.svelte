@@ -25,4 +25,7 @@ $: if (content && !$scrollElement) {
 ion-content {
   --padding-bottom: 76px;
 }
+ion-content::part(scroll) {
+  overflow: auto !important;
+}
 </style>
